@@ -13,9 +13,14 @@ import javax.swing.JLabel;
 import javax.swing.BorderFactory;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.JTree;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TreeExpansionListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import uniandes.cupi2.helpDesk.interfazMundo.*;
 
@@ -25,13 +30,13 @@ import java.awt.Font;
 import java.awt.Color;
 import java.util.ArrayList;
 
-public class PanelCliente extends JPanel implements ActionListener, ListSelectionListener {
+public class PanelCliente extends JPanel implements ActionListener, TreeSelectionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel panelIzquierda = null;
 	private JPanel panelDerecha = null;
 	private JPanel panelNavegacion = null;
-	private JList listaTickets = null;
+	private JScrollPane listaTickets = null;
 	private JButton botonAtras = null;
 	private JButton botonAdelante = null;
 	private JTextArea areaDescripcion = null;
@@ -113,20 +118,31 @@ public class PanelCliente extends JPanel implements ActionListener, ListSelectio
 	}
 
 	public void actualizar() {
-		
-		tickets = new ArrayList<ITicket>();
-		iterador.darGrupoActual();
-		while(iterador.haySiguiente())
+		DefaultMutableTreeNode raizTickets = new DefaultMutableTreeNode("Empleados");
+		while(iterador.hayGrupoSiguiente())
 		{
-			tickets.add( (ITicket) iterador.darSiguiente() );
+			iterador.darGrupoSiguiente();
+			if(iterador.haySiguiente())
+			{
+				ITicket ticket = (ITicket) iterador.darSiguiente();
+				DefaultMutableTreeNode nuevoEmpleado = new DefaultMutableTreeNode(ticket.darEmpleado().darNombre());
+				nuevoEmpleado.add(new DefaultMutableTreeNode(ticket.darId() + " - " + ticket.darFechaAtencion()));
+				while(iterador.haySiguiente())
+				{
+					ticket = (ITicket) iterador.darSiguiente();
+					nuevoEmpleado.add(new DefaultMutableTreeNode(ticket.darId() + " - " + ticket.darFechaAtencion()));
+				}
+				raizTickets.add(nuevoEmpleado);
+			}			
 		}
 		panelIzquierda.remove(listaTickets);
-		listaTickets = new JList(tickets.toArray());
-		listaTickets.addListSelectionListener(this);
+		JTree jArbol = new JTree(raizTickets);
+		jArbol.addTreeSelectionListener(this);
+		listaTickets = new JScrollPane(jArbol);
+		listaTickets.setPreferredSize(new Dimension(80,300));
 		panelIzquierda.add(listaTickets, BorderLayout.CENTER);
 		areaDescripcion.setText("");
 		panelIzquierda.validate();
-		listaTickets.setSelectedIndex(0);
 	}
 
 	/**
@@ -218,9 +234,9 @@ public class PanelCliente extends JPanel implements ActionListener, ListSelectio
 	 * 	
 	 * @return javax.swing.JTextArea	
 	 */
-	private JList getListaTickets() {
+	private JScrollPane getListaTickets() {
 		if (listaTickets == null) {
-			listaTickets = new JList();
+			listaTickets = new JScrollPane();
 		}
 		return listaTickets;
 	}
@@ -441,6 +457,11 @@ public class PanelCliente extends JPanel implements ActionListener, ListSelectio
 								"\nComentario del funcionario: " + (ticketActual.darComentarioEmpleado()==null?"":ticketActual.darComentarioEmpleado()));
 			areaDescripcion.setPreferredSize(new Dimension(300, areaDescripcion.getText().length() / 2));
 		areaDescripcion.revalidate();
+	}
+
+	public void valueChanged(TreeSelectionEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

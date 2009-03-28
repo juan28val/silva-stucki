@@ -66,7 +66,6 @@ public class PanelAdmin extends JPanel implements ActionListener, PropertyChange
 	private IIterador iteradorIncidentes;
 	private JPanel panelIncidentes;
 	private JList listaIncidentes;
-	private DefaultMutableTreeNode raizTickets;
 	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("adelanteClientes"))
@@ -111,7 +110,7 @@ public class PanelAdmin extends JPanel implements ActionListener, PropertyChange
 	}
 
 	private void actualizarTickets() {
-		raizTickets = new DefaultMutableTreeNode("Empleados");
+		DefaultMutableTreeNode raizTickets = new DefaultMutableTreeNode("Empleados");
 		while(iteradorTickets.hayGrupoSiguiente())
 		{
 			iteradorTickets.darGrupoSiguiente();
@@ -290,7 +289,7 @@ public class PanelAdmin extends JPanel implements ActionListener, PropertyChange
 	 */
 	private JScrollPane getListaTickets() {
 		if (listaTickets == null) {
-			raizTickets = new DefaultMutableTreeNode("Empleados");
+			DefaultMutableTreeNode raizTickets = new DefaultMutableTreeNode("Empleados");
 			listaTickets = new JScrollPane(new JTree(raizTickets));
 			listaTickets.setPreferredSize(new Dimension(80,300));
 		}

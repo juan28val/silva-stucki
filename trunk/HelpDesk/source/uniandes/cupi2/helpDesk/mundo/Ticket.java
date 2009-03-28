@@ -5,7 +5,14 @@ import java.util.Date;
 import uniandes.cupi2.helpDesk.interfazMundo.ITicket;
 import uniandes.cupi2.helpDesk.interfazMundo.IUsuario;
 
-
+/**
+ * Representa un ticket generado en el momento
+ * en que un cliente hace una amonestacion de
+ * cualquiera de los tres tipos: queja, reclamo,
+ * o solicitud.
+ * @author Emilio Silva, Nicolas Stucki
+ *
+ */
 public class Ticket implements ITicket {
 
 	private int tipo;

@@ -49,5 +49,10 @@ public class IteradorTickets implements IIterador {
 		
 	}
 
+	public void haySiguienteGrupo() {
+		// no se usa
+		
+	}
+
 
 }

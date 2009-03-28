@@ -93,5 +93,10 @@ public class IteradorClientes implements IIterador {
 		
 	}
 
+	public void haySiguienteGrupo() {
+		// no se usa
+		
+	}
+
 
 }

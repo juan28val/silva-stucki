@@ -38,5 +38,10 @@ public class IteradorEmpleados implements IIterador {
 		
 	}
 
+	public void haySiguienteGrupo() {
+		// no se usa
+		
+	}
+
 
 }

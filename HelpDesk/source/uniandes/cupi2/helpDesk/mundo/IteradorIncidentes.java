@@ -120,4 +120,9 @@ public class IteradorIncidentes implements IIterador {
 		pos = posGrupo;
 	}
 
+	public void haySiguienteGrupo() {
+		// no se usa
+		
+	}
+
 }

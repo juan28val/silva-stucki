@@ -7,7 +7,6 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Observable;
 import java.util.Properties;
@@ -62,7 +61,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	 */
 	private TablaHashingDinamica<Integer, Ticket> tablaTickets;
 	
-	private ArrayList<Integer> listaTicketsPorFecha;
+
 	
 	private IUsuario usuarioActual;
 	
@@ -91,7 +90,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	 */
 	private Trie<Empleado> prefijosEmpleados;
 
-	private int id;
+	private int ultimoId;
 	
 
     //-----------------------------------------------------------------
@@ -107,19 +106,17 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	public HelpDesk( )
     {
     		tablaTickets = new TablaHashingDinamica<Integer, Ticket>();
-    		listaTicketsPorFecha = new ArrayList<Integer>();
     		arbolIncidentes = new Arbol2_3<Incidente>();
     		prefijosEmpleados = new Trie<Empleado>();
     		numeroTicketsSinAtender = 0;
     		numeroTicketsSiendoAtendidos = 0;
     		numeroTicketsCerrados = 0;
-    		id = 10000;
+    		ultimoId = 10000;
     }
 	
 	public HelpDesk( String ruta ) throws Exception
 	{
 		tablaTickets = new TablaHashingDinamica<Integer, Ticket>();
-		listaTicketsPorFecha = new ArrayList<Integer>();
 		arbolIncidentes = new Arbol2_3<Incidente>();
 		prefijosEmpleados = new Trie<Empleado>();
 		
@@ -133,7 +130,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		parce.parse(new InputSource(new StringReader(cadena)));
 		Document doc = parce.getDocument();
 		Element raiz = doc.getDocumentElement();
-		id = Integer.parseInt(raiz.getAttribute("idTickets"));
+		ultimoId = Integer.parseInt(raiz.getAttribute("idTickets"));
 		numeroTicketsSinAtender = Integer.parseInt(raiz.getAttribute("ticketsSinAtender"));
 		numeroTicketsSiendoAtendidos = Integer.parseInt(raiz.getAttribute("ticketsSiendoAtendidos"));
 		numeroTicketsCerrados = Integer.parseInt(raiz.getAttribute("ticketsCerrados"));
@@ -144,6 +141,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		
 		cargarClientes(clientes);
 		cargarEmpleados(empleados);
+		cargarIncidentes(incidentes);
 	}
 
  	private void cargarClientes(Node clientes) {
@@ -209,8 +207,11 @@ public class HelpDesk extends Observable implements IHelpDesk {
 			
 		}
 	}
-
-	//-----------------------------------------------------------------
+	
+ 	private void cargarIncidentes(Node incidentes) {
+	
+ 	}
+ 		//-----------------------------------------------------------------
     // Métodos
     //-----------------------------------------------------------------
     
@@ -222,7 +223,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 
     	Element elementoRaiz = documento.createElement( "helpDesk" );
     	
-    	elementoRaiz.setAttribute("idTickets", String.valueOf(id));
+    	elementoRaiz.setAttribute("idTickets", String.valueOf(ultimoId));
     	elementoRaiz.setAttribute("ticketsSinAtender", String.valueOf(numeroTicketsSinAtender));
     	elementoRaiz.setAttribute("ticketsSiendoAtendidos", String.valueOf(numeroTicketsSiendoAtendidos));
     	elementoRaiz.setAttribute("ticketsCerrados", String.valueOf(numeroTicketsCerrados));
@@ -256,8 +257,8 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	 * pre: el usuario actual es un cliente
 	 */
 	public void nuevaSolicitud(int tipo, String comentarioCliente, boolean cifrado) throws Exception {
-		id++;
-		Ticket ticket = new Ticket(tipo, (Cliente)usuarioActual, comentarioCliente, 0, null, new Date(), null, null, true, false, cifrado, id);
+		ultimoId++;
+		Ticket ticket = new Ticket(tipo, (Cliente)usuarioActual, comentarioCliente, 0, null, new Date(), null, null, true, false, cifrado, ultimoId);
 		asignarTicket(ticket);
 		((Cliente) usuarioActual).agregarTicket(ticket.darId());
 		tablaTickets.agregar(ticket.darId(), ticket);
@@ -293,7 +294,6 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	 */
 	public void atenderTicket(ITicket ticket) throws Exception {
 		((Ticket)ticket).atender();
-		listaTicketsPorFecha.add(ticket.darId());
 		cambiarNumeroTicketsSinAtender(numeroTicketsSinAtender-1);
 		cambiarNumeroTicketsSiendoAtendidos(numeroTicketsSiendoAtendidos+1);
 		if(primerClienteAtendido == null )
@@ -371,7 +371,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	}
 	
 	public IIterador darListaTicketsEntreFechas(Date fecha1,Date fecha2) {
-		return new IteradorTicketsPorFecha(listaTicketsPorFecha, fecha1, fecha2, tablaTickets);
+		return new IteradorTicketsPorFecha(darEmpleados(), fecha1, fecha2, tablaTickets);
 	}
 	
 	public IIterador darListaIncidentes(boolean antes, Date fecha) {

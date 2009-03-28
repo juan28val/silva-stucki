@@ -16,7 +16,7 @@ public class IteradorTicketsPorFecha implements IIterador {
 	private int posGrupo;
 	
 	@SuppressWarnings("deprecation")
-	public IteradorTicketsPorFecha(ArrayList<Integer> listaTickets, Date fecha1, Date fecha2, TablaHashingDinamica<Integer, Ticket> tabla) {
+	public IteradorTicketsPorFecha(IIterador iteradorEmpleados, Date fecha1, Date fecha2, TablaHashingDinamica<Integer, Ticket> tabla) {
 		pos = 0;
 		posGrupo = 0;
 		listaTicketsEnFecha = new ArrayList<ITicket>();
@@ -30,9 +30,7 @@ public class IteradorTicketsPorFecha implements IIterador {
 			
 			if( ticketActual.darFechaAtencion() != null && ticketActual.darFechaAtencion().after(fecha1) && ticketActual.darFechaAtencion().before(fecha2) )
 				listaTicketsEnFecha.add(ticketActual);
-		}
-		
-		
+		}		
 	}
 
 	public void darGrupoAnterior() {
@@ -59,5 +57,10 @@ public class IteradorTicketsPorFecha implements IIterador {
 
 	public void darGrupoActual() {
 		pos = posGrupo;
+	}
+
+	public void haySiguienteGrupo() {
+		// no se usa
+		
 	}
 }

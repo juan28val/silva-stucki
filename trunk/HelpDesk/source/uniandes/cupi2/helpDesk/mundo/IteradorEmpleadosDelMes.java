@@ -94,5 +94,10 @@ public class IteradorEmpleadosDelMes implements IIterador {
 		
 	}
 
+	public void haySiguienteGrupo() {
+		// no se usa
+		
+	}
+
 
 }

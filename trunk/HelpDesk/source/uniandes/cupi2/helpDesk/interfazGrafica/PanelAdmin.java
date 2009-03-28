@@ -12,13 +12,17 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JList;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
 import javax.swing.border.TitledBorder;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import uniandes.cupi2.helpDesk.interfazMundo.IIncidente;
 import uniandes.cupi2.helpDesk.interfazMundo.IIterador;
@@ -33,7 +37,7 @@ public class PanelAdmin extends JPanel implements ActionListener, PropertyChange
 	private JPanel panelTickets = null;
 	private JPanel panelClientes = null;
 	private JPanel panelDerecha = null;
-	private JList listaTickets = null;
+	private JScrollPane listaTickets = null;
 	private JPanel navTickets = null;
 	private JButton atrasTickets = null;
 	private JButton adelanteTickets = null;
@@ -65,6 +69,7 @@ public class PanelAdmin extends JPanel implements ActionListener, PropertyChange
 	private IIterador iteradorIncidentes;
 	private JPanel panelIncidentes;
 	private JList listaIncidentes;
+	private DefaultMutableTreeNode raizTickets;
 	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("adelanteClientes"))
@@ -119,15 +124,32 @@ public class PanelAdmin extends JPanel implements ActionListener, PropertyChange
 	}
 
 	private void actualizarTickets() {
+		raizTickets = new DefaultMutableTreeNode("Empleados");
 		iteradorTickets.darGrupoActual();
-		ArrayList<String> datos = new ArrayList<String>();
 		while(iteradorTickets.haySiguiente())
 		{
 			ITicket ticket = (ITicket) iteradorTickets.darSiguiente();
-			datos.add(ticket.darId() + " - " + ticket.darFechaAtencion());
+			Enumeration<DefaultMutableTreeNode> iteradorRaiz = raizTickets.children();
+			boolean fin = false;
+			while(iteradorRaiz.hasMoreElements() && !fin)
+			{
+				DefaultMutableTreeNode nodo = (DefaultMutableTreeNode) iteradorRaiz.nextElement();
+				if(ticket.darEmpleado().darNombre()==nodo.toString())
+				{
+					nodo.add(new DefaultMutableTreeNode(ticket.darId() + " - " + ticket.darFechaAtencion()));
+					fin = true;
+				}
+			}
+			if(!fin)
+			{
+				DefaultMutableTreeNode nuevoEmpleado = new DefaultMutableTreeNode(ticket.darEmpleado().darNombre());
+				nuevoEmpleado.add(new DefaultMutableTreeNode(ticket.darId() + " - " + ticket.darFechaAtencion()));
+				raizTickets.add(nuevoEmpleado);
+			}
+			
 		}
 		panelTickets.remove(listaTickets);
-		listaTickets = new JList(datos.toArray());
+		listaTickets = new JScrollPane(new JTree(raizTickets));
 		listaTickets.setPreferredSize(new Dimension(80,300));
 		panelTickets.add(listaTickets, BorderLayout.CENTER);
 		panelTickets.validate();
@@ -286,9 +308,10 @@ public class PanelAdmin extends JPanel implements ActionListener, PropertyChange
 	 * 	
 	 * @return javax.swing.JList	
 	 */
-	private JList getListaTickets() {
+	private JScrollPane getListaTickets() {
 		if (listaTickets == null) {
-			listaTickets = new JList();
+			raizTickets = new DefaultMutableTreeNode("Empleados");
+			listaTickets = new JScrollPane(new JTree(raizTickets));
 			listaTickets.setPreferredSize(new Dimension(80,300));
 		}
 		return listaTickets;
@@ -314,8 +337,6 @@ public class PanelAdmin extends JPanel implements ActionListener, PropertyChange
 			gridLayout1.setColumns(1);
 			navTickets = new JPanel();
 			navTickets.setLayout(gridLayout1);
-			navTickets.add(getAtrasTickets());
-			navTickets.add(getAdelanteTickets());
 			navTickets.add(new JLabel(""));
 			navTickets.add(new JLabel(""));
 			fecha1 = new JDateChooser(new Date());
@@ -362,34 +383,8 @@ public class PanelAdmin extends JPanel implements ActionListener, PropertyChange
 	}
 	
 	/**
-	 * This method initializes atrasTickets	
-	 * 	
-	 * @return javax.swing.JButton	
+	 * This method initializes atrasIncidentes	
 	 */
-	private JButton getAtrasTickets() {
-		if (atrasTickets == null) {
-			atrasTickets = new JButton();
-			atrasTickets.setText("<<");
-			atrasTickets.addActionListener(this);
-			atrasTickets.setActionCommand("atrasTickets");
-		}
-		return atrasTickets;
-	}
-
-	/**
-	 * This method initializes adelanteTickets	
-	 * 	
-	 * @return javax.swing.JButton	
-	 */
-	private JButton getAdelanteTickets() {
-		if (adelanteTickets == null) {
-			adelanteTickets = new JButton();
-			adelanteTickets.setText(">>");
-			adelanteTickets.addActionListener(this);
-			adelanteTickets.setActionCommand("adelanteTickets");
-		}
-		return adelanteTickets;
-	}
 
 	private JButton getAtrasIncidentes() {
 		if (atrasIncidentes == null) {

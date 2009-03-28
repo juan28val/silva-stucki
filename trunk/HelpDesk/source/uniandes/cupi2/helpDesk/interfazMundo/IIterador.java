@@ -51,4 +51,12 @@ public interface IIterador
 	 * post: la fecha de cierre del ticket fue asignada
 	 */
 	public void darGrupoActual();
+
+	/**
+	 * El empleado al que le fue asignado un ticket lo marca como cerrado generando
+	 * una fecha 
+	 * pre: el ticket no puede ser null
+	 * post: la fecha de cierre del ticket fue asignada
+	 */
+	public void haySiguienteGrupo();
 }

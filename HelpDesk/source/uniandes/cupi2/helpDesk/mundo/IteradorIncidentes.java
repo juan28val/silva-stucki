@@ -120,7 +120,8 @@ public class IteradorIncidentes implements IIterador {
 		pos = posGrupo;
 	}
 
-	public void haySiguienteGrupo() {
+	public boolean hayGrupoSiguiente() {
+		return true;
 		// no se usa
 		
 	}

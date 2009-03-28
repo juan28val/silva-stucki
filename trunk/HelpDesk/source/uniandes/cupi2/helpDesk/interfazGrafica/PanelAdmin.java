@@ -12,7 +12,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Enumeration;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JList;
@@ -39,8 +38,6 @@ public class PanelAdmin extends JPanel implements ActionListener, PropertyChange
 	private JPanel panelDerecha = null;
 	private JScrollPane listaTickets = null;
 	private JPanel navTickets = null;
-	private JButton atrasTickets = null;
-	private JButton adelanteTickets = null;
 	private JList listaClientes = null;
 	private JPanel navClientes = null;
 	private JButton atrasClientes = null;
@@ -91,17 +88,7 @@ public class PanelAdmin extends JPanel implements ActionListener, PropertyChange
 		{
 			iteradorEmpleados.darGrupoAnterior();
 			actualizarEmpleados();
-		}		
-		else if(e.getActionCommand().equals("adelanteTickets"))
-		{
-			iteradorTickets.darGrupoSiguiente();
-			actualizarTickets();
-		}	
-		else if(e.getActionCommand().equals("atrasTickets"))
-		{
-			iteradorTickets.darGrupoAnterior();
-			actualizarTickets();
-		}	
+		}			
 		else if(e.getActionCommand().equals("adelanteIncidentes"))
 		{
 			iteradorIncidentes.darGrupoSiguiente();
@@ -125,28 +112,21 @@ public class PanelAdmin extends JPanel implements ActionListener, PropertyChange
 
 	private void actualizarTickets() {
 		raizTickets = new DefaultMutableTreeNode("Empleados");
-		iteradorTickets.darGrupoActual();
-		while(iteradorTickets.haySiguiente())
+		while(iteradorTickets.hayGrupoSiguiente())
 		{
-			ITicket ticket = (ITicket) iteradorTickets.darSiguiente();
-			Enumeration<DefaultMutableTreeNode> iteradorRaiz = raizTickets.children();
-			boolean fin = false;
-			while(iteradorRaiz.hasMoreElements() && !fin)
+			iteradorTickets.darGrupoSiguiente();
+			if(iteradorTickets.haySiguiente())
 			{
-				DefaultMutableTreeNode nodo = (DefaultMutableTreeNode) iteradorRaiz.nextElement();
-				if(ticket.darEmpleado().darNombre()==nodo.toString())
-				{
-					nodo.add(new DefaultMutableTreeNode(ticket.darId() + " - " + ticket.darFechaAtencion()));
-					fin = true;
-				}
-			}
-			if(!fin)
-			{
+				ITicket ticket = (ITicket) iteradorTickets.darSiguiente();
 				DefaultMutableTreeNode nuevoEmpleado = new DefaultMutableTreeNode(ticket.darEmpleado().darNombre());
 				nuevoEmpleado.add(new DefaultMutableTreeNode(ticket.darId() + " - " + ticket.darFechaAtencion()));
+				while(iteradorTickets.haySiguiente())
+				{
+					ticket = (ITicket) iteradorTickets.darSiguiente();
+					nuevoEmpleado.add(new DefaultMutableTreeNode(ticket.darId() + " - " + ticket.darFechaAtencion()));
+				}
 				raizTickets.add(nuevoEmpleado);
-			}
-			
+			}			
 		}
 		panelTickets.remove(listaTickets);
 		listaTickets = new JScrollPane(new JTree(raizTickets));

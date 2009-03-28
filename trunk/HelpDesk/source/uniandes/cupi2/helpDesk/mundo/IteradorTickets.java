@@ -49,7 +49,8 @@ public class IteradorTickets implements IIterador {
 		
 	}
 
-	public void haySiguienteGrupo() {
+	public boolean hayGrupoSiguiente() {
+		return true;
 		// no se usa
 		
 	}

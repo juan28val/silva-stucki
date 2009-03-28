@@ -58,5 +58,5 @@ public interface IIterador
 	 * pre: el ticket no puede ser null
 	 * post: la fecha de cierre del ticket fue asignada
 	 */
-	public void haySiguienteGrupo();
+	public boolean hayGrupoSiguiente();
 }

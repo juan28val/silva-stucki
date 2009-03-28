@@ -79,8 +79,8 @@ public class HelpDeskTest extends TestCase implements Observer
     {
         setupEscenario1( );
     
-        Cliente cliente = new Cliente("Juan",1,"email@hotmail.com",null);
-        Cliente cliente2 = new Cliente("Carlos",3,"email2",cliente);
+        Cliente cliente = new Cliente("Juan",1,"email@hotmail.com",null, null);
+        Cliente cliente2 = new Cliente("Carlos",3,"email2",cliente, null);
     	helpDesk.iniciarSesion(cliente);
 
         assertEquals("El cliente no se crea con el nombre correcto.", "Juan", cliente.darNombre());

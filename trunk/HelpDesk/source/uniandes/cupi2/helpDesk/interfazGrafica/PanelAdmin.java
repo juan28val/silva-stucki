@@ -235,7 +235,7 @@ public class PanelAdmin extends JPanel implements ActionListener, PropertyChange
 			borderLayout.setVgap(0);
 			panelTickets = new JPanel();
 			panelTickets.setLayout(borderLayout);
-			panelTickets.setBorder(new TitledBorder("Lista de tickets a fecha"));
+			panelTickets.setBorder(new TitledBorder("Tickets abiertos entre las fechas:"));
 			panelTickets.add(getListaTickets(), BorderLayout.CENTER);
 			panelTickets.add(getNavTickets(), BorderLayout.SOUTH);
 		}
@@ -251,7 +251,7 @@ public class PanelAdmin extends JPanel implements ActionListener, PropertyChange
 		if (panelClientes == null) {
 			panelClientes = new JPanel();
 			panelClientes.setLayout(new BorderLayout());
-			panelClientes.setBorder(new TitledBorder("Lista de clientes atendidos"));
+			panelClientes.setBorder(new TitledBorder("Clientes atendidos"));
 			panelClientes.add(getListaClientes(), BorderLayout.CENTER);
 			panelClientes.add(getNavClientes(), BorderLayout.SOUTH);
 		}
@@ -281,7 +281,7 @@ public class PanelAdmin extends JPanel implements ActionListener, PropertyChange
 			borderLayout.setVgap(0);
 			panelIncidentes = new JPanel();
 			panelIncidentes.setLayout(borderLayout);
-			panelIncidentes.setBorder(new TitledBorder("Lista incidentes a fecha:"));
+			panelIncidentes.setBorder(new TitledBorder("Incidentes ocurridos"));
 			panelIncidentes.add(getListaIncidentes(), BorderLayout.CENTER);
 			panelIncidentes.add(getNavIncidentes(), BorderLayout.SOUTH);
 		}

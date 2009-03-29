@@ -139,6 +139,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		Document doc = parce.getDocument();
 		Element raiz = doc.getDocumentElement();
 		idTickets = Integer.parseInt(raiz.getAttribute("idTickets"));
+		idUsuarios = Integer.parseInt(raiz.getAttribute("idUsuarios"));
 		numeroTicketsSinAtender = Integer.parseInt(raiz.getAttribute("ticketsSinAtender"));
 		numeroTicketsSiendoAtendidos = Integer.parseInt(raiz.getAttribute("ticketsSiendoAtendidos"));
 		numeroTicketsCerrados = Integer.parseInt(raiz.getAttribute("ticketsCerrados"));
@@ -203,6 +204,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 			empleado.cambiarSiguienteDelMes(primerEmpleado);
 			if(primerEmpleado!=null)
 				primerEmpleado.cambiarAnteriorDelMes(empleado);
+			else ultimoEmpleado = empleado;
    			empleadoDelMes = empleado;
    			primerEmpleado = empleado;
 			primerEmpleado.cambiarCalificacion(0);
@@ -238,6 +240,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
     	Element elementoRaiz = documento.createElement( "helpDesk" );
     	
     	elementoRaiz.setAttribute("idTickets", String.valueOf(idTickets));
+    	elementoRaiz.setAttribute("idUsuarios", String.valueOf(idUsuarios));
     	elementoRaiz.setAttribute("ticketsSinAtender", String.valueOf(numeroTicketsSinAtender));
     	elementoRaiz.setAttribute("ticketsSiendoAtendidos", String.valueOf(numeroTicketsSiendoAtendidos));
     	elementoRaiz.setAttribute("ticketsCerrados", String.valueOf(numeroTicketsCerrados));

@@ -31,11 +31,11 @@ public class BarraEstado extends JPanel implements Observer {
 		
 		actualizarNumeros();
 		
-		add(new JLabel("Tickets sin atender:"));
+		add(new JLabel("Sin atender:"));
 		add(numeroSinAtender);
-		add(new JLabel("   Tickets siendo atendidos:"));
+		add(new JLabel("   Abiertos:"));
 		add(numeroSiendoAtendidos);
-		add(new JLabel("   Tickets cerrados:"));
+		add(new JLabel("   Cerrados:"));
 		add(numeroCerrados);
 	}
 	

@@ -156,7 +156,7 @@ public class PanelCliente extends JPanel implements ActionListener, TreeSelectio
 			borderLayout.setHgap(0);
 			panelIzquierda = new JPanel();
 			panelIzquierda.setLayout(borderLayout);
-			panelIzquierda.setBorder(BorderFactory.createTitledBorder(null, "Lista de tickets", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
+			panelIzquierda.setBorder(BorderFactory.createTitledBorder(null, "Árbol de tickets", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
 			panelIzquierda.add(getListaTickets(), BorderLayout.CENTER);
 		}
 		return panelIzquierda;

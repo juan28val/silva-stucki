@@ -11,16 +11,13 @@ import java.awt.BorderLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.BorderFactory;
-import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeSelectionModel;
 
 import uniandes.cupi2.helpDesk.interfazMundo.*;
 
@@ -35,10 +32,7 @@ public class PanelCliente extends JPanel implements ActionListener, TreeSelectio
 	private static final long serialVersionUID = 1L;
 	private JPanel panelIzquierda = null;
 	private JPanel panelDerecha = null;
-	private JPanel panelNavegacion = null;
 	private JScrollPane listaTickets = null;
-	private JButton botonAtras = null;
-	private JButton botonAdelante = null;
 	private JTextArea areaDescripcion = null;
 	private JPanel panelOpciones = null;
 	private JButton botonNuevo = null;
@@ -56,59 +50,38 @@ public class PanelCliente extends JPanel implements ActionListener, TreeSelectio
 	private ITicket ticketActual;
 	ArrayList<ITicket> tickets;
 	private JButton botonReabrir;
+	private JTree jArbol;
 
 	
 	public void actionPerformed(ActionEvent evento) {
-		if(evento.getActionCommand().equals("atras"))
-		{
-			iterador.darGrupoAnterior();
-			actualizar();
-		}
-		if(evento.getActionCommand().equals("adelante"))
-		{
-			iterador.darGrupoSiguiente();
-			actualizar();
-		}
-			
 		if(evento.getActionCommand().equals("nuevo"))
 		{
-			int i = listaTickets.getSelectedIndex();
 			DialogoTicketNuevo nuevo = new DialogoTicketNuevo(principal, this);
 			nuevo.setVisible(true);
 			principal.darJFrame().setEnabled(false);
-			if(i != -1)
-			{
-				ticketActual = tickets.get(i);
-				listaTickets.setSelectedIndex(i);
-				actualizarDescripcion();
-			}
-
+			iterador = principal.darListaTickets();
+			actualizar();
+			actualizarDescripcion();
 		}
 		if(evento.getActionCommand().equals("calificar"))
 		{
-			
 			if(ticketActual != null && ticketActual.darFechaCierre() != null)
 			{
 				principal.calificar(ticketActual, (String)listaCalificacion.getSelectedItem());
 				actualizarDescripcion();
 			}
-			
 		}
-		
 		if(evento.getActionCommand().equals("reabrir"))
 		{
 			if(ticketActual != null && ticketActual.darFechaCierre() != null)
 			{
-				int i = listaTickets.getSelectedIndex();
 				DialogoReapertura nuevo = new DialogoReapertura(principal, this, ticketActual);
 				nuevo.setVisible(true);
 				principal.darJFrame().setEnabled(false);
-				if(i != -1)
-				{
-					ticketActual = tickets.get(i);
-					listaTickets.setSelectedIndex(i);
-					actualizarDescripcion();
-				}
+				ticketActual = null;
+				iterador = principal.darListaTickets();
+				actualizar();
+				actualizarDescripcion();
 			}
 		}
 		if(evento.getActionCommand().equals("opcion1"))
@@ -126,18 +99,20 @@ public class PanelCliente extends JPanel implements ActionListener, TreeSelectio
 			{
 				ITicket ticket = (ITicket) iterador.darSiguiente();
 				DefaultMutableTreeNode nuevoEmpleado = new DefaultMutableTreeNode(ticket.darEmpleado().darNombre());
-				nuevoEmpleado.add(new DefaultMutableTreeNode(ticket.darId() + " - " + ticket.darFechaAtencion()));
+				nuevoEmpleado.add(new DefaultMutableTreeNode(ticket));
 				while(iterador.haySiguiente())
 				{
 					ticket = (ITicket) iterador.darSiguiente();
-					nuevoEmpleado.add(new DefaultMutableTreeNode(ticket.darId() + " - " + ticket.darFechaAtencion()));
+					nuevoEmpleado.add(new DefaultMutableTreeNode(ticket));
 				}
 				raizTickets.add(nuevoEmpleado);
 			}			
 		}
 		panelIzquierda.remove(listaTickets);
-		JTree jArbol = new JTree(raizTickets);
+		jArbol = new JTree(raizTickets);
 		jArbol.addTreeSelectionListener(this);
+		jArbol.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+		jArbol.expandRow(2);
 		listaTickets = new JScrollPane(jArbol);
 		listaTickets.setPreferredSize(new Dimension(80,300));
 		panelIzquierda.add(listaTickets, BorderLayout.CENTER);
@@ -185,7 +160,6 @@ public class PanelCliente extends JPanel implements ActionListener, TreeSelectio
 			panelIzquierda = new JPanel();
 			panelIzquierda.setLayout(borderLayout);
 			panelIzquierda.setBorder(BorderFactory.createTitledBorder(null, "Lista de tickets", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
-			panelIzquierda.add(getPanelNavegacion(), BorderLayout.SOUTH);
 			panelIzquierda.add(getListaTickets(), BorderLayout.CENTER);
 		}
 		return panelIzquierda;
@@ -211,25 +185,6 @@ public class PanelCliente extends JPanel implements ActionListener, TreeSelectio
 	}
 
 	/**
-	 * This method initializes panelNavegacion	
-	 * 	
-	 * @return javax.swing.JPanel	
-	 */
-	private JPanel getPanelNavegacion() {
-		if (panelNavegacion == null) {
-			GridLayout gridLayout1 = new GridLayout();
-			gridLayout1.setRows(1);
-			panelNavegacion = new JPanel();
-			panelNavegacion.setLayout(gridLayout1);
-			panelNavegacion.add(getBotonAtras(), null);
-			panelNavegacion.add(getBotonAdelante(), null);
-		}
-		return panelNavegacion;
-	}
-	
-	
-
-	/**
 	 * This method initializes areaTickets	
 	 * 	
 	 * @return javax.swing.JTextArea	
@@ -239,36 +194,6 @@ public class PanelCliente extends JPanel implements ActionListener, TreeSelectio
 			listaTickets = new JScrollPane();
 		}
 		return listaTickets;
-	}
-
-	/**
-	 * This method initializes botonAtras	
-	 * 	
-	 * @return javax.swing.JButton	
-	 */
-	private JButton getBotonAtras() {
-		if (botonAtras == null) {
-			botonAtras = new JButton();
-			botonAtras.setText("<<");
-			botonAtras.addActionListener(this);
-			botonAtras.setActionCommand("atras");
-		}
-		return botonAtras;
-	}
-
-	/**
-	 * This method initializes botonAdelante	
-	 * 	
-	 * @return javax.swing.JButton	
-	 */
-	private JButton getBotonAdelante() {
-		if (botonAdelante == null) {
-			botonAdelante = new JButton();
-			botonAdelante.setText(">>");
-			botonAdelante.addActionListener(this);
-			botonAdelante.setActionCommand("adelante");
-		}
-		return botonAdelante;
 	}
 
 	/**
@@ -283,6 +208,7 @@ public class PanelCliente extends JPanel implements ActionListener, TreeSelectio
 			areaDescripcion.setPreferredSize(new Dimension(300,200));
 			areaDescripcion.setLineWrap(true);
 			areaDescripcion.setWrapStyleWord(true);
+			areaDescripcion.setText("Seleccione un ticket.");
 		}
 		return areaDescripcion;
 	}
@@ -431,37 +357,35 @@ public class PanelCliente extends JPanel implements ActionListener, TreeSelectio
 		return botonReabrir;
 	}
 
-	public void valueChanged(ListSelectionEvent evento) {
-		ticketActual = tickets.get( listaTickets.getSelectedIndex());
-		if(ticketActual == null)
-			return;
-		if(ticketActual.darFechaCierre() != null)
+	public void actualizarDescripcion()
+	{
+		if(ticketActual!=null)
 		{
-			botonCalificar.setEnabled(true);
-			botonReabrir.setEnabled(true);
+			areaDescripcion.setText("Asignado a " + ticketActual.darNombreEmpleado() + (ticketActual.atendidoPorExperto() ? "" : " (inexperto)") + "\nCalificacion: " + ticketActual.darCalificacion()
+					+ "\nCreacion: " + ticketActual.darFechaCreacion().toString() + "\nAtencion: " + (ticketActual.darFechaAtencion() == null ? "" : ticketActual.darFechaAtencion().toString()) +
+					"\nCierre: " + (ticketActual.darFechaCierre() == null ? "" : ticketActual.darFechaCierre().toString()) + "\nMi comentario: " + ticketActual.darComentarioCliente() +
+					"\nComentario del funcionario: " + (ticketActual.darComentarioEmpleado()==null?"":ticketActual.darComentarioEmpleado()));
+					areaDescripcion.setPreferredSize(new Dimension(300, areaDescripcion.getText().length() / 2));
+					areaDescripcion.revalidate();
+		}
+		else
+			areaDescripcion.setText("Seleccione un ticket.");
+	}
+
+	public void valueChanged(TreeSelectionEvent evento) {
+		DefaultMutableTreeNode nodo = (DefaultMutableTreeNode)jArbol.getLastSelectedPathComponent();
+		
+		if(nodo==null)
+			return;
+		else if(nodo.isLeaf() && nodo.getLevel()==2)
+		{
+			ticketActual = (ITicket) nodo.getUserObject();
 		}
 		else
 		{
-			botonCalificar.setEnabled(false);
-			botonReabrir.setEnabled(false);
+			ticketActual = null;
 		}
 		actualizarDescripcion();
-	}
-	
-	public void actualizarDescripcion()
-	{
-		
-		areaDescripcion.setText("Asignado a " + ticketActual.darNombreEmpleado() + (ticketActual.atendidoPorExperto() ? "" : " (inexperto)") + "\nCalificacion: " + ticketActual.darCalificacion()
-				+ "\nCreacion: " + ticketActual.darFechaCreacion().toString() + "\nAtencion: " + (ticketActual.darFechaAtencion() == null ? "" : ticketActual.darFechaAtencion().toString()) +
-						"\nCierre: " + (ticketActual.darFechaCierre() == null ? "" : ticketActual.darFechaCierre().toString()) + "\nMi comentario: " + ticketActual.darComentarioCliente() +
-								"\nComentario del funcionario: " + (ticketActual.darComentarioEmpleado()==null?"":ticketActual.darComentarioEmpleado()));
-			areaDescripcion.setPreferredSize(new Dimension(300, areaDescripcion.getText().length() / 2));
-		areaDescripcion.revalidate();
-	}
-
-	public void valueChanged(TreeSelectionEvent arg0) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

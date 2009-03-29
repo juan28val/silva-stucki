@@ -536,4 +536,8 @@ public class InterfazHelpDesk {
 		return mundo.darListaIncidentes(antes, fecha);
 	}
 
+	public IIterador darListaTickets() {
+		return mundo.darListaTicketsUsuarioActual();
+	}
+
 }

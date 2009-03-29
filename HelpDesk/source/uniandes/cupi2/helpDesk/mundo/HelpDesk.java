@@ -392,7 +392,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 
 	public IIterador darListaTicketsUsuarioActual()
 	{
-		return new IteradorTickets( usuarioActual, tablaTickets );
+		return new IteradorTickets( usuarioActual,usuarioActual.esEmpleado()?new IteradorClientes(primerCliente):new IteradorEmpleados(primerEmpleado) ,tablaTickets );
 	}
 	
 	public IIterador darListaTicketsEntreFechas(Date fecha1,Date fecha2) {

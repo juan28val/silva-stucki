@@ -1,5 +1,7 @@
 package uniandes.cupi2.helpDesk.mundo;
 
+import java.util.ArrayList;
+
 import uniandes.cupi2.collections.tablaHashing.tablaHashingDinamica.TablaHashingDinamica;
 import uniandes.cupi2.helpDesk.interfazMundo.IIterador;
 import uniandes.cupi2.helpDesk.interfazMundo.ITicket;
@@ -10,49 +12,55 @@ public class IteradorTickets implements IIterador {
 	
 	private IUsuario usuarioActual;
 	private int pos;
-	private int posGrupo;
 	private TablaHashingDinamica<Integer, Ticket> tabla;
+	private IIterador listaUsuarios;
+	private ArrayList<Integer> listaTicketsUsuarioActual;
 
-	public IteradorTickets(IUsuario usuarioActual, TablaHashingDinamica<Integer, Ticket> tabla) {
+	public IteradorTickets(IUsuario usuarioActual,IIterador listaUsuarios, TablaHashingDinamica<Integer, Ticket> tabla) {
 		this.usuarioActual = usuarioActual;
+		this.listaUsuarios = listaUsuarios;
+		listaTicketsUsuarioActual = new ArrayList<Integer>();
 		pos = 0;
-		posGrupo = 0;
 		this.tabla = tabla;
 	}
 
 	public void darGrupoAnterior() {
-		
-		if( posGrupo >= LIMITE )
-			posGrupo = posGrupo-LIMITE;
-		pos = posGrupo;
+		// no se usa
 	}
 
 	public void darGrupoSiguiente() {
-		if( posGrupo + LIMITE < usuarioActual.darListaTickets().size() )
-			posGrupo = posGrupo+LIMITE;
-		pos = posGrupo;
-		
+		pos = 0;
+		listaTicketsUsuarioActual = new ArrayList<Integer>();
+		IUsuario usuario = (IUsuario) listaUsuarios.darSiguiente();
+		for(int i=0;i<usuarioActual.darListaTickets().size();i++)
+		{
+			if(usuarioActual.esEmpleado() && tabla.dar(usuarioActual.darListaTickets().get(i)).darClient().darId()==usuario.darId())
+			{
+				listaTicketsUsuarioActual.add(usuarioActual.darListaTickets().get(i));
+			}
+			else if(!usuarioActual.esEmpleado() && tabla.dar(usuarioActual.darListaTickets().get(i)).darEmpleado().darId()==usuario.darId())
+			{
+				listaTicketsUsuarioActual.add(usuarioActual.darListaTickets().get(i));
+			}
+		}
 	}
 
 	public ITicket darSiguiente() {
 		pos++;
-		return tabla.dar(usuarioActual.darListaTickets().get(pos-1));
+		return tabla.dar(listaTicketsUsuarioActual.get(pos-1));
 	}
 
 	public boolean haySiguiente() {
-
-		return pos<LIMITE + posGrupo && pos < usuarioActual.darListaTickets().size();
+		return pos<listaTicketsUsuarioActual.size()-1;
 	}
 
 	public void darGrupoActual() {
-		pos= posGrupo;
+		// no se usa
 		
 	}
 
 	public boolean hayGrupoSiguiente() {
-		return true;
-		// no se usa
-		
+		return listaUsuarios.haySiguiente();		
 	}
 
 

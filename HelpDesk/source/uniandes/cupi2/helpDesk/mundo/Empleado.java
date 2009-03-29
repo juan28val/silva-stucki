@@ -11,6 +11,7 @@ import uniandes.cupi2.helpDesk.interfazMundo.IUsuario;
 
 public class Empleado implements IUsuario {
 	
+	private int id;
 	private String nombre;
 	private Empleado siguiente;
 	private Empleado anteriorDelMes;
@@ -21,8 +22,9 @@ public class Empleado implements IUsuario {
 	private int incidentes;
 	private byte clave;
 
-	public Empleado(String nombre, Empleado siguiente, int tipo, int sumaCalificacion, byte clave, int incidentes)
+	public Empleado(int id, String nombre, Empleado siguiente, int tipo, int sumaCalificacion, byte clave, int incidentes)
 	{
+		this.id = id;
 		this.nombre = nombre;
 		this.siguiente = siguiente;
 		listaTickets = new ArrayList<Integer>();
@@ -225,6 +227,7 @@ public class Empleado implements IUsuario {
 
 	public void guardar(Element elementoEmpleados,Document documento) {
 		Element e = documento.createElement("empleado");
+		e.setAttribute("id", String.valueOf(id));
 		e.setAttribute("nombre", nombre);
 		e.setAttribute("clave", String.valueOf(clave));
 		e.setAttribute("tipo", String.valueOf(tipo));
@@ -239,6 +242,10 @@ public class Empleado implements IUsuario {
 		elementoEmpleados.appendChild(e);
 		if(siguiente != null)
 			siguiente.guardar(elementoEmpleados, documento);
+	}
+
+	public int darId() {
+		return id;
 	}
 
 }

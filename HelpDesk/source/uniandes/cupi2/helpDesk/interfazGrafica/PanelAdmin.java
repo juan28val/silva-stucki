@@ -132,6 +132,8 @@ public class PanelAdmin extends JPanel implements ActionListener, PropertyChange
 		panelTickets.remove(listaTickets);
 		JTree jArbol = new JTree(raizTickets);
 		jArbol.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+		for(int i=raizTickets.getChildCount();i>0;i--)
+			jArbol.expandRow(i);
 		listaTickets = new JScrollPane(jArbol);
 		listaTickets.setPreferredSize(new Dimension(80,300));
 		panelTickets.add(listaTickets, BorderLayout.CENTER);

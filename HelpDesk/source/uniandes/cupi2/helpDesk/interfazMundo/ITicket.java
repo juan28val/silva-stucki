@@ -153,5 +153,11 @@ public interface ITicket
 	 * @return boolean: si esta cifrado.
 	 */
 	public boolean estaCifrado();
+
+	/**
+	 * Retorna el cliente que creo el ticket.
+	 * @return Cliente: el cliente que creo el ticket.
+	 */
+	public IUsuario darCliente();
 	
 }

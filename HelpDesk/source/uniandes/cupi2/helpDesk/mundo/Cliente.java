@@ -160,4 +160,9 @@ public class Cliente implements IUsuario {
 		if(siguiente != null)
 			siguiente.guardar(elementoClientes, documento, tablaTickets);
 	}
+	
+	public String toString()
+	{
+		return nombre;
+	}
 }

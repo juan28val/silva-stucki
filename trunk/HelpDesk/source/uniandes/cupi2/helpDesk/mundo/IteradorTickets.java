@@ -31,17 +31,28 @@ public class IteradorTickets implements IIterador {
 	public void darGrupoSiguiente() {
 		pos = 0;
 		listaTicketsUsuarioActual = new ArrayList<Integer>();
-		IUsuario usuario = (IUsuario) listaUsuarios.darSiguiente();
-		for(int i=0;i<usuarioActual.darListaTickets().size();i++)
+		
+		if(usuarioActual.esEmpleado() )
 		{
-			if(usuarioActual.esEmpleado() && tabla.dar(usuarioActual.darListaTickets().get(i)).darClient().darId()==usuario.darId())
+			Cliente usuario = (Cliente) listaUsuarios.darSiguiente();
+			for(int i=0;i<usuarioActual.darListaTickets().size();i++)
 			{
-				listaTicketsUsuarioActual.add(usuarioActual.darListaTickets().get(i));
-			}
-			else if(!usuarioActual.esEmpleado() && tabla.dar(usuarioActual.darListaTickets().get(i)).darEmpleado().darId()==usuario.darId())
+				if(tabla.dar(usuarioActual.darListaTickets().get(i)).darClient().darId()==usuario.darId())
+				{
+					listaTicketsUsuarioActual.add(usuarioActual.darListaTickets().get(i));
+				}
+			}			
+		}
+		else
+		{
+			Empleado usuario = (Empleado)listaUsuarios.darSiguiente();
+			for(int i=0;i<usuarioActual.darListaTickets().size();i++)
 			{
-				listaTicketsUsuarioActual.add(usuarioActual.darListaTickets().get(i));
-			}
+				if(tabla.dar(usuarioActual.darListaTickets().get(i)).darEmpleado().darId()==usuario.darId())
+				{
+					listaTicketsUsuarioActual.add(usuarioActual.darListaTickets().get(i));
+				}
+			}			
 		}
 	}
 
@@ -51,7 +62,7 @@ public class IteradorTickets implements IIterador {
 	}
 
 	public boolean haySiguiente() {
-		return pos<listaTicketsUsuarioActual.size()-1;
+		return pos<listaTicketsUsuarioActual.size();
 	}
 
 	public void darGrupoActual() {

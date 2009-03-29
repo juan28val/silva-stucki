@@ -25,7 +25,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Color;
-import java.util.ArrayList;
 
 public class PanelCliente extends JPanel implements ActionListener, TreeSelectionListener {
 
@@ -37,7 +36,7 @@ public class PanelCliente extends JPanel implements ActionListener, TreeSelectio
 	private JPanel panelOpciones = null;
 	private JButton botonNuevo = null;
 	private JPanel panelPropiedades = null;
-	private JComboBox listaCalificacion = null;
+	private JComboBox comboCalificacion = null;
 	private JButton botonCalificar = null;
 	private JButton botonOpcion1 = null;
 	private JButton botonOpcion2 = null;
@@ -48,7 +47,6 @@ public class PanelCliente extends JPanel implements ActionListener, TreeSelectio
 	private InterfazHelpDesk principal;
 	private IIterador iterador;
 	private ITicket ticketActual;
-	ArrayList<ITicket> tickets;
 	private JButton botonReabrir;
 	private JTree jArbol;
 
@@ -59,7 +57,6 @@ public class PanelCliente extends JPanel implements ActionListener, TreeSelectio
 			DialogoTicketNuevo nuevo = new DialogoTicketNuevo(principal, this);
 			nuevo.setVisible(true);
 			principal.darJFrame().setEnabled(false);
-			iterador = principal.darListaTickets();
 			actualizar();
 			actualizarDescripcion();
 		}
@@ -67,19 +64,18 @@ public class PanelCliente extends JPanel implements ActionListener, TreeSelectio
 		{
 			if(ticketActual != null && ticketActual.darFechaCierre() != null)
 			{
-				principal.calificar(ticketActual, (String)listaCalificacion.getSelectedItem());
+				principal.calificar(ticketActual, (String)comboCalificacion.getSelectedItem());
 				actualizarDescripcion();
 			}
 		}
 		if(evento.getActionCommand().equals("reabrir"))
 		{
-			if(ticketActual != null && ticketActual.darFechaCierre() != null)
+			if(ticketActual != null && ((ITicket)ticketActual).darFechaCierre() != null)
 			{
 				DialogoReapertura nuevo = new DialogoReapertura(principal, this, ticketActual);
 				nuevo.setVisible(true);
 				principal.darJFrame().setEnabled(false);
 				ticketActual = null;
-				iterador = principal.darListaTickets();
 				actualizar();
 				actualizarDescripcion();
 			}
@@ -92,18 +88,18 @@ public class PanelCliente extends JPanel implements ActionListener, TreeSelectio
 
 	public void actualizar() {
 		DefaultMutableTreeNode raizTickets = new DefaultMutableTreeNode("Empleados");
+		iterador = principal.darListaTickets();
 		while(iterador.hayGrupoSiguiente())
 		{
 			iterador.darGrupoSiguiente();
 			if(iterador.haySiguiente())
 			{
 				ITicket ticket = (ITicket) iterador.darSiguiente();
-				DefaultMutableTreeNode nuevoEmpleado = new DefaultMutableTreeNode(ticket.darEmpleado().darNombre());
+				DefaultMutableTreeNode nuevoEmpleado = new DefaultMutableTreeNode(ticket.darEmpleado());
 				nuevoEmpleado.add(new DefaultMutableTreeNode(ticket));
 				while(iterador.haySiguiente())
 				{
-					ticket = (ITicket) iterador.darSiguiente();
-					nuevoEmpleado.add(new DefaultMutableTreeNode(ticket));
+					nuevoEmpleado.add(new DefaultMutableTreeNode(iterador.darSiguiente()));
 				}
 				raizTickets.add(nuevoEmpleado);
 			}			
@@ -112,7 +108,8 @@ public class PanelCliente extends JPanel implements ActionListener, TreeSelectio
 		jArbol = new JTree(raizTickets);
 		jArbol.addTreeSelectionListener(this);
 		jArbol.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-		jArbol.expandRow(2);
+		for(int i=raizTickets.getChildCount();i>0;i--)
+			jArbol.expandRow(i);
 		listaTickets = new JScrollPane(jArbol);
 		listaTickets.setPreferredSize(new Dimension(80,300));
 		panelIzquierda.add(listaTickets, BorderLayout.CENTER);
@@ -275,14 +272,15 @@ public class PanelCliente extends JPanel implements ActionListener, TreeSelectio
 	 * @return javax.swing.JComboBox	
 	 */
 	private JComboBox getListaCalificacion() {
-		if (listaCalificacion == null) {
-			listaCalificacion = new JComboBox();
-			listaCalificacion.addItem("Muy malo");
-			listaCalificacion.addItem("Podria mejorar");
-			listaCalificacion.addItem("Satisfecho");
-			listaCalificacion.addItem("Muy satisfecho");
+		if (comboCalificacion == null) {
+			comboCalificacion = new JComboBox();
+			comboCalificacion.setEditable(false);
+			comboCalificacion.addItem("Muy malo");
+			comboCalificacion.addItem("Podria mejorar");
+			comboCalificacion.addItem("Satisfecho");
+			comboCalificacion.addItem("Muy satisfecho");
 		}
-		return listaCalificacion;
+		return comboCalificacion;
 	}
 
 	/**
@@ -293,6 +291,7 @@ public class PanelCliente extends JPanel implements ActionListener, TreeSelectio
 	private JButton getBotonCalificar() {
 		if (botonCalificar == null) {
 			botonCalificar = new JButton();
+			botonCalificar.setEnabled(false);
 			botonCalificar.setText("Calificar");
 			botonCalificar.addActionListener(this);
 			botonCalificar.setActionCommand("calificar");
@@ -361,10 +360,11 @@ public class PanelCliente extends JPanel implements ActionListener, TreeSelectio
 	{
 		if(ticketActual!=null)
 		{
-			areaDescripcion.setText("Asignado a " + ticketActual.darNombreEmpleado() + (ticketActual.atendidoPorExperto() ? "" : " (inexperto)") + "\nCalificacion: " + ticketActual.darCalificacion()
-					+ "\nCreacion: " + ticketActual.darFechaCreacion().toString() + "\nAtencion: " + (ticketActual.darFechaAtencion() == null ? "" : ticketActual.darFechaAtencion().toString()) +
-					"\nCierre: " + (ticketActual.darFechaCierre() == null ? "" : ticketActual.darFechaCierre().toString()) + "\nMi comentario: " + ticketActual.darComentarioCliente() +
-					"\nComentario del funcionario: " + (ticketActual.darComentarioEmpleado()==null?"":ticketActual.darComentarioEmpleado()));
+			ITicket ticket = ticketActual;
+			areaDescripcion.setText("Asignado a " + ticket.darNombreEmpleado() + (ticket.atendidoPorExperto() ? "" : " (inexperto)") + "\nCalificacion: " + ticket.darCalificacion()
+					+ "\nCreacion: " + ticket.darFechaCreacion().toString() + "\nAtencion: " + (ticket.darFechaAtencion() == null ? "" : ticket.darFechaAtencion().toString()) +
+					"\nCierre: " + (ticket.darFechaCierre() == null ? "" : ticket.darFechaCierre().toString()) + "\nMi comentario: " + ticket.darComentarioCliente() +
+					"\nComentario del funcionario: " + (ticket.darComentarioEmpleado()==null?"":ticket.darComentarioEmpleado()));
 					areaDescripcion.setPreferredSize(new Dimension(300, areaDescripcion.getText().length() / 2));
 					areaDescripcion.revalidate();
 		}
@@ -379,11 +379,24 @@ public class PanelCliente extends JPanel implements ActionListener, TreeSelectio
 			return;
 		else if(nodo.isLeaf() && nodo.getLevel()==2)
 		{
-			ticketActual = (ITicket) nodo.getUserObject();
+			ticketActual = (ITicket)nodo.getUserObject();
 		}
 		else
 		{
 			ticketActual = null;
+		}
+		
+		if(ticketActual!=null && ticketActual.darFechaCierre()!=null)
+		{
+			botonCalificar.setEnabled(true);
+			botonReabrir.setEnabled(true);
+			comboCalificacion.setEnabled(true);
+		}
+		else
+		{
+			botonCalificar.setEnabled(false);
+			botonReabrir.setEnabled(false);
+			comboCalificacion.setEnabled(false);			
 		}
 		actualizarDescripcion();
 	}

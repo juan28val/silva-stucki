@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.border.TitledBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeSelectionModel;
 
 import uniandes.cupi2.helpDesk.interfazMundo.IIncidente;
 import uniandes.cupi2.helpDesk.interfazMundo.IIterador;
@@ -129,7 +130,9 @@ public class PanelAdmin extends JPanel implements ActionListener, PropertyChange
 			}			
 		}
 		panelTickets.remove(listaTickets);
-		listaTickets = new JScrollPane(new JTree(raizTickets));
+		JTree jArbol = new JTree(raizTickets);
+		jArbol.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+		listaTickets = new JScrollPane(jArbol);
 		listaTickets.setPreferredSize(new Dimension(80,300));
 		panelTickets.add(listaTickets, BorderLayout.CENTER);
 		panelTickets.validate();

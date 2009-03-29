@@ -32,6 +32,7 @@ import com.toedter.calendar.*;
 
 public class PanelAdmin extends JPanel implements ActionListener, PropertyChangeListener {
 
+	
 	private static final long serialVersionUID = 1L;
 	private JPanel panelTickets = null;
 	private JPanel panelClientes = null;

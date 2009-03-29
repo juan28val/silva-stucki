@@ -24,6 +24,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import uniandes.cupi2.collections.arbol.arbol2_3.Arbol2_3;
+import uniandes.cupi2.collections.iterador.Iterador;
 import uniandes.cupi2.collections.lista.Lista;
 import uniandes.cupi2.collections.tablaHashing.tablaHashingDinamica.TablaHashingDinamica;
 import uniandes.cupi2.collections.trie.Trie;
@@ -77,6 +78,8 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	
 	private Cliente ultimoClienteAtendido;
 	
+	private TablaHashingDinamica<Integer, IUsuario> tablaUsuarios;
+	
 	private Arbol2_3<Incidente> arbolIncidentes;
 	
 	private int numeroTicketsSinAtender;
@@ -90,7 +93,9 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	 */
 	private Trie<Empleado> prefijosEmpleados;
 
-	private int ultimoId;
+	private int idTickets;
+	
+	private int idUsuarios;
 	
 
     //-----------------------------------------------------------------
@@ -106,17 +111,20 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	public HelpDesk( )
     {
     		tablaTickets = new TablaHashingDinamica<Integer, Ticket>();
+    		tablaUsuarios = new TablaHashingDinamica<Integer, IUsuario>();
     		arbolIncidentes = new Arbol2_3<Incidente>();
     		prefijosEmpleados = new Trie<Empleado>();
     		numeroTicketsSinAtender = 0;
     		numeroTicketsSiendoAtendidos = 0;
     		numeroTicketsCerrados = 0;
-    		ultimoId = 10000;
+    		idTickets = 10000;
+    		idUsuarios = 10000;
     }
 	
 	public HelpDesk( String ruta ) throws Exception
 	{
 		tablaTickets = new TablaHashingDinamica<Integer, Ticket>();
+		tablaUsuarios = new TablaHashingDinamica<Integer, IUsuario>();
 		arbolIncidentes = new Arbol2_3<Incidente>();
 		prefijosEmpleados = new Trie<Empleado>();
 		
@@ -130,7 +138,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		parce.parse(new InputSource(new StringReader(cadena)));
 		Document doc = parce.getDocument();
 		Element raiz = doc.getDocumentElement();
-		ultimoId = Integer.parseInt(raiz.getAttribute("idTickets"));
+		idTickets = Integer.parseInt(raiz.getAttribute("idTickets"));
 		numeroTicketsSinAtender = Integer.parseInt(raiz.getAttribute("ticketsSinAtender"));
 		numeroTicketsSiendoAtendidos = Integer.parseInt(raiz.getAttribute("ticketsSiendoAtendidos"));
 		numeroTicketsCerrados = Integer.parseInt(raiz.getAttribute("ticketsCerrados"));
@@ -149,7 +157,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		for(int i=0; i<hijos.getLength(); i++)
 		{
 			Element hijo = (Element)hijos.item(i);
-			Cliente cliente = new Cliente(hijo.getAttribute("nombre"), Integer.parseInt(hijo.getAttribute("tipo")), hijo.getAttribute("email"), primerCliente, hijo.getAttribute("fechaAtencion").equals("") ? null : new Date(Long.parseLong(hijo.getAttribute("fechaAtencion"))));
+			Cliente cliente = new Cliente(Integer.parseInt(hijo.getAttribute("id")), hijo.getAttribute("nombre"), Integer.parseInt(hijo.getAttribute("tipo")), hijo.getAttribute("email"), primerCliente, hijo.getAttribute("fechaAtencion").equals("") ? null : new Date(Long.parseLong(hijo.getAttribute("fechaAtencion"))));
 			primerCliente = cliente;
 			if(cliente.darFechaAtencion() != null)
 				if(primerClienteAtendido == null)
@@ -191,7 +199,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		for(int i=0; i<hijos.getLength(); i++)
 		{
 			Element hijo = (Element)hijos.item(i);
-			Empleado empleado = new Empleado(hijo.getAttribute("nombre"), primerEmpleado, Integer.parseInt(hijo.getAttribute("tipo")), Integer.parseInt(hijo.getAttribute("calificacion")), Byte.valueOf(hijo.getAttribute("clave")), Integer.parseInt(hijo.getAttribute("incidentes")));
+			Empleado empleado = new Empleado(Integer.parseInt(hijo.getAttribute("id")), hijo.getAttribute("nombre"), primerEmpleado, Integer.parseInt(hijo.getAttribute("tipo")), Integer.parseInt(hijo.getAttribute("calificacion")), Byte.valueOf(hijo.getAttribute("clave")), Integer.parseInt(hijo.getAttribute("incidentes")));
 			empleado.cambiarSiguienteDelMes(primerEmpleado);
 			if(primerEmpleado!=null)
 				primerEmpleado.cambiarAnteriorDelMes(empleado);
@@ -208,10 +216,16 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		}
 	}
 	
- 	private void cargarIncidentes(Node incidentes) {
-	
+ 	private void cargarIncidentes(Node incidentes) throws Exception {
+ 		NodeList hijos = incidentes.getChildNodes();
+ 		for(int i=0; i<hijos.getLength(); i++)
+ 		{
+ 			Element hijo = (Element)hijos.item(i);
+ 			Incidente incidente = new Incidente(new Date(Long.parseLong(hijo.getAttribute("fecha"))), (Empleado)tablaUsuarios.dar(Integer.parseInt(hijo.getAttribute("empleado"))), (Cliente)tablaUsuarios.dar(Integer.parseInt(hijo.getAttribute("cliente"))), tablaTickets.dar(Integer.parseInt(hijo.getAttribute("ticket"))), hijo.getAttribute("comentario"));
+ 			arbolIncidentes.insertar(incidente);
+ 		}
  	}
- 		//-----------------------------------------------------------------
+ 	//-----------------------------------------------------------------
     // Métodos
     //-----------------------------------------------------------------
     
@@ -223,7 +237,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 
     	Element elementoRaiz = documento.createElement( "helpDesk" );
     	
-    	elementoRaiz.setAttribute("idTickets", String.valueOf(ultimoId));
+    	elementoRaiz.setAttribute("idTickets", String.valueOf(idTickets));
     	elementoRaiz.setAttribute("ticketsSinAtender", String.valueOf(numeroTicketsSinAtender));
     	elementoRaiz.setAttribute("ticketsSiendoAtendidos", String.valueOf(numeroTicketsSiendoAtendidos));
     	elementoRaiz.setAttribute("ticketsCerrados", String.valueOf(numeroTicketsCerrados));
@@ -239,7 +253,18 @@ public class HelpDesk extends Observable implements IHelpDesk {
     	elementoRaiz.appendChild(elementoEmpleados);
     	
     	Element elementoIncidentes = documento.createElement("incidentes");
-    	//TODO INCIDENTES
+    	Iterador<Incidente> iterador = arbolIncidentes.inorden();
+    	while(iterador.haySiguiente())
+    	{
+    		Incidente incidente = iterador.darSiguiente();
+    		Element elementoIncidente = documento.createElement("incidente");
+    		elementoIncidente.setAttribute("fecha", String.valueOf(incidente.darFecha()));
+    		elementoIncidente.setAttribute("empleado", String.valueOf(incidente.darEmpleado().darId()));
+    		elementoIncidente.setAttribute("cliente", String.valueOf(incidente.darCliente().darId()));
+    		elementoIncidente.setAttribute("ticket", String.valueOf(incidente.darTicket().darId()));
+    		elementoIncidente.setAttribute("comentario", incidente.darComentario());
+    		elementoIncidentes.appendChild(elementoIncidente);
+    	}
     	elementoRaiz.appendChild(elementoIncidentes);
     	
     	documento.appendChild( elementoRaiz );
@@ -257,8 +282,8 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	 * pre: el usuario actual es un cliente
 	 */
 	public void nuevaSolicitud(int tipo, String comentarioCliente, boolean cifrado) throws Exception {
-		ultimoId++;
-		Ticket ticket = new Ticket(tipo, (Cliente)usuarioActual, comentarioCliente, 0, null, new Date(), null, null, true, false, cifrado, ultimoId);
+		idTickets++;
+		Ticket ticket = new Ticket(tipo, (Cliente)usuarioActual, comentarioCliente, 0, null, new Date(), null, null, true, false, cifrado, idTickets);
 		asignarTicket(ticket);
 		((Cliente) usuarioActual).agregarTicket(ticket.darId());
 		tablaTickets.agregar(ticket.darId(), ticket);
@@ -308,13 +333,13 @@ public class HelpDesk extends Observable implements IHelpDesk {
 			ultimoClienteAtendido = ((Ticket)ticket).darCliente();
 		}
 		((Ticket)ticket).darCliente().cambiarFechaAtencion(ticket.darFechaAtencion());
-		enviarEmail(ticket, ticket.darFechaAtencion().toString() + "\n\n\nEstimado " + ticket.darNombreCliente() + ":\n\nSu ticket esta siendo atendido por "+ticket.darNombreEmpleado() + ", quien en breve resolver‡ sus inquietudes.\n\n\nGracias por preferirnos.\n\n\n\n\n\nCupi2HelpDesk");
+		enviarEmail(ticket, ticket.darFechaAtencion().toString() + "\n\n\nEstimado " + ticket.darNombreCliente() + ":\n\nSu ticket esta siendo atendido por "+ticket.darNombreEmpleado() + ", quien en breve resolverá sus inquietudes.\n\n\nGracias por preferirnos.\n\n\n\n\n\nCupi2HelpDesk");
 		
 	}
 
 	/**
 	 * calificarTicket
-	 * LLama al mŽtodo calificar del ticket, y dado el caso de que
+	 * LLama al método calificar del ticket, y dado el caso de que
 	 * haya un nuevo empleado del mes, llama al metodo recursivo
 	 * darEmpleadoDelMes para que encuentre al nuevo empleado del mes,
 	 * y lo asigne como tal.
@@ -341,9 +366,9 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	 * pre: el nombre del cliente no existe
 	 */
 	public IUsuario crearCliente(String nombreCliente, int tipoCliente, String email) {
-		
-		Cliente cliente = new Cliente(nombreCliente, tipoCliente, email, primerCliente, null);
-	
+		idUsuarios++;
+		Cliente cliente = new Cliente(idUsuarios, nombreCliente, tipoCliente, email, primerCliente, null);
+		tablaUsuarios.agregar(idUsuarios, cliente);
 		primerCliente = cliente;
 		
 		return cliente;
@@ -440,21 +465,24 @@ public class HelpDesk extends Observable implements IHelpDesk {
    		int tamano = Integer.parseInt(lista.getProperty("NumeroEmpleados"));
    		if(tamano > 0)
    		{
-   			primerEmpleado = new Empleado(lista.getProperty("Empleado0.nombre"), null, (lista.getProperty("Empleado0.tipo").equals("queja") ? IUsuario.EMPLEADO_QUEJA : (lista.getProperty("Empleado0.tipo").equals("reclamo") ? IUsuario.EMPLEADO_RECLAMO : IUsuario.EMPLEADO_SOLICITUD)), 0, (byte) (Math.random()*254+1), 0);
+   			idUsuarios++;
+   			primerEmpleado = new Empleado(idUsuarios, lista.getProperty("Empleado0.nombre"), null, (lista.getProperty("Empleado0.tipo").equals("queja") ? IUsuario.EMPLEADO_QUEJA : (lista.getProperty("Empleado0.tipo").equals("reclamo") ? IUsuario.EMPLEADO_RECLAMO : IUsuario.EMPLEADO_SOLICITUD)), 0, (byte) (Math.random()*254+1), 0);
    			empleadoDelMes = primerEmpleado;
    			ultimoEmpleado = primerEmpleado;
    			prefijosEmpleados.insertar(primerEmpleado);
-   			
+   			tablaUsuarios.agregar(idUsuarios, primerEmpleado);
    		}
    		if(tamano > 1)
    			for(int i=1; i<tamano; i++)
    			{
-   				Empleado empleado = new Empleado(lista.getProperty("Empleado" + i + ".nombre"), primerEmpleado, lista.getProperty("Empleado" + i + ".tipo").equals("queja") ? IUsuario.EMPLEADO_QUEJA : (lista.getProperty("Empleado" + i + ".tipo").equals("reclamo") ? IUsuario.EMPLEADO_RECLAMO : IUsuario.EMPLEADO_SOLICITUD), 0, (byte) (Math.random()*254+1), 0);
+   				idUsuarios++;
+   				Empleado empleado = new Empleado(idUsuarios, lista.getProperty("Empleado" + i + ".nombre"), primerEmpleado, lista.getProperty("Empleado" + i + ".tipo").equals("queja") ? IUsuario.EMPLEADO_QUEJA : (lista.getProperty("Empleado" + i + ".tipo").equals("reclamo") ? IUsuario.EMPLEADO_RECLAMO : IUsuario.EMPLEADO_SOLICITUD), 0, (byte) (Math.random()*254+1), 0);
    				empleado.cambiarSiguienteDelMes(primerEmpleado);
    				primerEmpleado.cambiarAnteriorDelMes(empleado);
    				empleadoDelMes = empleado;
    				primerEmpleado = empleado;
    				prefijosEmpleados.insertar(empleado);
+   				tablaUsuarios.agregar(idUsuarios, empleado);
    			}
    		entrada.close();
 	}

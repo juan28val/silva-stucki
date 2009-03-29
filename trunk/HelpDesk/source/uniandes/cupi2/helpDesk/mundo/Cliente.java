@@ -9,8 +9,10 @@ import org.w3c.dom.Element;
 import uniandes.cupi2.collections.tablaHashing.tablaHashingDinamica.TablaHashingDinamica;
 import uniandes.cupi2.helpDesk.interfazMundo.IUsuario;
 
+
 public class Cliente implements IUsuario {
 	
+	private int id;
 	private String nombre;
 	private int tipo;
 	private String email;
@@ -20,8 +22,9 @@ public class Cliente implements IUsuario {
 	private Cliente siguienteAtendido;
 	private Date fechaPrimeraAtencion;
 	
-	public Cliente(String nombre, int tipo, String email, Cliente siguiente, Date fechaPrimeraAtencion)
+	public Cliente(int id, String nombre, int tipo, String email, Cliente siguiente, Date fechaPrimeraAtencion)
 	{
+		this.id = id;
 		this.nombre = nombre;
 		this.tipo = tipo;
 		this.email = email;
@@ -30,6 +33,11 @@ public class Cliente implements IUsuario {
 		listaTickets = new ArrayList<Integer>();
 		
 		verificarInvariante();
+	}
+	
+	public int darId()
+	{
+		return id;
 	}
 
 	public String darNombre() {
@@ -125,6 +133,7 @@ public class Cliente implements IUsuario {
 
 	public void guardar(Element elementoClientes, Document documento, TablaHashingDinamica<Integer,Ticket> tablaTickets) {
 		Element e = documento.createElement("cliente");
+		e.setAttribute("id", String.valueOf(id));
 		e.setAttribute("nombre", nombre);
 		e.setAttribute("tipo", String.valueOf(tipo));
 		e.setAttribute("email", email);

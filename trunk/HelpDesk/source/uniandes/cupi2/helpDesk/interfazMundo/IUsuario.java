@@ -71,6 +71,16 @@ public interface IUsuario {
 	 */
 	public ArrayList<Integer> darListaTickets();
 
+	/**
+	 * Retorna el tipo respectivo del usuario.
+	 * @return el tipo
+	 */
 	public int darTipo();
+
+	/**
+	 * Retorna el id respectivo del usuario.
+	 * @return el id.
+	 */
+	public int darId();
 		
 }

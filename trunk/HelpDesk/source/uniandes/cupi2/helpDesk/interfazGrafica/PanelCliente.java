@@ -8,6 +8,8 @@ import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import java.awt.BorderLayout;
+
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.BorderFactory;
@@ -17,6 +19,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
 
 import uniandes.cupi2.helpDesk.interfazMundo.*;
@@ -106,6 +109,16 @@ public class PanelCliente extends JPanel implements ActionListener, TreeSelectio
 		}
 		panelIzquierda.remove(listaTickets);
 		jArbol = new JTree(raizTickets);
+		ImageIcon leafIcon = new ImageIcon("./data/iconos/hoja.gif");
+		ImageIcon empleadoIcon = new ImageIcon("./data/iconos/empleado.gif");
+		if(leafIcon!=null)
+		{
+			DefaultTreeCellRenderer render = new DefaultTreeCellRenderer();
+			render.setLeafIcon(leafIcon);
+			render.setClosedIcon(empleadoIcon);
+			render.setOpenIcon(empleadoIcon);
+			jArbol.setCellRenderer(render);
+		}
 		jArbol.addTreeSelectionListener(this);
 		jArbol.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		for(int i=raizTickets.getChildCount();i>0;i--)

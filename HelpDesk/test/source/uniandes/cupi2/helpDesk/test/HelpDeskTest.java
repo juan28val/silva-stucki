@@ -70,7 +70,7 @@ public class HelpDeskTest extends TestCase implements Observer
     {
     	setupEscenario2();
     	
-    	helpDesk.cargarListaEmpleados( new File("test/data/datosTest.properties") );
+    	helpDesk.cargarListaEmpleados( new File("./test/data/datosTest.properties") );
     }
     /**
      * Prueba la cliente la clase cliente y intenta agregar uno es estos a la intefaz
@@ -115,23 +115,16 @@ public class HelpDeskTest extends TestCase implements Observer
     		setupEscenario3();  
     		
     		Ticket nuevoTicket1 = null;
+    		helpDesk.iniciarSesion(helpDesk.darUsuario("Juan", 4));
     		
     		try{
     			helpDesk.nuevaSolicitud(3, "primera queja", false);
-    			fail("No intento enviar el email");
     		}
     		catch(Exception e)
 			{
-				//Tiene que pasar por aqui
+    			fail("No pudo agregar el primer ticket.");
 			}
-    		try{
-        		nuevoTicket1 = (Ticket) helpDesk.darTicket(helpDesk.darUsuario("Danilo", Empleado.EMPLEADO_RECLAMO).darListaTickets().get(0));
-    			fail("No intento enviar el email");
-    		}
-    		catch(Exception e)
-			{
-				//Tiene que pasar por aqui
-			}
+    		nuevoTicket1 = (Ticket) helpDesk.darTicket(10001);
     		assertNotNull("La nueva solicitud no se agrego", nuevoTicket1 );
     		assertNotNull("El nuevo ticket no se inicio correctamente.", nuevoTicket1.darFechaCreacion() );
     		
@@ -166,7 +159,7 @@ public class HelpDeskTest extends TestCase implements Observer
 			{
 				//Tiene que pasar por aqui
 			}
-    		assertNull("El ticket no se reabre correctamente", nuevoTicket1.darFechaAtencion());
+    		assertNotNull("El ticket no se reabre correctamente", nuevoTicket1.darFechaAtencion());
         	assertNull("El ticket no se reabre correctamente", nuevoTicket1.darFechaCierre());
 
         	assertTrue("No se agrego el incidente", helpDesk.darListaIncidentes(true, new Date()).haySiguiente() );
@@ -174,7 +167,7 @@ public class HelpDeskTest extends TestCase implements Observer
 
         	assertTrue("El numero de tickets cerrados no se inicio correcramente", helpDesk.darNumeroCerrados()==0 );
         	assertTrue("El numero de tickets siendo atendidos no se inicio correcramente", helpDesk.darNumeroSiendoAtendidos()==0 );
-        	assertTrue("El numero de tickets sin atender no se inicio correcramente", helpDesk.darNumeroSinAtender()==0 );
+        	assertTrue("El numero de tickets sin atender no se inicio correcramente", helpDesk.darNumeroSinAtender()==1 );
         	
         	helpDesk.addObserver(this);
         	

@@ -8,6 +8,8 @@ import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import java.awt.BorderLayout;
+
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
@@ -17,6 +19,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
 
 import uniandes.cupi2.helpDesk.interfazMundo.*;
@@ -95,17 +98,27 @@ public class PanelEmpleado extends JPanel implements ActionListener, TreeSelecti
 			if(iterador.haySiguiente())
 			{
 				ITicket ticket = (ITicket) iterador.darSiguiente();
-				DefaultMutableTreeNode nuevoEmpleado = new DefaultMutableTreeNode(ticket.darCliente());
-				nuevoEmpleado.add(new DefaultMutableTreeNode(ticket));
+				DefaultMutableTreeNode nuevoCliente = new DefaultMutableTreeNode(ticket.darCliente());
+				nuevoCliente.add(new DefaultMutableTreeNode(ticket));
 				while(iterador.haySiguiente())
 				{
-					nuevoEmpleado.add(new DefaultMutableTreeNode(iterador.darSiguiente()));
+					nuevoCliente.add(new DefaultMutableTreeNode(iterador.darSiguiente()));
 				}
-				raizTickets.add(nuevoEmpleado);
+				raizTickets.add(nuevoCliente);
 			}			
 		}
 		panelIzquierda.remove(listaTickets);
 		jArbol = new JTree(raizTickets);
+		ImageIcon leafIcon = new ImageIcon("./data/iconos/hoja.gif");
+		ImageIcon empleadoIcon = new ImageIcon("./data/iconos/empleado.gif");
+		if(leafIcon!=null)
+		{
+			DefaultTreeCellRenderer render = new DefaultTreeCellRenderer();
+			render.setLeafIcon(leafIcon);
+			render.setClosedIcon(empleadoIcon);
+			render.setOpenIcon(empleadoIcon);
+			jArbol.setCellRenderer(render);
+		}
 		jArbol.addTreeSelectionListener(this);
 		jArbol.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		for(int i=raizTickets.getChildCount();i>0;i--)

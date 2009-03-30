@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -22,6 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.border.TitledBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
 
 import uniandes.cupi2.helpDesk.interfazMundo.IIncidente;
@@ -131,6 +133,16 @@ public class PanelAdmin extends JPanel implements ActionListener, PropertyChange
 		}
 		panelTickets.remove(listaTickets);
 		JTree jArbol = new JTree(raizTickets);
+		ImageIcon leafIcon = new ImageIcon("./data/iconos/hoja.gif");
+		ImageIcon empleadoIcon = new ImageIcon("./data/iconos/empleado.gif");
+		if(leafIcon!=null)
+		{
+			DefaultTreeCellRenderer render = new DefaultTreeCellRenderer();
+			render.setLeafIcon(leafIcon);
+			render.setClosedIcon(empleadoIcon);
+			render.setOpenIcon(empleadoIcon);
+			jArbol.setCellRenderer(render);
+		}
 		jArbol.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		for(int i=raizTickets.getChildCount();i>0;i--)
 			jArbol.expandRow(i);
@@ -297,7 +309,7 @@ public class PanelAdmin extends JPanel implements ActionListener, PropertyChange
 		if (listaTickets == null) {
 			DefaultMutableTreeNode raizTickets = new DefaultMutableTreeNode("Empleados");
 			listaTickets = new JScrollPane(new JTree(raizTickets));
-			listaTickets.setPreferredSize(new Dimension(80,300));
+			listaTickets.setPreferredSize(new Dimension(100,300));
 		}
 		return listaTickets;
 	}

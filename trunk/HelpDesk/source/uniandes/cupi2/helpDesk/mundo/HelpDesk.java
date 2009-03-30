@@ -118,7 +118,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
     		numeroTicketsSiendoAtendidos = 0;
     		numeroTicketsCerrados = 0;
     		idTickets = 10000;
-    		idUsuarios = 10000;
+    		idUsuarios = 25000;
     }
 	
 	public HelpDesk( String ruta ) throws Exception

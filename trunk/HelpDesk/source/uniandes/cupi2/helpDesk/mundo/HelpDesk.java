@@ -27,6 +27,8 @@ import uniandes.cupi2.collections.arbol.arbol2_3.Arbol2_3;
 import uniandes.cupi2.collections.iterador.Iterador;
 import uniandes.cupi2.collections.lista.Lista;
 import uniandes.cupi2.collections.tablaHashing.tablaHashingDinamica.TablaHashingDinamica;
+import uniandes.cupi2.collections.trie.ElementoExisteException;
+import uniandes.cupi2.collections.trie.PalabraInvalidaException;
 import uniandes.cupi2.collections.trie.Trie;
 import uniandes.cupi2.helpDesk.interfazMundo.IHelpDesk;
 import uniandes.cupi2.helpDesk.interfazMundo.IIterador;
@@ -159,6 +161,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		{
 			Element hijo = (Element)hijos.item(i);
 			Cliente cliente = new Cliente(Integer.parseInt(hijo.getAttribute("id")), hijo.getAttribute("nombre"), Integer.parseInt(hijo.getAttribute("tipo")), hijo.getAttribute("email"), primerCliente, hijo.getAttribute("fechaAtencion").equals("") ? null : new Date(Long.parseLong(hijo.getAttribute("fechaAtencion"))));
+			tablaUsuarios.agregar(cliente.darId(), cliente);
 			primerCliente = cliente;
 			if(cliente.darFechaAtencion() != null)
 				if(primerClienteAtendido == null)
@@ -195,12 +198,13 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		}
 	}
 
-	private void cargarEmpleados(Node empleados) {
+	private void cargarEmpleados(Node empleados) throws ElementoExisteException, PalabraInvalidaException {
 		NodeList hijos = empleados.getChildNodes();
 		for(int i=0; i<hijos.getLength(); i++)
 		{
 			Element hijo = (Element)hijos.item(i);
 			Empleado empleado = new Empleado(Integer.parseInt(hijo.getAttribute("id")), hijo.getAttribute("nombre"), primerEmpleado, Integer.parseInt(hijo.getAttribute("tipo")), Integer.parseInt(hijo.getAttribute("calificacion")), Byte.valueOf(hijo.getAttribute("clave")), Integer.parseInt(hijo.getAttribute("incidentes")));
+			tablaUsuarios.agregar(empleado.darId(), empleado);
 			empleado.cambiarSiguienteDelMes(primerEmpleado);
 			if(primerEmpleado!=null)
 				primerEmpleado.cambiarAnteriorDelMes(empleado);
@@ -214,7 +218,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 				empleado.agregarTicket(Integer.parseInt(nieto.getAttribute("id")));
 				tablaTickets.dar(Integer.parseInt(nieto.getAttribute("id"))).cambiarEmpleado(empleado);
 			}
-			
+			prefijosEmpleados.insertar(empleado);
 		}
 	}
 	
@@ -638,5 +642,9 @@ public class HelpDesk extends Observable implements IHelpDesk {
 			for(int j=0; j<((Empleado)lista.darElemento(i)).darListaTickets().size(); j++)
 				tickets += tablaTickets.dar(((Empleado)lista.darElemento(i)).darListaTickets().get(j)).darId() + " asignado a " + tablaTickets.dar(((Empleado)lista.darElemento(i)).darListaTickets().get(j)).darEmpleado().darNombre() + "\n";
 		return tickets.equals("") ? "No se encontro ningun empleado cuyo nombre correspondiera con la cadena de texto introducida por usted." : tickets;
+	}
+
+	public IUsuario darUsuario(int llave) {
+		return tablaUsuarios.dar(llave);
 	}
 }

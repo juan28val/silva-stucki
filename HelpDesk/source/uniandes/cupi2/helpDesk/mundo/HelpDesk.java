@@ -191,9 +191,9 @@ public class HelpDesk extends Observable implements IHelpDesk {
 			for(int j=0; j<hijo.getChildNodes().getLength(); j++)
 			{
 				Element nieto = (Element) ((NodeList)hijo.getChildNodes()).item(j);
-				Ticket t = new Ticket(Integer.parseInt(nieto.getAttribute("tipo")), cliente, nieto.getAttribute("comentarioCliente"), Integer.parseInt(nieto.getAttribute("calificacion")), nieto.getAttribute("comentarioEmpleado"), new Date(Long.parseLong(nieto.getAttribute("fechaCreacion"))), nieto.getAttribute("fechaAtencion").equals("") ? null : new Date(Long.parseLong(nieto.getAttribute("fechaAtencion"))), nieto.getAttribute("fechaCierre").equals("") ? null : new Date(Long.parseLong(nieto.getAttribute("fechaCierre"))), Boolean.valueOf(nieto.getAttribute("experto")), Boolean.valueOf(nieto.getAttribute("reabierto")), Boolean.valueOf(nieto.getAttribute("cifrado")), Integer.parseInt(nieto.getAttribute("id")));
+				Ticket ticket = new Ticket(Integer.parseInt(nieto.getAttribute("tipo")), cliente, nieto.getAttribute("comentarioCliente"), Integer.parseInt(nieto.getAttribute("calificacion")), nieto.getAttribute("comentarioEmpleado"), new Date(Long.parseLong(nieto.getAttribute("fechaCreacion"))), nieto.getAttribute("fechaAtencion").equals("") ? null : new Date(Long.parseLong(nieto.getAttribute("fechaAtencion"))), nieto.getAttribute("fechaCierre").equals("") ? null : new Date(Long.parseLong(nieto.getAttribute("fechaCierre"))), Boolean.valueOf(nieto.getAttribute("experto")), Boolean.valueOf(nieto.getAttribute("reabierto")), Boolean.valueOf(nieto.getAttribute("cifrado")), Integer.parseInt(nieto.getAttribute("id")));
 				cliente.agregarTicket(Integer.parseInt(nieto.getAttribute("id")));
-				tablaTickets.agregar(t.darId(), t);				
+				tablaTickets.agregar(ticket.darId(), ticket);				
 			}
 		}
 	}

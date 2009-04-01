@@ -390,7 +390,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 
 	public IIterador darListaPersonasAtendidas() {
 	
-		return new IteradorClientes(primerClienteAtendido);
+		return new IteradorClientesAtendidos(primerClienteAtendido);
 	}
 
 	public IIterador darListaTicketsUsuarioActual()

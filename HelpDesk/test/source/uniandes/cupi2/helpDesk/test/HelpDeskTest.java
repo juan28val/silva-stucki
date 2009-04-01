@@ -72,6 +72,7 @@ public class HelpDeskTest extends TestCase implements Observer
     	
     	helpDesk.cargarListaEmpleados( new File("./test/data/datosTest.properties") );
     }
+    
     /**
      * Prueba la cliente la clase cliente y intenta agregar uno es estos a la intefaz
      */
@@ -179,6 +180,13 @@ public class HelpDeskTest extends TestCase implements Observer
         	assertTrue("El numero de tickets siendo atendidos no se inicio correcramente", helpDesk.darNumeroSiendoAtendidos()==numeroSiendoAtendidos );
         	assertTrue("El numero de tickets sin atender no se inicio correcramente", helpDesk.darNumeroSinAtender()==numeroSinAtender );
         	
+        	try
+        	{
+        		helpDesk.guardar("./test/data/persistenciaTest1.xml");
+        	}
+        	catch (Exception e) {
+				fail("No se pudo guardar en un archovi XML.");
+			}
     	}
     	catch(Exception e)
     	{
@@ -186,10 +194,47 @@ public class HelpDeskTest extends TestCase implements Observer
     	}
     	
     }
+
+    /**
+     * Prueba 
+     */
+    public void testCargarXML( )
+    {
+    	try
+    	{
+    		helpDesk = new HelpDesk("./test/data/persistenciaTest2.xml");
+    	}
+    	catch (Exception e) {
+    		helpDesk = new HelpDesk();
+    		fail("No se pudo construir el mundo a partir de un XML");
+    	}
+    	
+    	assertTrue("El numero de tickets cerrados no se cargo correcramente", helpDesk.darNumeroCerrados()==1 );
+    	assertTrue("El numero de tickets siendo atendidos no se cargo correcramente", helpDesk.darNumeroSiendoAtendidos()==2 );
+    	assertTrue("El numero de tickets sin atender no se cargo correcramente", helpDesk.darNumeroSinAtender()==4 );
+    	
+    	for(int i=10001; i<10008; i++)
+		{
+			assertNotNull("No se cargo un ticket con id:"+i, helpDesk.darTicket(i) );
+		}
+		assertNull("Se cargo un ticket adicional", helpDesk.darTicket(10000) );
+		assertNull("Se cargo un ticket adicional", helpDesk.darTicket(10008) );
+		
+		for(int i=25001; i<25009;i++)
+		{
+			assertTrue("El usuario deberia ser empleado", helpDesk.darUsuario(i).esEmpleado());
+		}
+
+		for(int i=25009; i<25012;i++)
+		{
+			IUsuario empleado = helpDesk.darUsuario(i);
+			assertFalse("El usuario deberia ser empleado",empleado.esEmpleado());
+		}
+    }
     
 	public void update(Observable arg0, Object arg1) {
 		numeroSinAtender = helpDesk.darNumeroSinAtender();
 		numeroSiendoAtendidos = helpDesk.darNumeroSiendoAtendidos();
-		numeroCerrados = helpDesk.darNumeroCerrados();	
+		numeroCerrados = helpDesk.darNumeroCerrados();
 	}
 }

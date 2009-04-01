@@ -40,9 +40,6 @@ public class IteradorEmpleados implements IIterador {
 
 	public boolean hayGrupoSiguiente() {
 		return true;
-		// no se usa
-		
+		// no se usa		
 	}
-
-
 }

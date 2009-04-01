@@ -444,7 +444,7 @@ public class InterfazHelpDesk {
 		
 		if( IUsuario.NOMBRE_ADMIN.equals(nombre) )
 		{
-			jFrame.setSize(800, 600);
+			jFrame.setSize(800, 500);
 			jContentPane.removeAll();
 			jContentPane.add( new PanelAdmin( this,mundo.darListaTicketsEntreFechas(new Date(), new Date()), mundo.darEmpleadosDelMes(),mundo.darListaPersonasAtendidas(), mundo.darListaIncidentes(true, new Date())), BorderLayout.CENTER);
 			jContentPane.add( new BarraEstado(this,mundo));

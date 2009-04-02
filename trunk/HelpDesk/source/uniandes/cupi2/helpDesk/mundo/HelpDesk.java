@@ -211,7 +211,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 			else ultimoEmpleado = empleado;
    			empleadoDelMes = empleado;
    			primerEmpleado = empleado;
-			primerEmpleado.cambiarCalificacion(0);
+			primerEmpleado.cambiarCalificacion(0, empleadoDelMes);
 			for(int j=0; j<hijo.getChildNodes().getLength(); j++)
 			{
 				Element nieto = (Element) ((NodeList)hijo.getChildNodes()).item(j);
@@ -504,7 +504,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		((Ticket)ticket).cambiarFechaAtencion(new Date());
 		((Ticket)ticket).cambiarFechaCierre(null);
 		((Ticket)ticket).cambiarExperto(ticket.darTipo() == ((Empleado)empleado).darTipo());
-		((Empleado)ticket.darEmpleado()).incidente();
+		((Empleado)ticket.darEmpleado()).incidente(empleadoDelMes);
 		((Ticket)ticket).cambiarEmpleado((Empleado)empleado);
 		empleado.darListaTickets().add(ticket.darId());
 		cambiarNumeroTicketesCerrados(numeroTicketsCerrados-1);

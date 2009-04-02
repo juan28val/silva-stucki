@@ -131,7 +131,7 @@ public class HelpDeskTest extends TestCase implements Observer
     		
     		try{
     			helpDesk.atenderTicket(nuevoTicket1);
-    			fail("No intento enviar el email");
+    			fail("No intento enviar el email, puede se por en firewall.");
     		}
     		catch(Exception e)
     		{

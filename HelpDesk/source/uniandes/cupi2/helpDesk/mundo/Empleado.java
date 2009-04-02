@@ -95,7 +95,7 @@ public class Empleado implements IUsuario {
 	 * y dado tal caso, cambia las referencias acordemente.
 	 * @param valor: diferencia de calificacion
 	 */
-	public void cambiarCalificacion(int valor)
+	public void cambiarCalificacion(int valor, Empleado primerEmpleadoDelMes)
 	{
 		Empleado posicion = null;
 		sumaCalificacion += valor;
@@ -123,6 +123,8 @@ public class Empleado implements IUsuario {
 			posicion.cambiarAnteriorDelMes(this);
 			if(anteriorDelMes != null)
 				anteriorDelMes.cambiarSiguienteDelMes(this);
+			else
+				primerEmpleadoDelMes = this;
 			
 		}
 	}
@@ -207,9 +209,9 @@ public class Empleado implements IUsuario {
 		return listaTickets;
 	}
 
-	public void incidente() {
+	public void incidente(Empleado primerEmpleadoDelMes) {
 		incidentes ++;
-		cambiarCalificacion(ITicket.INCIDENTE);
+		cambiarCalificacion(ITicket.INCIDENTE, primerEmpleadoDelMes);
 	}
 
 	public int darNumeroIncidentes() {

@@ -122,12 +122,11 @@ public class Empleado implements IUsuario {
 			anteriorDelMes.cambiarSiguienteDelMes(siguienteDelMes);
 			siguienteDelMes = posicion;
 			anteriorDelMes = posicion.darAnteriorDelMes();
+			if(posicion.darAnteriorDelMes()==null)
+				primerEmpleadoDelMes = this;
 			posicion.cambiarAnteriorDelMes(this);
 			if(anteriorDelMes != null)
-				anteriorDelMes.cambiarSiguienteDelMes(this);
-			else
-				primerEmpleadoDelMes = this;
-			
+				anteriorDelMes.cambiarSiguienteDelMes(this);		
 		}
 	}
 	

@@ -265,7 +265,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
     	{
     		Incidente incidente = iterador.darSiguiente();
     		Element elementoIncidente = documento.createElement("incidente");
-    		elementoIncidente.setAttribute("fecha", String.valueOf(incidente.darFecha()));
+    		elementoIncidente.setAttribute("fecha", incidente.darFecha() == null ? "" : String.valueOf(incidente.darFecha().getTime()));
     		elementoIncidente.setAttribute("empleado", String.valueOf(incidente.darEmpleado().darId()));
     		elementoIncidente.setAttribute("cliente", String.valueOf(incidente.darCliente().darId()));
     		elementoIncidente.setAttribute("ticket", String.valueOf(incidente.darTicket().darId()));
@@ -640,7 +640,8 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		String tickets = "";
 		for(int i=0; i<lista.darLongitud();i++)
 			for(int j=0; j<((Empleado)lista.darElemento(i)).darListaTickets().size(); j++)
-				tickets += tablaTickets.dar(((Empleado)lista.darElemento(i)).darListaTickets().get(j)).darId() + " asignado a " + tablaTickets.dar(((Empleado)lista.darElemento(i)).darListaTickets().get(j)).darEmpleado().darNombre() + "\n";
+				if(tablaTickets.dar(((Empleado)lista.darElemento(i)).darListaTickets().get(j)).reabierto())
+					tickets += tablaTickets.dar(((Empleado)lista.darElemento(i)).darListaTickets().get(j)).darId() + " asignado a " + tablaTickets.dar(((Empleado)lista.darElemento(i)).darListaTickets().get(j)).darEmpleado().darNombre() + "\n";
 		return tickets.equals("") ? "No se encontro ningun empleado cuyo nombre correspondiera con la cadena de texto introducida por usted." : tickets;
 	}
 

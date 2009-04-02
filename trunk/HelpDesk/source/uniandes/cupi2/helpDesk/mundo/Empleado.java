@@ -105,6 +105,8 @@ public class Empleado implements IUsuario {
 			posicion = buscarPosicionAdelante(valor);
 			if(anteriorDelMes != null)
 				anteriorDelMes.cambiarSiguienteDelMes(siguienteDelMes);
+			else
+				primerEmpleadoDelMes = siguienteDelMes;
 			siguienteDelMes.cambiarAnteriorDelMes(anteriorDelMes);
 			anteriorDelMes = posicion;
 			siguienteDelMes = posicion.darSiguienteDelMes();

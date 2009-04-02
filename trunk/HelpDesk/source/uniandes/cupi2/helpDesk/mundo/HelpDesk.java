@@ -355,7 +355,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	 * definidas en ITicket
 	 */
 	public void calificarTicket(ITicket ticket, int calificacion) {
-		((Ticket)ticket).calificar(calificacion);
+		((Ticket)ticket).calificar(calificacion,empleadoDelMes);
 		if(empleadoDelMes.darAnteriorDelMes() != null)
 			empleadoDelMes = empleadoDelMes.darEmpleadoDelMes();
 	}

@@ -186,8 +186,8 @@ public class Ticket implements ITicket {
 	 * y cambia el propio parametro calificacion
 	 * @param calificacion 
 	 */
-	public void calificar(int calificacion) {
-		empleado.cambiarCalificacion(calificacion - this.calificacion);
+	public void calificar(int calificacion, Empleado primerEmpleadoDelMes) {
+		empleado.cambiarCalificacion(calificacion - this.calificacion,primerEmpleadoDelMes);
 		this.calificacion = calificacion;
 				
 	}

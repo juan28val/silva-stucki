@@ -6,7 +6,7 @@ public interface IIterador
 	/**
 	 * Constante que especifica el limite general
 	 * para los grupos en los cuales se mostrara en
-	 * interfaz el contenido sobre el que se itera.
+	 * interfaz el contenido sobre el que se itera
 	 */
 	public final static int LIMITE = 21;
 	

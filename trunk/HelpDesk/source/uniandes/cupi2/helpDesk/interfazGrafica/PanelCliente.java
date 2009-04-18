@@ -47,7 +47,7 @@ public class PanelCliente extends JPanel implements ActionListener, TreeSelectio
 	private JLabel etiquetaVacia2 = null;
 	private JPanel panelAcciones = null;
 	private JScrollPane barra = null;
-	private InterfazHelpDesk principal;
+	private IInterfaz principal;
 	private IIterador iterador;
 	private ITicket ticketActual;
 	private JButton botonReabrir;
@@ -133,7 +133,7 @@ public class PanelCliente extends JPanel implements ActionListener, TreeSelectio
 	/**
 	 * This is the default constructor
 	 */
-	public PanelCliente(InterfazHelpDesk principal, IIterador iterador) {
+	public PanelCliente(IInterfaz principal, IIterador iterador) {
 		super();
 		this.principal = principal;
 		this.iterador = iterador;

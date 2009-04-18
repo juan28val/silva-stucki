@@ -85,7 +85,7 @@ public class DialogoTicketNuevo extends JDialog implements ActionListener {
 
 
 
-	private InterfazHelpDesk principal;
+	private IInterfaz principal;
 
 
 
@@ -123,7 +123,7 @@ public class DialogoTicketNuevo extends JDialog implements ActionListener {
 
 	 */
 
-	public DialogoTicketNuevo(InterfazHelpDesk owner, PanelCliente panel) {
+	public DialogoTicketNuevo(IInterfaz owner, PanelCliente panel) {
 
 		super(owner.darJFrame());
 

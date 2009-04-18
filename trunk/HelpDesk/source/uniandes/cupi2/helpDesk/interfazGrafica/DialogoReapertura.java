@@ -73,7 +73,7 @@ public class DialogoReapertura extends JDialog implements ActionListener {
 
 
 
-	private InterfazHelpDesk principal;
+	private IInterfaz principal;
 
 
 
@@ -115,7 +115,7 @@ public class DialogoReapertura extends JDialog implements ActionListener {
 
 	 */
 
-	public DialogoReapertura(InterfazHelpDesk owner,PanelCliente panel,ITicket ticket) {
+	public DialogoReapertura(IInterfaz owner,PanelCliente panel,ITicket ticket) {
 
 		super(owner.darJFrame());
 

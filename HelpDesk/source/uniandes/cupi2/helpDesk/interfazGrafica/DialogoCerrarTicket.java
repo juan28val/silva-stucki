@@ -53,8 +53,7 @@ public class DialogoCerrarTicket extends JDialog implements ActionListener {
 	private JTextArea areaComentario = null;
 
 
-
-
+	
 	private JButton botonAceptar = null;
 
 
@@ -63,7 +62,7 @@ public class DialogoCerrarTicket extends JDialog implements ActionListener {
 
 
 
-	private InterfazHelpDesk principal;
+	private IInterfaz principal;
 
 
 
@@ -101,7 +100,7 @@ public class DialogoCerrarTicket extends JDialog implements ActionListener {
 
 	 */
 
-	public DialogoCerrarTicket(InterfazHelpDesk owner, PanelEmpleado panel, ITicket ticket) {
+	public DialogoCerrarTicket(IInterfaz owner, PanelEmpleado panel, ITicket ticket) {
 
 		super(owner.darJFrame());
 

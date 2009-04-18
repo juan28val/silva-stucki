@@ -47,7 +47,7 @@ public class DialogoClienteNuevo extends JDialog implements ActionListener {
 
 	private String nombre;
 	
-	private InterfazHelpDesk principal;
+	private IInterfaz principal;
 
 	public void actionPerformed(ActionEvent evento) {
 		if(evento.getActionCommand().equals("Aceptar"))
@@ -59,7 +59,7 @@ public class DialogoClienteNuevo extends JDialog implements ActionListener {
 	/**
 	 * @param owner
 	 */
-	public DialogoClienteNuevo(InterfazHelpDesk owner, String nombre) {
+	public DialogoClienteNuevo(IInterfaz owner, String nombre) {
 		super(owner.darJFrame());
 		this.nombre = nombre;
 		principal = owner;

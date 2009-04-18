@@ -35,18 +35,17 @@ public class PanelInicioSesion extends JPanel implements ActionListener {
 	private JRadioButton radioCliente = null;
 	private JRadioButton radioEmpleado = null;
 	private JRadioButton radioAdministrador = null;
-	private ButtonGroup grupoBotones = null;  //  @jve:decl-index=0:
-	private InterfazHelpDesk principal = null;
+	private ButtonGroup grupoBotones = null; 
+	private IInterfaz principal = null;
 
 	/**
 	 * This is the default constructor
 	 */
-	public PanelInicioSesion( InterfazHelpDesk iHD ) {
+	public PanelInicioSesion( IInterfaz principal ) {
 		super();
 		initialize();
-		principal  = iHD;
+		this.principal  = principal;
 	}
-
 
 	/**
 	 * This method initializes this

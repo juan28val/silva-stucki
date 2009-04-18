@@ -57,7 +57,7 @@ public class PanelAdmin extends JPanel implements ActionListener, PropertyChange
 	private IIterador iteradorTickets = null;
 	private IIterador iteradorEmpleados = null;
 	private IIterador iteradorClientes = null;
-	private InterfazHelpDesk principal;
+	private IInterfaz principal;
 	private JDateChooser fecha1;
 	private JDateChooser fecha2;
 	private JRadioButton radioIncidentes1;
@@ -200,7 +200,7 @@ public class PanelAdmin extends JPanel implements ActionListener, PropertyChange
 	 * @param iteradorUsuario 
 	 * @param iteradorTicket 
 	 */
-	public PanelAdmin(InterfazHelpDesk principal, IIterador iteradorTicket, IIterador iteradorEmpleados,IIterador iteradorClientes,IIterador iteradorIncidentes) {
+	public PanelAdmin(IInterfaz principal, IIterador iteradorTicket, IIterador iteradorEmpleados,IIterador iteradorClientes,IIterador iteradorIncidentes) {
 		super();
 		principal.darJFrame().setSize(900,600);
 		initialize();

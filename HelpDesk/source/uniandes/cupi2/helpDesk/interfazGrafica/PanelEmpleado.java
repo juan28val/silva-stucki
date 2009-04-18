@@ -44,7 +44,7 @@ public class PanelEmpleado extends JPanel implements ActionListener, TreeSelecti
 	private JLabel etiquetaVacia1 = null;
 	private JLabel etiquetaVacia2 = null;
 	private JPanel panelNuevo = null;
-	private InterfazHelpDesk principal;
+	private IInterfaz principal;
 	private IIterador iterador;
 	private ITicket ticketActual;
 	private JScrollPane barra;
@@ -135,7 +135,7 @@ public class PanelEmpleado extends JPanel implements ActionListener, TreeSelecti
 	/**
 	 * This is the default constructor
 	 */
-	public PanelEmpleado(InterfazHelpDesk principal, IIterador iterador) {
+	public PanelEmpleado(IInterfaz principal, IIterador iterador) {
 		super();
 		this.principal = principal;
 		this.iterador = iterador;

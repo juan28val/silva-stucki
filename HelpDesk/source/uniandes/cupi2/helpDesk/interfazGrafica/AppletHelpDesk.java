@@ -8,13 +8,13 @@ import java.awt.Event;
 import java.awt.BorderLayout;
 
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.KeyStroke;
 import java.awt.Point;
 import java.io.File;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
+import javax.swing.JApplet;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -31,7 +31,13 @@ import uniandes.cupi2.helpDesk.interfazMundo.ITicket;
 import uniandes.cupi2.helpDesk.interfazMundo.IUsuario;
 import uniandes.cupi2.helpDesk.mundo.FabricaHelpDesk;
 
-public class InterfazHelpDesk implements IInterfaz {
+
+public class AppletHelpDesk extends JApplet implements IInterfaz {
+
+	/**
+	 * Serial Version UID
+	 */
+	private static final long serialVersionUID = 15465L;
 
 	public static final String RUTA_ARCHIVO = "data/persistencia.xml";
 	
@@ -54,21 +60,14 @@ public class InterfazHelpDesk implements IInterfaz {
 	private JMenuItem prefijos;
 
 	/**
+	 * Init - inicializa el applet
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				InterfazHelpDesk application = new InterfazHelpDesk();
-				application.getJFrame().setVisible(true);
-			}
-		});
-	}
-
-	private InterfazHelpDesk()
-	{
+	public void init() {
+		super.init();
 		escogerImplementacion( );
 		inicializar( );
+		start();
 	}
 	
 	private void inicializar() {

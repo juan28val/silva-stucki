@@ -12,15 +12,15 @@ import uniandes.cupi2.helpDesk.mundo.HelpDesk;
 public class BarraEstado extends JPanel implements Observer {
 
 	/**
-	 * 
+	 * Serial Version uid
 	 */
 	private static final long serialVersionUID = 354341L;
 	private JLabel numeroSinAtender;
 	private JLabel numeroSiendoAtendidos;
 	private JLabel numeroCerrados;
-	private InterfazHelpDesk padre;
+	private IInterfaz padre;
 	
-	public BarraEstado(InterfazHelpDesk padre, IHelpDesk mundo)
+	public BarraEstado(IInterfaz padre, IHelpDesk mundo)
 	{
 		((HelpDesk)mundo).addObserver( this );
 		this.padre = padre;

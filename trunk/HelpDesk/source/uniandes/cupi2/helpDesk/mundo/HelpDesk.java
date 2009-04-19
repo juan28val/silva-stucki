@@ -30,6 +30,8 @@ import uniandes.cupi2.collections.tablaHashing.tablaHashingDinamica.TablaHashing
 import uniandes.cupi2.collections.trie.ElementoExisteException;
 import uniandes.cupi2.collections.trie.PalabraInvalidaException;
 import uniandes.cupi2.collections.trie.Trie;
+import uniandes.cupi2.helpDesk.digiturno.Actividad;
+import uniandes.cupi2.helpDesk.digiturno.Grafo;
 import uniandes.cupi2.helpDesk.interfazMundo.IHelpDesk;
 import uniandes.cupi2.helpDesk.interfazMundo.IIterador;
 import uniandes.cupi2.helpDesk.interfazMundo.ITicket;
@@ -99,6 +101,8 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	
 	private int idUsuarios;
 	
+	private Grafo digiturno;
+	
 
     //-----------------------------------------------------------------
     // Constructores
@@ -116,6 +120,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
     		tablaUsuarios = new TablaHashingDinamica<Integer, IUsuario>();
     		arbolIncidentes = new Arbol2_3<Incidente>();
     		prefijosEmpleados = new Trie<Empleado>();
+    		digiturno = new Grafo();
     		numeroTicketsSinAtender = 0;
     		numeroTicketsSiendoAtendidos = 0;
     		numeroTicketsCerrados = 0;
@@ -129,6 +134,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		tablaUsuarios = new TablaHashingDinamica<Integer, IUsuario>();
 		arbolIncidentes = new Arbol2_3<Incidente>();
 		prefijosEmpleados = new Trie<Empleado>();
+		digiturno = new Grafo();
 		
 		BufferedReader lector = new BufferedReader(new FileReader(ruta));
 		String cadena;
@@ -149,10 +155,12 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		Node clientes = hijos.item(0);
 		Node empleados = hijos.item(1);
 		Node incidentes = hijos.item(2);
+		Node actividades = hijos.item(3);
 		
 		cargarClientes(clientes);
 		cargarEmpleados(empleados);
 		cargarIncidentes(incidentes);
+		cargarActividades(actividades);
 	}
 
  	private void cargarClientes(Node clientes) {
@@ -231,6 +239,23 @@ public class HelpDesk extends Observable implements IHelpDesk {
  			arbolIncidentes.insertar(incidente);
  		}
  	}
+ 	
+ 	private void cargarActividades(Node actividades) throws Exception {
+ 		NodeList hijos = actividades.getChildNodes();
+ 		for(int i=0; i<hijos.getLength(); i++)
+ 		{
+ 			Element hijo = (Element)hijos.item(i);
+ 			Actividad actividad = new Actividad(hijo.getAttribute("nombre"),  Float.valueOf(hijo.getAttribute("promedioTiempo")), Integer.parseInt(hijo.getAttribute("numeroVecesEjecutada")));		
+ 			digiturno.agregarVertice(actividad);
+ 			NodeList nietos = hijo.getChildNodes();
+ 	 		for(int j=0; j<nietos.getLength(); j++)
+ 	 		{
+ 	 			Element elemento = (Element)nietos.item(j);
+ 	 			digiturno.agregarArco(hijo.getAttribute("nombre"),elemento.getAttribute("nombre") );
+ 	 		}
+ 		}
+ 	}
+
  	//-----------------------------------------------------------------
     // Métodos
     //-----------------------------------------------------------------
@@ -273,6 +298,10 @@ public class HelpDesk extends Observable implements IHelpDesk {
     		elementoIncidentes.appendChild(elementoIncidente);
     	}
     	elementoRaiz.appendChild(elementoIncidentes);
+    	
+    	Element elementoActividades = documento.createElement("actividades");
+   		digiturno.guardar(elementoActividades, documento);
+    	elementoRaiz.appendChild(elementoActividades);
     	
     	documento.appendChild( elementoRaiz );
     	StringWriter stringWriter = new StringWriter( ); 

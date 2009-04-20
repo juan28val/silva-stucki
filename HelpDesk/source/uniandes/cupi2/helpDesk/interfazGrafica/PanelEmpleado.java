@@ -65,7 +65,7 @@ public class PanelEmpleado extends JPanel implements ActionListener, TreeSelecti
 		
 		if(evento.getActionCommand().equals("descifrar"))
 		{
-			JOptionPane.showMessageDialog(principal.darJFrame(), principal.descifrar(ticketActual), "Comentario descifrado", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(principal.getJFrame(), principal.descifrar(ticketActual), "Comentario descifrado", JOptionPane.INFORMATION_MESSAGE);
 		}
 			
 		if(evento.getActionCommand().equals("atender"))
@@ -78,7 +78,7 @@ public class PanelEmpleado extends JPanel implements ActionListener, TreeSelecti
 		{
 			DialogoCerrarTicket cerrar = new DialogoCerrarTicket(principal, this, ticketActual);
 			cerrar.setVisible(true);
-			principal.darJFrame().setEnabled(false);
+			principal.getJFrame().setEnabled(false);
 			actualizar();
 			actualizarDescripcion();
 		}

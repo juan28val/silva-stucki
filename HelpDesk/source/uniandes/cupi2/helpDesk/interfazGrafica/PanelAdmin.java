@@ -202,7 +202,7 @@ public class PanelAdmin extends JPanel implements ActionListener, PropertyChange
 	 */
 	public PanelAdmin(IInterfaz principal, IIterador iteradorTicket, IIterador iteradorEmpleados,IIterador iteradorClientes,IIterador iteradorIncidentes) {
 		super();
-		principal.darJFrame().setSize(900,600);
+		principal.getJFrame().setSize(900,600);
 		initialize();
 		
 		this.principal = principal;

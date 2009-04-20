@@ -82,7 +82,7 @@ public class InterfazHelpDesk implements IInterfaz {
 	 * 
 	 * @return javax.swing.JFrame
 	 */
-	private JFrame getJFrame() {
+	public JFrame getJFrame() {
 		if (jFrame == null) {
 			jFrame = new JFrame();
 			jFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

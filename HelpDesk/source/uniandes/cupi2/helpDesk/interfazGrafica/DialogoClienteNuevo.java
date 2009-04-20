@@ -52,7 +52,7 @@ public class DialogoClienteNuevo extends JDialog implements ActionListener {
 	public void actionPerformed(ActionEvent evento) {
 		if(evento.getActionCommand().equals("Aceptar"))
 			principal.iniciarSesion(principal.nuevoCliente(nombre, textoEmail.getText(), (String)listaTipo.getSelectedItem()));
-		principal.darJFrame().setEnabled(true);
+		principal.getJFrame().setEnabled(true);
 		dispose();
 	}
 
@@ -60,7 +60,7 @@ public class DialogoClienteNuevo extends JDialog implements ActionListener {
 	 * @param owner
 	 */
 	public DialogoClienteNuevo(IInterfaz owner, String nombre) {
-		super(owner.darJFrame());
+		super(owner.getJFrame());
 		this.nombre = nombre;
 		principal = owner;
 		initialize();

@@ -74,6 +74,7 @@ public class AppletHelpDesk extends JApplet implements IInterfaz {
 		jContentPane.add(new PanelInicioSesion(this));
 		jContentPane.setBorder(BorderFactory.createEmptyBorder(100,250,100,100));
 		add(jContentPane);
+		setSize(800,600);
 	}
 
 	/**

@@ -10,6 +10,6 @@ public interface IGrafo {
 	
 	public IIterador darListaActividadesPorTiempo();
 	
-	public float darTiempoPromedioEspera();
+	public float darTiempoPromedioEspera(String nombre);
 	
 }

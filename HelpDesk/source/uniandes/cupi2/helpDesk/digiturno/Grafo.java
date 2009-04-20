@@ -72,9 +72,8 @@ public class Grafo implements IGrafo {
 		return null;
 	}
 
-	public float darTiempoPromedioEspera() {
-		// TODO Auto-generated method stub
-		return 0;
+	public float darTiempoPromedioEspera(String nombre) {
+		return tablaActividades.dar(nombre).darTiempoPromedioEspera(tablaActividades);
 	}
 
 	public void agregarDatoAActividad(String nombre, float tiempo)

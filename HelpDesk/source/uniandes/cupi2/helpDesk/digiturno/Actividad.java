@@ -101,4 +101,18 @@ public class Actividad extends Vertice<String> implements IActividad{
 		numeroVecesEjecutada++;
 		
 	}
+
+	public float darTiempoPromedioEspera(TablaHashingDinamica<String, Actividad> tablaActividades) {
+
+		float promedio = 0;
+		int numVecesEjecutado = 0;
+		
+		for(int i=0;i<hijos.size();i++)
+		{
+			promedio += tablaActividades.dar(hijos.get(i)).darTiempoPromedioEspera(tablaActividades)*tablaActividades.dar(hijos.get(i)).darNumeroVecesEjecutada();
+			numVecesEjecutado += tablaActividades.dar(hijos.get(i)).darNumeroVecesEjecutada();
+		}
+		
+		return promedioTiempo+promedio/numVecesEjecutado;
+	}
 }

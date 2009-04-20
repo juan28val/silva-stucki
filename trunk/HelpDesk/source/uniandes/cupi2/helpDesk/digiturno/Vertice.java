@@ -23,12 +23,12 @@ public class Vertice<K> implements IVertice<K> {
 		return elem;
 	}
 
-	public void agregarHijo(K nombreHijo) throws Exception
+	public void agregarHijo(K nombreHijo)
 	{
 		for(int i=0;i<hijos.size();i++)
 		{
 			if(hijos.get(i).equals(nombreHijo))
-				throw new Exception("El nodo ya tiene ese hijo");
+				return;
 		}
 		
 		hijos.add(nombreHijo);

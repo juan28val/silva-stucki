@@ -30,12 +30,12 @@ import uniandes.cupi2.collections.tablaHashing.tablaHashingDinamica.TablaHashing
 import uniandes.cupi2.collections.trie.ElementoExisteException;
 import uniandes.cupi2.collections.trie.PalabraInvalidaException;
 import uniandes.cupi2.collections.trie.Trie;
-import uniandes.cupi2.helpDesk.digiturno.Actividad;
-import uniandes.cupi2.helpDesk.digiturno.Grafo;
 import uniandes.cupi2.helpDesk.interfazMundo.IHelpDesk;
 import uniandes.cupi2.helpDesk.interfazMundo.IIterador;
 import uniandes.cupi2.helpDesk.interfazMundo.ITicket;
 import uniandes.cupi2.helpDesk.interfazMundo.IUsuario;
+import uniandes.cupi2.helpDesk.servicioDigiturno.Actividad;
+import uniandes.cupi2.helpDesk.servicioDigiturno.Grafo;
 import uniandes.cupi2.mailer.*;
 
 /**
@@ -55,6 +55,24 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	private static final String EMAIL_SERVIDOR = "smtp.lavabit.com";
 
 	private static final String EMAIL_PASSWORD = "nicolas";
+
+	private static final String ACTIVIDAD_HACER_SOLICITUD = "Hacer solicitud nuevo ticket (cliente)";
+
+	private static final String ACTIVIDAD_CIFRAR = "Cifrar solicitud segun empleado (sistema)";
+
+	private static final String ACTIVIDAD_ASIGNAR_AUTOMATICAMENTE = "Asignar automaticamente segun fila virtual (sistema)";
+
+	private static final String ACTIVIDAD_ATENDER = "Atender solicitud (empleado)";
+
+	private static final String ACTIVIDAD_CERRAR = "Cerrar ticket (empleado)";
+
+	private static final String ACTIVIDAD_NOTFICAR = "Notificar al cliente (sistema)";
+
+	private static final String ACTIVIDAD_REABRIR = "Reabrir ticket (cliente)";
+
+	private static final String ACTIVIDAD_ESCOGER_EMPLEADO = "Escojer empleado (cliente)";
+
+	private static final String ACTIVIDAD_ASIGNAR_AL_MISMO = "Asignar al mismo empleado";
 
 	
     //-----------------------------------------------------------------
@@ -126,8 +144,41 @@ public class HelpDesk extends Observable implements IHelpDesk {
     		numeroTicketsCerrados = 0;
     		idTickets = 10000;
     		idUsuarios = 25000;
+    		
+    		inicializarDigiturno();
     }
 	
+	private void inicializarDigiturno() 
+	{
+		try 
+		{
+			digiturno.agregarVertice(new Actividad(ACTIVIDAD_HACER_SOLICITUD,0,0));
+			digiturno.agregarVertice(new Actividad(ACTIVIDAD_CIFRAR,0,0));
+			digiturno.agregarVertice(new Actividad(ACTIVIDAD_ASIGNAR_AUTOMATICAMENTE,0,0));
+			digiturno.agregarVertice(new Actividad(ACTIVIDAD_ATENDER,0,0));
+			digiturno.agregarVertice(new Actividad(ACTIVIDAD_CERRAR,0,0));
+			digiturno.agregarVertice(new Actividad(ACTIVIDAD_NOTFICAR,0,0));
+			digiturno.agregarVertice(new Actividad(ACTIVIDAD_REABRIR,0,0));
+			digiturno.agregarVertice(new Actividad(ACTIVIDAD_ESCOGER_EMPLEADO,0,0));
+			digiturno.agregarVertice(new Actividad(ACTIVIDAD_ASIGNAR_AL_MISMO,0,0));
+
+			digiturno.agregarArco(ACTIVIDAD_HACER_SOLICITUD, ACTIVIDAD_CIFRAR );
+			digiturno.agregarArco(ACTIVIDAD_HACER_SOLICITUD, ACTIVIDAD_ASIGNAR_AUTOMATICAMENTE );
+			digiturno.agregarArco(ACTIVIDAD_CIFRAR, ACTIVIDAD_ATENDER );
+			digiturno.agregarArco(ACTIVIDAD_ASIGNAR_AUTOMATICAMENTE, ACTIVIDAD_ATENDER );
+			digiturno.agregarArco(ACTIVIDAD_ATENDER, ACTIVIDAD_CERRAR );
+			digiturno.agregarArco(ACTIVIDAD_CERRAR, ACTIVIDAD_NOTFICAR );
+			digiturno.agregarArco(ACTIVIDAD_REABRIR, ACTIVIDAD_ESCOGER_EMPLEADO );
+			digiturno.agregarArco(ACTIVIDAD_ESCOGER_EMPLEADO, ACTIVIDAD_CIFRAR );
+			digiturno.agregarArco(ACTIVIDAD_ESCOGER_EMPLEADO, ACTIVIDAD_ASIGNAR_AUTOMATICAMENTE );
+			digiturno.agregarArco(ACTIVIDAD_ESCOGER_EMPLEADO, ACTIVIDAD_ASIGNAR_AL_MISMO);
+			digiturno.agregarArco(ACTIVIDAD_ASIGNAR_AL_MISMO, ACTIVIDAD_ATENDER );
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public HelpDesk( String ruta ) throws Exception
 	{
 		tablaTickets = new TablaHashingDinamica<Integer, Ticket>();

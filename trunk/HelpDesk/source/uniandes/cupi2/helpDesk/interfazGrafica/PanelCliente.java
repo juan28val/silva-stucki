@@ -59,7 +59,7 @@ public class PanelCliente extends JPanel implements ActionListener, TreeSelectio
 		{
 			DialogoTicketNuevo nuevo = new DialogoTicketNuevo(principal, this);
 			nuevo.setVisible(true);
-			principal.darJFrame().setEnabled(false);
+			principal.getJFrame().setEnabled(false);
 			actualizar();
 			actualizarDescripcion();
 		}
@@ -77,7 +77,7 @@ public class PanelCliente extends JPanel implements ActionListener, TreeSelectio
 			{
 				DialogoReapertura nuevo = new DialogoReapertura(principal, this, ticketActual);
 				nuevo.setVisible(true);
-				principal.darJFrame().setEnabled(false);
+				principal.getJFrame().setEnabled(false);
 				ticketActual = null;
 				actualizar();
 				actualizarDescripcion();

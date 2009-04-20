@@ -67,13 +67,13 @@ public class AppletHelpDesk extends JApplet implements IInterfaz {
 		super.init();
 		escogerImplementacion( );
 		inicializar( );
-		start();
 	}
 	
 	private void inicializar() {
 		jContentPane = new JPanel();
 		jContentPane.add(new PanelInicioSesion(this));
 		jContentPane.setBorder(BorderFactory.createEmptyBorder(100,250,100,100));
+		add(jContentPane);
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class AppletHelpDesk extends JApplet implements IInterfaz {
 	 * 
 	 * @return javax.swing.JFrame
 	 */
-	private JFrame getJFrame() {
+	public JFrame getJFrame() {
 		if (jFrame == null) {
 			jFrame = new JFrame();
 			jFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -448,7 +448,6 @@ public class AppletHelpDesk extends JApplet implements IInterfaz {
 			jContentPane.add( new BarraEstado(this,mundo));
 			jContentPane.validate();
 			jContentPane.setBorder(null);
-			jFrame.setTitle("HelpDesk - Administrador");
 		}
 		else JOptionPane.showMessageDialog(jFrame, "Por favor no trate de violar nuestra \"seguridad\".");
 		jFrame.validate();
@@ -458,7 +457,7 @@ public class AppletHelpDesk extends JApplet implements IInterfaz {
 		
 		mundo.iniciarSesion(usuario);
 		
-		jFrame.setSize(670, 500);
+		setSize(670, 500);
 		jContentPane.removeAll();
 		
 		if( usuario.esEmpleado() )
@@ -471,9 +470,8 @@ public class AppletHelpDesk extends JApplet implements IInterfaz {
 		}
 		jContentPane.add( new BarraEstado(this,mundo));
 		jContentPane.validate();
-		jContentPane.setBorder(null);
-		jFrame.setTitle("HelpDesk - " + usuario.darNombre());		
-		jFrame.validate();
+		jContentPane.setBorder(null);	
+		validate();
 	}
 
 	public void cerrarSesion() {
@@ -494,8 +492,8 @@ public class AppletHelpDesk extends JApplet implements IInterfaz {
 		JDialog dialogo = new DialogoClienteNuevo( this,text );
 		dialogo.setVisible(true);
 		dialogo.setLocationRelativeTo(jFrame);
-		jFrame.setEnabled(false);
-		jFrame.validate();			
+		setEnabled(false);
+		validate();			
 	}
 
 	public IIterador darListaTicketsEntreFechas(Date date1, Date date2) {

@@ -107,7 +107,7 @@ public class DialogoTicketNuevo extends JDialog implements ActionListener {
 
 			principal.nuevaSolicitud( radioQueja.isSelected()?ITicket.TIPO_QUEJA:(radioReclamo.isSelected()?ITicket.TIPO_RECLAMO:ITicket.TIPO_SOLICITUD), areaComentario.getText(), cifrar.isSelected());
 
-		principal.darJFrame().setEnabled(true);
+		principal.getJFrame().setEnabled(true);
 
 		padre.actualizar();
 
@@ -125,7 +125,7 @@ public class DialogoTicketNuevo extends JDialog implements ActionListener {
 
 	public DialogoTicketNuevo(IInterfaz owner, PanelCliente panel) {
 
-		super(owner.darJFrame());
+		super(owner.getJFrame());
 
 		principal = owner;
 

@@ -99,7 +99,7 @@ public class DialogoReapertura extends JDialog implements ActionListener {
 
 			principal.reapertura(ticketActual, areaComentario.getText(), listaEmpleados.get(comboEmpleados.getSelectedIndex()));
 
-		principal.darJFrame().setEnabled(true);
+		principal.getJFrame().setEnabled(true);
 
 		padre.actualizar();
 
@@ -117,7 +117,7 @@ public class DialogoReapertura extends JDialog implements ActionListener {
 
 	public DialogoReapertura(IInterfaz owner,PanelCliente panel,ITicket ticket) {
 
-		super(owner.darJFrame());
+		super(owner.getJFrame());
 
 		listaEmpleados = new ArrayList<IUsuario>();
 		

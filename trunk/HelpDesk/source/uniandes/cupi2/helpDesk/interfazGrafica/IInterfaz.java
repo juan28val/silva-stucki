@@ -18,7 +18,7 @@ public interface IInterfaz {
 
 	void crearCliente(String text);
 
-	JFrame darJFrame();
+	JFrame getJFrame();
 
 	IIterador darListaIncidentes(boolean selected, Date date);
 

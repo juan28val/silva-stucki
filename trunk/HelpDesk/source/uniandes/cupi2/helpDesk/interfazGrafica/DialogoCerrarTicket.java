@@ -84,7 +84,7 @@ public class DialogoCerrarTicket extends JDialog implements ActionListener {
 
 			principal.cerrarTicket(ticket, areaComentario.getText());
 
-		principal.darJFrame().setEnabled(true);
+		principal.getJFrame().setEnabled(true);
 
 		padre.actualizar();
 
@@ -102,7 +102,7 @@ public class DialogoCerrarTicket extends JDialog implements ActionListener {
 
 	public DialogoCerrarTicket(IInterfaz owner, PanelEmpleado panel, ITicket ticket) {
 
-		super(owner.darJFrame());
+		super(owner.getJFrame());
 
 		principal = owner;
 

@@ -195,7 +195,7 @@ public class PanelInicioSesion extends JPanel implements ActionListener {
 		}
 		else
 		{
-			JOptionPane.showMessageDialog(principal.darJFrame(), "Este empleado no existe.");
+			JOptionPane.showMessageDialog(principal.getJFrame(), "Este empleado no existe.");
 		}
 	}
 

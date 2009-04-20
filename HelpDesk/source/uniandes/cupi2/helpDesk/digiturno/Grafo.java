@@ -6,6 +6,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import uniandes.cupi2.collections.tablaHashing.tablaHashingDinamica.TablaHashingDinamica;
+import uniandes.cupi2.helpDesk.digiturno.Actividad;
 import uniandes.cupi2.helpDesk.interfazMundo.IActividad;
 import uniandes.cupi2.helpDesk.interfazMundo.IGrafo;
 import uniandes.cupi2.helpDesk.interfazMundo.IIterador;
@@ -76,6 +77,11 @@ public class Grafo implements IGrafo {
 		return 0;
 	}
 
+	public void agregarDatoAActividad(String nombre, float tiempo)
+	{
+		tablaActividades.dar(nombre).agregarDato(tiempo);	
+	}
+	
 	public void guardar(Element elementoActividades, Document documento) {
 		
 		for(int i=0;i<listaActividadesSinPadre.size();i++)
@@ -86,11 +92,10 @@ public class Grafo implements IGrafo {
 	}
 
 	private void quitarMarcas() {
-		// TODO Auto-generated method stub
+		for(int i=0;i<listaActividadesSinPadre.size();i++)
+		{
+			tablaActividades.dar(listaActividadesSinPadre.get(i)).quitarMarcas(tablaActividades);
+		}
 		
 	}
-
-
-	
-	
 }

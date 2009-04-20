@@ -30,7 +30,8 @@ import uniandes.cupi2.collections.tablaHashing.tablaHashingDinamica.TablaHashing
 import uniandes.cupi2.collections.trie.ElementoExisteException;
 import uniandes.cupi2.collections.trie.PalabraInvalidaException;
 import uniandes.cupi2.collections.trie.Trie;
-import uniandes.cupi2.helpDesk.digiturno.*;
+import uniandes.cupi2.helpDesk.digiturno.Actividad;
+import uniandes.cupi2.helpDesk.digiturno.Grafo;
 import uniandes.cupi2.helpDesk.interfazMundo.IHelpDesk;
 import uniandes.cupi2.helpDesk.interfazMundo.IIterador;
 import uniandes.cupi2.helpDesk.interfazMundo.ITicket;

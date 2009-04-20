@@ -370,12 +370,17 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	 * pre: el usuario actual es un cliente
 	 */
 	public void nuevaSolicitud(int tipo, String comentarioCliente, boolean cifrado) throws Exception {
+		Long inicio = new Date().getTime();
+		
 		idTickets++;
 		Ticket ticket = new Ticket(tipo, (Cliente)usuarioActual, comentarioCliente, 0, null, new Date(), null, null, true, false, cifrado, idTickets);
-		asignarTicket(ticket);
 		((Cliente) usuarioActual).agregarTicket(ticket.darId());
 		tablaTickets.agregar(ticket.darId(), ticket);
 		cambiarNumeroTicketsSinAtender(numeroTicketsSinAtender+1);
+		
+		digiturno.agregarDatoAActividad(ACTIVIDAD_HACER_SOLICITUD, (new Date().getTime() - inicio)/1000);
+		
+		asignarTicket(ticket);
 	}
 
 	/**
@@ -386,6 +391,8 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	 */
 	public void asignarTicket(Ticket ticket)
 	{
+		Long inicio = new Date().getTime();
+		
 		Empleado encargado = primerEmpleado.asignarTicket(ticket);
 		if(encargado == null)
 		{
@@ -399,7 +406,13 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		ultimoEmpleado = encargado;
 		ticket.asignar(encargado);
 		if(ticket.estaCifrado())
+		{
 			ticket.cifrar(encargado.darClave());
+			digiturno.agregarDatoAActividad(ACTIVIDAD_CIFRAR, (new Date().getTime() - inicio)/1000);
+		}
+		else
+			digiturno.agregarDatoAActividad(ACTIVIDAD_ASIGNAR_AUTOMATICAMENTE, (new Date().getTime() - inicio)/1000);
+
 	}
 
 	/**
@@ -421,8 +434,8 @@ public class HelpDesk extends Observable implements IHelpDesk {
 			ultimoClienteAtendido = ((Ticket)ticket).darCliente();
 		}
 		((Ticket)ticket).darCliente().cambiarFechaAtencion(ticket.darFechaAtencion());
-		enviarEmail(ticket, ticket.darFechaAtencion().toString() + "\n\n\nEstimado " + ticket.darNombreCliente() + ":\n\nSu ticket esta siendo atendido por "+ticket.darNombreEmpleado() + ", quien en breve resolverá sus inquietudes.\n\n\nGracias por preferirnos.\n\n\n\n\n\nCupi2HelpDesk");
 		
+		digiturno.agregarDatoAActividad(ACTIVIDAD_ATENDER, ( ((Ticket)ticket).darFechaAtencion().getTime() - ((Ticket)ticket).darFechaCreacion().getTime() )/1000);	
 	}
 
 	/**
@@ -446,6 +459,9 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		cambiarNumeroTicketsSiendoAtendidos(numeroTicketsSiendoAtendidos-1);
 		cambiarNumeroTicketesCerrados(numeroTicketsCerrados+1);
 		((Ticket)ticket).cerrar(comentario);
+		
+		digiturno.agregarDatoAActividad(ACTIVIDAD_CERRAR, ( ((Ticket)ticket).darFechaCierre().getTime() - ((Ticket)ticket).darFechaAtencion().getTime() )/1000);	
+		
 		enviarEmail(ticket, ticket.darFechaAtencion().toString() + "\n\n\nEstimado " + ticket.darNombreCliente() + ":\n\nSu ticket ha sido cerrado por " + ticket.darNombreEmpleado()+", quien le remite estas humildes palabras: \n\n"+ticket.darComentarioEmpleado() + "\n\n\nGracias por preferirnos.\n\n\n\n\n\nCupi2HelpDesk");
 		
 	}
@@ -525,6 +541,8 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	 */
 	public void enviarEmail(ITicket ticket, String mensage) throws Exception
 	{
+		Long inicio = new Date().getTime();
+		
         Email email = new Email( );
         int tipo = ((Ticket)ticket).darTipo();
         email.cambiarTitulo( "El estado de su " + (tipo==Ticket.TIPO_QUEJA?"queja":(tipo==Ticket.TIPO_RECLAMO?"reclamo":"solicitud" )) + " ha cambiado" );
@@ -534,11 +552,15 @@ public class HelpDesk extends Observable implements IHelpDesk {
         try
         {
             email.enviar( EMAIL_SERVIDOR, EMAIL_LOGIN, EMAIL_PASSWORD );
+    		digiturno.agregarDatoAActividad(ACTIVIDAD_NOTFICAR, (new Date().getTime() - inicio)/1000);
         }
         catch( Exception e )
         {
-	            throw new Exception( "Error al enviar el mensaje a la cuenta de correo del cliente", e );
+    		digiturno.agregarDatoAActividad(ACTIVIDAD_NOTFICAR, (new Date().getTime() - inicio)/1000);
+
+    		throw new Exception( "Error al enviar el mensaje a la cuenta de correo del cliente", e );
         }
+        
 	}
 	
 	public IUsuario darUsuarioActual() {
@@ -576,6 +598,10 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	}
 	
 	public void reapertura(ITicket ticket, IUsuario empleado, String comentarioReapertura) throws Exception {
+
+		Long inicio = new Date().getTime();
+		boolean mismo = ((Ticket)ticket).darEmpleado().equals(empleado);
+		
 		Incidente incidente = new Incidente(new Date(), (Empleado)empleado, ((Ticket)ticket).darCliente(), (Ticket)ticket, comentarioReapertura); 
 		((Ticket)ticket).cifrar(((Empleado)ticket.darEmpleado()).darClave());
 		((Ticket)ticket).cifrar(((Empleado)empleado).darClave());
@@ -590,6 +616,13 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		empleado.darListaTickets().add(ticket.darId());
 		cambiarNumeroTicketesCerrados(numeroTicketsCerrados-1);
 		cambiarNumeroTicketsSinAtender(numeroTicketsSinAtender+1);
+		
+		digiturno.agregarDatoAActividad(ACTIVIDAD_REABRIR, (new Date().getTime() - inicio)/1000);
+		if(!mismo)
+			digiturno.agregarDatoAActividad(ACTIVIDAD_ESCOGER_EMPLEADO, 0);
+		else
+			digiturno.agregarDatoAActividad(ACTIVIDAD_ASIGNAR_AL_MISMO, 0);
+
 		enviarEmail(ticket, ticket.darFechaAtencion().toString() + "\n\n\nEstimado " + ticket.darNombreCliente() + ":\n\nSu ticket ha sido reabierto a solicitud suya. Sera atendido por " + ticket.darNombreEmpleado()+", quien le envia sus mejores deseos.\n\n\nGracias por preferirnos.\n\n\n\n\n\nCupi2HelpDesk");
 	}
 	

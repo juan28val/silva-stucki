@@ -96,6 +96,5 @@ public class Grafo implements IGrafo {
 		{
 			tablaActividades.dar(listaActividadesSinPadre.get(i)).quitarMarcas(tablaActividades);
 		}
-		
 	}
 }

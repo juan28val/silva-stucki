@@ -152,15 +152,15 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	{
 		try 
 		{
-			digiturno.agregarVertice(new Actividad(ACTIVIDAD_HACER_SOLICITUD,0,0));
-			digiturno.agregarVertice(new Actividad(ACTIVIDAD_CIFRAR,0,0));
-			digiturno.agregarVertice(new Actividad(ACTIVIDAD_ASIGNAR_AUTOMATICAMENTE,0,0));
-			digiturno.agregarVertice(new Actividad(ACTIVIDAD_ATENDER,0,0));
-			digiturno.agregarVertice(new Actividad(ACTIVIDAD_CERRAR,0,0));
-			digiturno.agregarVertice(new Actividad(ACTIVIDAD_NOTFICAR,0,0));
-			digiturno.agregarVertice(new Actividad(ACTIVIDAD_REABRIR,0,0));
-			digiturno.agregarVertice(new Actividad(ACTIVIDAD_ESCOGER_EMPLEADO,0,0));
-			digiturno.agregarVertice(new Actividad(ACTIVIDAD_ASIGNAR_AL_MISMO,0,0));
+			digiturno.agregarVertice(new Actividad(ACTIVIDAD_HACER_SOLICITUD));
+			digiturno.agregarVertice(new Actividad(ACTIVIDAD_CIFRAR));
+			digiturno.agregarVertice(new Actividad(ACTIVIDAD_ASIGNAR_AUTOMATICAMENTE));
+			digiturno.agregarVertice(new Actividad(ACTIVIDAD_ATENDER));
+			digiturno.agregarVertice(new Actividad(ACTIVIDAD_CERRAR));
+			digiturno.agregarVertice(new Actividad(ACTIVIDAD_NOTFICAR));
+			digiturno.agregarVertice(new Actividad(ACTIVIDAD_REABRIR));
+			digiturno.agregarVertice(new Actividad(ACTIVIDAD_ESCOGER_EMPLEADO));
+			digiturno.agregarVertice(new Actividad(ACTIVIDAD_ASIGNAR_AL_MISMO));
 
 			digiturno.agregarArco(ACTIVIDAD_HACER_SOLICITUD, ACTIVIDAD_CIFRAR );
 			digiturno.agregarArco(ACTIVIDAD_HACER_SOLICITUD, ACTIVIDAD_ASIGNAR_AUTOMATICAMENTE );
@@ -311,6 +311,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
     // Métodos
     //-----------------------------------------------------------------
     
+	@SuppressWarnings("deprecation")
 	public void guardar( String ruta ) throws Exception
     {  	
     	DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance( ); 

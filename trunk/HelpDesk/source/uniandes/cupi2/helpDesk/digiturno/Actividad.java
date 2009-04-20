@@ -32,6 +32,15 @@ public class Actividad extends Vertice<String> implements IActividad{
 		marcado = false;
 	}
 	
+	public Actividad(String nombreActividad) 
+	{
+		hijos = new ArrayList<String>();
+		this.elem = nombreActividad;
+		promedioTiempo = 0;
+		numeroVecesEjecutada = 0;		
+		marcado = false;	
+	}
+
 	public void marcar(boolean marcado)
 	{
 		this.marcado = marcado;

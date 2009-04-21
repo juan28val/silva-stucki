@@ -310,8 +310,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
  	//-----------------------------------------------------------------
     // Métodos
     //-----------------------------------------------------------------
-    
-	@SuppressWarnings("deprecation")
+
 	public void guardar( String ruta ) throws Exception
     {  	
     	DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance( ); 

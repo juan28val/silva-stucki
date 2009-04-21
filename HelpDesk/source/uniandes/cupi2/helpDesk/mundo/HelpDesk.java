@@ -619,7 +619,11 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		
 		digiturno.agregarDatoAActividad(ACTIVIDAD_REABRIR, (new Date().getTime() - inicio)/1000);
 		if(!mismo)
+		{
 			digiturno.agregarDatoAActividad(ACTIVIDAD_ESCOGER_EMPLEADO, 0);
+			digiturno.agregarDatoAActividad(ACTIVIDAD_CIFRAR, 0);
+			digiturno.agregarDatoAActividad(ACTIVIDAD_ASIGNAR_AUTOMATICAMENTE, 0);
+		}
 		else
 			digiturno.agregarDatoAActividad(ACTIVIDAD_ASIGNAR_AL_MISMO, 0);
 

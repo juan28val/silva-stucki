@@ -58,6 +58,8 @@ public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener
 	private JMenuItem itemEmpleado;
 	private JMenuItem prefijos;
 
+	private JMenuItem grafo;
+
 	
 	// ------------------------------------------
 	//  METODOS 
@@ -110,6 +112,8 @@ public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener
 			}
 			if(evento.getActionCommand().equals("cerrar"))
 				cerrarSesion();
+			if(evento.getActionCommand().equals("grafo"))
+				new DialogoGrafo().setVisible(true);
 		}
 		catch(Exception e)
 		{
@@ -214,6 +218,7 @@ public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener
 			menuInfo.add(getTicket());
 			menuInfo.add(getAboutMenuItem());
 			menuInfo.add(getPrefijos());
+			menuInfo.add(getGrafo());
 			
 		}
 		return menuInfo;
@@ -221,6 +226,16 @@ public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener
 
 
 
+	private JMenuItem getGrafo() {
+		if(grafo == null)
+		{
+			grafo = new JMenuItem();
+			grafo.setText("Ver grafo de actividades...");
+			grafo.addActionListener(this);
+			grafo.setActionCommand("grafo");
+		}
+		return grafo;
+	}
 	private JMenuItem getPrefijos() {
 		if(prefijos == null)
 		{

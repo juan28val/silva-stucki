@@ -39,7 +39,7 @@ public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener
 	 */
 	private static final long serialVersionUID = 15465L;
 
-	public static final String RUTA_ARCHIVO = File.separator + "cupi2HelpDesk.xml";
+	public static final String RUTA_ARCHIVO = ".." + File.separator + "data" + File.separator + "persistencia.xml";
 	
 	private JFrame jFrame = null;
 	private JPanel jContentPane = null;

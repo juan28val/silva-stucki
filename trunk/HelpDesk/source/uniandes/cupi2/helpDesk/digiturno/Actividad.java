@@ -9,7 +9,7 @@ import uniandes.cupi2.collections.tablaHashing.tablaHashingDinamica.TablaHashing
 import uniandes.cupi2.helpDesk.digiturno.Vertice;
 import uniandes.cupi2.helpDesk.interfazMundo.IActividad;
 
-public class Actividad extends Vertice<String> implements IActividad{
+public class Actividad extends Vertice<String> implements IActividad, Comparable<Actividad>{
 
 	/**
 	 * 
@@ -22,6 +22,7 @@ public class Actividad extends Vertice<String> implements IActividad{
 	
 	private int numeroVecesEjecutada;
 
+	
 	
 	public Actividad(String nombreActividad, float promedioTiempo, int numeroVecesEjecutada)
 	{
@@ -114,5 +115,9 @@ public class Actividad extends Vertice<String> implements IActividad{
 		}
 		
 		return promedioTiempo+promedio/numVecesEjecutado;
+	}
+
+	public int compareTo(Actividad otro) {
+		return otro.darPromedioTiempo()>promedioTiempo?-1:otro.darPromedioTiempo()>promedioTiempo?0:1;
 	}
 }

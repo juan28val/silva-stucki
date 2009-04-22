@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import uniandes.cupi2.collections.iterador.Iterador;
+import uniandes.cupi2.collections.listaEncadenadaOrdenada.ListaEncadenadaOrdenada;
 import uniandes.cupi2.collections.tablaHashing.tablaHashingDinamica.TablaHashingDinamica;
 import uniandes.cupi2.helpDesk.digiturno.Actividad;
 import uniandes.cupi2.helpDesk.interfazMundo.IActividad;
@@ -13,22 +15,26 @@ import uniandes.cupi2.helpDesk.interfazMundo.IIterador;
 
 public class Grafo implements IGrafo {
 
-	private TablaHashingDinamica<String, Actividad> tablaActividades;
+	private TablaHashingDinamica<String, Actividad> tablaVertices;
 	
-	private ArrayList<String> listaActividadesSinPadre;
+	private ArrayList<String> listaVerticesSinPadre;
 
+	private ListaEncadenadaOrdenada<Actividad> caminoPorTiempo;
+	
 	public Grafo()
 	{
-		tablaActividades = new TablaHashingDinamica<String, Actividad>();
-		listaActividadesSinPadre = new ArrayList<String>();
+		tablaVertices = new TablaHashingDinamica<String, Actividad>();
+		listaVerticesSinPadre = new ArrayList<String>();
+		caminoPorTiempo = new ListaEncadenadaOrdenada<Actividad>();
 	}
 	
 	public void agregarVertice(Actividad actividad) throws Exception
 	{
-		if(tablaActividades.dar(actividad.darId())==null)
+		if(tablaVertices.dar(actividad.darId())==null)
 		{
-			tablaActividades.agregar(actividad.darId(), actividad);
-			listaActividadesSinPadre.add(actividad.darId());
+			tablaVertices.agregar(actividad.darId(), actividad);
+			listaVerticesSinPadre.add(actividad.darId());
+			caminoPorTiempo.insertar(actividad);
 		}
 		else
 		{
@@ -38,13 +44,13 @@ public class Grafo implements IGrafo {
 	
 	public void agregarArco(String nombrePadre, String nombreHijo) throws Exception
 	{
-		if(tablaActividades.dar(nombrePadre)!=null)
+		if(tablaVertices.dar(nombrePadre)!=null)
 		{
-			tablaActividades.dar(nombrePadre).agregarHijo(nombreHijo);
-			for(int i=0;i<listaActividadesSinPadre.size();i++)
+			tablaVertices.dar(nombrePadre).agregarHijo(nombreHijo);
+			for(int i=0;i<listaVerticesSinPadre.size();i++)
 			{
-				if( listaActividadesSinPadre.get(i).equals(nombreHijo) )
-					listaActividadesSinPadre.remove(i);
+				if( listaVerticesSinPadre.get(i).equals(nombreHijo) )
+					listaVerticesSinPadre.remove(i);
 			}
 		}
 		else
@@ -59,41 +65,47 @@ public class Grafo implements IGrafo {
 	}
 
 	public IActividad darActividad(String nombre) {
-		return tablaActividades.dar(nombre);
+		return tablaVertices.dar(nombre);
 	}
 
 	public IActividad[] darActividadesMasLentas() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		IActividad[] masLentas = new IActividad[3];
+		IIterador it = darListaActividadesPorTiempo();
+		for(int i=0; i<3 && it.haySiguiente(); i++)
+		{
+			masLentas[i] = (IActividad)it.darSiguiente();
+		}
+		
+		return masLentas;
 	}
-
+	
 	public IIterador darListaActividadesPorTiempo() {
-		// TODO Auto-generated method stub
-		return null;
+		return new IteradorListaActividadesPorTiempo(caminoPorTiempo, this);
 	}
-
+	
 	public float darTiempoPromedioEspera(String nombre) {
-		return tablaActividades.dar(nombre).darTiempoPromedioEspera(tablaActividades);
+		return tablaVertices.dar(nombre).darTiempoPromedioEspera(tablaVertices);
 	}
 
 	public void agregarDatoAActividad(String nombre, float tiempo)
 	{
-		tablaActividades.dar(nombre).agregarDato(tiempo);	
+		tablaVertices.dar(nombre).agregarDato(tiempo);	
 	}
 	
 	public void guardar(Element elementoActividades, Document documento) {
 		
-		for(int i=0;i<listaActividadesSinPadre.size();i++)
+		for(int i=0;i<listaVerticesSinPadre.size();i++)
 		{
-			tablaActividades.dar(listaActividadesSinPadre.get(i)).guardar(elementoActividades, documento, tablaActividades);
+			tablaVertices.dar(listaVerticesSinPadre.get(i)).guardar(elementoActividades, documento, tablaVertices);
 		}
 		quitarMarcas();
 	}
 
 	private void quitarMarcas() {
-		for(int i=0;i<listaActividadesSinPadre.size();i++)
+		for(int i=0;i<listaVerticesSinPadre.size();i++)
 		{
-			tablaActividades.dar(listaActividadesSinPadre.get(i)).quitarMarcas(tablaActividades);
+			tablaVertices.dar(listaVerticesSinPadre.get(i)).quitarMarcas(tablaVertices);
 		}
 	}
 }

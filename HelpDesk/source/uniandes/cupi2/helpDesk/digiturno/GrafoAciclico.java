@@ -12,7 +12,7 @@ import uniandes.cupi2.helpDesk.interfazMundo.IActividad;
 import uniandes.cupi2.helpDesk.interfazMundo.IGrafo;
 import uniandes.cupi2.helpDesk.interfazMundo.IIterador;
 
-public class Grafo implements IGrafo {
+public class GrafoAciclico implements IGrafo {
 
 	private TablaHashingDinamica<String, Actividad> tablaVertices;
 	
@@ -20,7 +20,7 @@ public class Grafo implements IGrafo {
 
 	private ListaEncadenadaOrdenada<Actividad> caminoPorTiempo;
 	
-	public Grafo()
+	public GrafoAciclico()
 	{
 		tablaVertices = new TablaHashingDinamica<String, Actividad>();
 		listaVerticesSinPadre = new ArrayList<String>();

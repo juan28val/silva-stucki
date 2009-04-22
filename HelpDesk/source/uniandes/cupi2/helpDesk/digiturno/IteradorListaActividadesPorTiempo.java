@@ -12,11 +12,11 @@ public class IteradorListaActividadesPorTiempo implements IIterador {
 
 	private Iterador<Actividad> vertice;
 
-	public IteradorListaActividadesPorTiempo(TablaHashingDinamica<String, Actividad> tablaActividades, ArrayList<String> listaActividadesSinPadre, Grafo grafo) {
+	public IteradorListaActividadesPorTiempo(TablaHashingDinamica<String, Actividad> tablaActividades, ArrayList<String> listaActividadesSinPadre, GrafoAciclico grafo) {
 
 	}
 
-	public IteradorListaActividadesPorTiempo(ListaEncadenadaOrdenada<Actividad> listaVertices, Grafo grafo) {
+	public IteradorListaActividadesPorTiempo(ListaEncadenadaOrdenada<Actividad> listaVertices, GrafoAciclico grafo) {
 		vertice = listaVertices.darIterador();
 	}
 

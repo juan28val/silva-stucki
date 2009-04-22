@@ -31,7 +31,7 @@ import uniandes.cupi2.collections.trie.ElementoExisteException;
 import uniandes.cupi2.collections.trie.PalabraInvalidaException;
 import uniandes.cupi2.collections.trie.Trie;
 import uniandes.cupi2.helpDesk.digiturno.Actividad;
-import uniandes.cupi2.helpDesk.digiturno.Grafo;
+import uniandes.cupi2.helpDesk.digiturno.GrafoAciclico;
 import uniandes.cupi2.helpDesk.interfazMundo.IHelpDesk;
 import uniandes.cupi2.helpDesk.interfazMundo.IIterador;
 import uniandes.cupi2.helpDesk.interfazMundo.ITicket;
@@ -119,7 +119,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	
 	private int idUsuarios;
 	
-	private Grafo digiturno;
+	private GrafoAciclico digiturno;
 	
 
     //-----------------------------------------------------------------
@@ -138,7 +138,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
     		tablaUsuarios = new TablaHashingDinamica<Integer, IUsuario>();
     		arbolIncidentes = new Arbol2_3<Incidente>();
     		prefijosEmpleados = new Trie<Empleado>();
-    		digiturno = new Grafo();
+    		digiturno = new GrafoAciclico();
     		numeroTicketsSinAtender = 0;
     		numeroTicketsSiendoAtendidos = 0;
     		numeroTicketsCerrados = 0;
@@ -185,7 +185,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		tablaUsuarios = new TablaHashingDinamica<Integer, IUsuario>();
 		arbolIncidentes = new Arbol2_3<Incidente>();
 		prefijosEmpleados = new Trie<Empleado>();
-		digiturno = new Grafo();
+		digiturno = new GrafoAciclico();
 		
 		BufferedReader lector = new BufferedReader(new FileReader(ruta));
 		String cadena;

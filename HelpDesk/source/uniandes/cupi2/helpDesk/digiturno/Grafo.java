@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import uniandes.cupi2.collections.iterador.Iterador;
 import uniandes.cupi2.collections.listaEncadenadaOrdenada.ListaEncadenadaOrdenada;
 import uniandes.cupi2.collections.tablaHashing.tablaHashingDinamica.TablaHashingDinamica;
 import uniandes.cupi2.helpDesk.digiturno.Actividad;

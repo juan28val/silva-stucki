@@ -597,13 +597,16 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	}
 	
 	public void reapertura(ITicket ticket, IUsuario empleado, String comentarioReapertura) throws Exception {
-
-		Long inicio = new Date().getTime();
-		boolean mismo = ((Ticket)ticket).darEmpleado().equals(empleado);
 		
+		Long inicio = new Date().getTime();
 		Incidente incidente = new Incidente(new Date(), (Empleado)empleado, ((Ticket)ticket).darCliente(), (Ticket)ticket, comentarioReapertura); 
 		((Ticket)ticket).cifrar(((Empleado)ticket.darEmpleado()).darClave());
 		((Ticket)ticket).cifrar(((Empleado)empleado).darClave());
+		
+		digiturno.agregarDatoAActividad(ACTIVIDAD_CIFRAR, (new Date().getTime()-inicio)/1000);
+		inicio = new Date().getTime();
+		boolean mismo = ((Ticket)ticket).darEmpleado().equals(empleado);
+		
 		ticket.darEmpleado().darListaTickets().remove((Integer)ticket.darId());
 		((Ticket)ticket).reabrir();
 		arbolIncidentes.insertar(incidente);
@@ -620,7 +623,6 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		if(!mismo)
 		{
 			digiturno.agregarDatoAActividad(ACTIVIDAD_ESCOGER_EMPLEADO, 0);
-			digiturno.agregarDatoAActividad(ACTIVIDAD_CIFRAR, 0);
 			digiturno.agregarDatoAActividad(ACTIVIDAD_ASIGNAR_AUTOMATICAMENTE, 0);
 		}
 		else

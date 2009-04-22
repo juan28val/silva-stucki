@@ -7,6 +7,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -56,7 +57,7 @@ public class DialogoGrafo extends JDialog {
                 "Please enter your comments in text box above." +
                 " HTML syntax is allowed."), BorderLayout.SOUTH);*/
         
-        setContentPane(wrapInBackgroundImage(foregroundPanel,new ImageIcon("./data/actividades.png")));
+        setContentPane(wrapInBackgroundImage(foregroundPanel,new ImageIcon("." + File.separator + "data" + File.separator + "Grafo.gif")));
         
         pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -8,8 +8,7 @@ public interface IGrafo {
 	
 	public IActividad[] darActividadesMasLentas();
 	
-	public IIterador darListaActividadesPorTiempo();
+	public IIterador darListaActividadesPorTiempo();	
 	
-	public float darTiempoPromedioEspera(String nombre);
-	
+	public float darTiempoPromedioEspera();
 }

@@ -56,24 +56,6 @@ public class HelpDesk extends Observable implements IHelpDesk {
 
 	private static final String EMAIL_PASSWORD = "nicolas";
 
-	private static final String ACTIVIDAD_HACER_SOLICITUD = "Hacer solicitud nuevo ticket (cliente)";
-
-	private static final String ACTIVIDAD_CIFRAR = "Cifrar solicitud segun empleado (sistema)";
-
-	private static final String ACTIVIDAD_ASIGNAR_AUTOMATICAMENTE = "Asignar automaticamente segun fila virtual (sistema)";
-
-	private static final String ACTIVIDAD_ATENDER = "Atender solicitud (empleado)";
-
-	private static final String ACTIVIDAD_CERRAR = "Cerrar ticket (empleado)";
-
-	private static final String ACTIVIDAD_NOTFICAR = "Notificar al cliente (sistema)";
-
-	private static final String ACTIVIDAD_REABRIR = "Reabrir ticket (cliente)";
-
-	private static final String ACTIVIDAD_ESCOGER_EMPLEADO = "Escojer empleado (cliente)";
-
-	private static final String ACTIVIDAD_ASIGNAR_AL_MISMO = "Asignar al mismo empleado";
-
 	
     //-----------------------------------------------------------------
     // Atributos
@@ -152,27 +134,21 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	{
 		try 
 		{
-			digiturno.agregarVertice(new Actividad(ACTIVIDAD_HACER_SOLICITUD));
+			digiturno.agregarVertice(new Actividad(ACTIVIDAD_NUEVA_SOLICITUD));
 			digiturno.agregarVertice(new Actividad(ACTIVIDAD_CIFRAR));
-			digiturno.agregarVertice(new Actividad(ACTIVIDAD_ASIGNAR_AUTOMATICAMENTE));
+			digiturno.agregarVertice(new Actividad(ACTIVIDAD_ASIGNAR_TICKET));
 			digiturno.agregarVertice(new Actividad(ACTIVIDAD_ATENDER));
 			digiturno.agregarVertice(new Actividad(ACTIVIDAD_CERRAR));
 			digiturno.agregarVertice(new Actividad(ACTIVIDAD_NOTFICAR));
 			digiturno.agregarVertice(new Actividad(ACTIVIDAD_REABRIR));
-			digiturno.agregarVertice(new Actividad(ACTIVIDAD_ESCOGER_EMPLEADO));
-			digiturno.agregarVertice(new Actividad(ACTIVIDAD_ASIGNAR_AL_MISMO));
 
-			digiturno.agregarArco(ACTIVIDAD_HACER_SOLICITUD, ACTIVIDAD_CIFRAR );
-			digiturno.agregarArco(ACTIVIDAD_HACER_SOLICITUD, ACTIVIDAD_ASIGNAR_AUTOMATICAMENTE );
+			digiturno.agregarArco(ACTIVIDAD_NUEVA_SOLICITUD, ACTIVIDAD_ASIGNAR_TICKET );
+			digiturno.agregarArco(ACTIVIDAD_ASIGNAR_TICKET, ACTIVIDAD_ATENDER );
+			digiturno.agregarArco(ACTIVIDAD_ASIGNAR_TICKET, ACTIVIDAD_CIFRAR );
 			digiturno.agregarArco(ACTIVIDAD_CIFRAR, ACTIVIDAD_ATENDER );
-			digiturno.agregarArco(ACTIVIDAD_ASIGNAR_AUTOMATICAMENTE, ACTIVIDAD_ATENDER );
 			digiturno.agregarArco(ACTIVIDAD_ATENDER, ACTIVIDAD_CERRAR );
+			digiturno.agregarArco(ACTIVIDAD_REABRIR, ACTIVIDAD_CIFRAR );
 			digiturno.agregarArco(ACTIVIDAD_CERRAR, ACTIVIDAD_NOTFICAR );
-			digiturno.agregarArco(ACTIVIDAD_REABRIR, ACTIVIDAD_ESCOGER_EMPLEADO );
-			digiturno.agregarArco(ACTIVIDAD_ESCOGER_EMPLEADO, ACTIVIDAD_CIFRAR );
-			digiturno.agregarArco(ACTIVIDAD_ESCOGER_EMPLEADO, ACTIVIDAD_ASIGNAR_AUTOMATICAMENTE );
-			digiturno.agregarArco(ACTIVIDAD_ESCOGER_EMPLEADO, ACTIVIDAD_ASIGNAR_AL_MISMO);
-			digiturno.agregarArco(ACTIVIDAD_ASIGNAR_AL_MISMO, ACTIVIDAD_ATENDER );
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -377,7 +353,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		tablaTickets.agregar(ticket.darId(), ticket);
 		cambiarNumeroTicketsSinAtender(numeroTicketsSinAtender+1);
 		
-		digiturno.agregarDatoAActividad(ACTIVIDAD_HACER_SOLICITUD, (new Date().getTime() - inicio)/1000);
+		digiturno.agregarDatoAActividad(ACTIVIDAD_NUEVA_SOLICITUD, (new Date().getTime() - inicio)/1000);
 		
 		asignarTicket(ticket);
 	}
@@ -404,20 +380,23 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		encargado.cambiarSiguiente(null);
 		ultimoEmpleado = encargado;
 		ticket.asignar(encargado);
+		
+		digiturno.agregarDatoAActividad(ACTIVIDAD_ASIGNAR_TICKET, (new Date().getTime() - inicio)/1000);
+		inicio = new Date().getTime();
 		if(ticket.estaCifrado())
 		{
 			ticket.cifrar(encargado.darClave());
 			digiturno.agregarDatoAActividad(ACTIVIDAD_CIFRAR, (new Date().getTime() - inicio)/1000);
 		}
-		else
-			digiturno.agregarDatoAActividad(ACTIVIDAD_ASIGNAR_AUTOMATICAMENTE, (new Date().getTime() - inicio)/1000);
-
 	}
 
 	/**
 	 * pre: el usuario actual es un empleado
 	 */
 	public void atenderTicket(ITicket ticket) throws Exception {
+		
+		Long inicio = new Date().getTime();
+		
 		((Ticket)ticket).atender();
 		cambiarNumeroTicketsSinAtender(numeroTicketsSinAtender-1);
 		cambiarNumeroTicketsSiendoAtendidos(numeroTicketsSiendoAtendidos+1);
@@ -434,7 +413,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		}
 		((Ticket)ticket).darCliente().cambiarFechaAtencion(ticket.darFechaAtencion());
 		
-		digiturno.agregarDatoAActividad(ACTIVIDAD_ATENDER, ( ((Ticket)ticket).darFechaAtencion().getTime() - ((Ticket)ticket).darFechaCreacion().getTime() )/1000);	
+		digiturno.agregarDatoAActividad(ACTIVIDAD_ATENDER, ( (new Date().getTime() - inicio))/1000);	
 	}
 
 	/**
@@ -455,14 +434,19 @@ public class HelpDesk extends Observable implements IHelpDesk {
 
 	public void cerrarTicket(ITicket ticket, String comentario) throws Exception {
 		
+		Long inicio = new Date().getTime();
+		
 		cambiarNumeroTicketsSiendoAtendidos(numeroTicketsSiendoAtendidos-1);
 		cambiarNumeroTicketesCerrados(numeroTicketsCerrados+1);
 		((Ticket)ticket).cerrar(comentario);
 		
-		digiturno.agregarDatoAActividad(ACTIVIDAD_CERRAR, ( ((Ticket)ticket).darFechaCierre().getTime() - ((Ticket)ticket).darFechaAtencion().getTime() )/1000);	
+		digiturno.agregarDatoAActividad(ACTIVIDAD_CERRAR, ( new Date().getTime() - inicio )/1000);	
+		
+		inicio = new Date().getTime();
 		
 		enviarEmail(ticket, ticket.darFechaAtencion().toString() + "\n\n\nEstimado " + ticket.darNombreCliente() + ":\n\nSu ticket ha sido cerrado por " + ticket.darNombreEmpleado()+", quien le remite estas humildes palabras: \n\n"+ticket.darComentarioEmpleado() + "\n\n\nGracias por preferirnos.\n\n\n\n\n\nCupi2HelpDesk");
 		
+		digiturno.agregarDatoAActividad(ACTIVIDAD_NOTFICAR, ( new Date().getTime() - inicio )/1000);	
 	}
 
 	/**
@@ -599,14 +583,13 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	public void reapertura(ITicket ticket, IUsuario empleado, String comentarioReapertura) throws Exception {
 		
 		Long inicio = new Date().getTime();
-		Incidente incidente = new Incidente(new Date(), (Empleado)empleado, ((Ticket)ticket).darCliente(), (Ticket)ticket, comentarioReapertura); 
 		((Ticket)ticket).cifrar(((Empleado)ticket.darEmpleado()).darClave());
 		((Ticket)ticket).cifrar(((Empleado)empleado).darClave());
-		
 		digiturno.agregarDatoAActividad(ACTIVIDAD_CIFRAR, (new Date().getTime()-inicio)/1000);
-		inicio = new Date().getTime();
-		boolean mismo = ((Ticket)ticket).darEmpleado().equals(empleado);
 		
+		inicio = new Date().getTime();
+		Incidente incidente = new Incidente(new Date(), (Empleado)empleado, ((Ticket)ticket).darCliente(), (Ticket)ticket, comentarioReapertura); 
+
 		ticket.darEmpleado().darListaTickets().remove((Integer)ticket.darId());
 		((Ticket)ticket).reabrir();
 		arbolIncidentes.insertar(incidente);
@@ -618,17 +601,8 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		empleado.darListaTickets().add(ticket.darId());
 		cambiarNumeroTicketesCerrados(numeroTicketsCerrados-1);
 		cambiarNumeroTicketsSinAtender(numeroTicketsSinAtender+1);
-		
-		digiturno.agregarDatoAActividad(ACTIVIDAD_REABRIR, (new Date().getTime() - inicio)/1000);
-		if(!mismo)
-		{
-			digiturno.agregarDatoAActividad(ACTIVIDAD_ESCOGER_EMPLEADO, 0);
-			digiturno.agregarDatoAActividad(ACTIVIDAD_ASIGNAR_AUTOMATICAMENTE, 0);
-		}
-		else
-			digiturno.agregarDatoAActividad(ACTIVIDAD_ASIGNAR_AL_MISMO, 0);
-
-		enviarEmail(ticket, ticket.darFechaAtencion().toString() + "\n\n\nEstimado " + ticket.darNombreCliente() + ":\n\nSu ticket ha sido reabierto a solicitud suya. Sera atendido por " + ticket.darNombreEmpleado()+", quien le envia sus mejores deseos.\n\n\nGracias por preferirnos.\n\n\n\n\n\nCupi2HelpDesk");
+	
+		digiturno.agregarDatoAActividad(ACTIVIDAD_REABRIR, (new Date().getTime() - inicio)/1000);		
 	}
 	
 	public String darEmpleadoMenosIncidentes() {

@@ -2,7 +2,7 @@ package uniandes.cupi2.helpDesk.digiturno;
 
 import java.util.ArrayList;
 
-import uniandes.cupi2.collections.grafo.IVertice;
+import uniandes.cupi2.collections.grafo.*;
 
 public class Vertice<K> implements IVertice<K> {
 	

@@ -32,14 +32,14 @@ import uniandes.cupi2.helpDesk.interfazMundo.IUsuario;
 import uniandes.cupi2.helpDesk.mundo.FabricaHelpDesk;
 
 
-public class AppletHelpDesk extends JApplet implements IInterfaz {
+public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener {
 
 	/**
 	 * Serial Version UID
 	 */
 	private static final long serialVersionUID = 15465L;
 
-	public static final String RUTA_ARCHIVO = "data/persistencia.xml";
+	public static final String RUTA_ARCHIVO = File.separator + "cupi2HelpDesk.xml";
 	
 	private JFrame jFrame = null;
 	private JPanel jContentPane = null;
@@ -56,9 +56,67 @@ public class AppletHelpDesk extends JApplet implements IInterfaz {
 	private JMenuItem menuCargar = null;
 	private JMenuItem itemTicket;
 	private JMenuItem itemEmpleado;
-
 	private JMenuItem prefijos;
 
+	
+	// ------------------------------------------
+	//  METODOS 
+	// ------------------------------------------
+	
+	/**
+	 * Metodo llamado cuando se ejecuta una accion
+	 */
+	public void actionPerformed(ActionEvent evento)
+	{
+		try
+		{
+			if(evento.getActionCommand().equals("prefijos"))
+			{
+				String prefijo = JOptionPane.showInputDialog(this, "Introduzca el nombre del empleado.\nPuede usar wildcards (*) para buscar nombres incompletos.");
+				JOptionPane.showMessageDialog(this, mundo.darPrefijos(prefijo));
+			}
+			if(evento.getActionCommand().equals("ticket"))
+			{
+				String id = JOptionPane.showInputDialog(this, "Introduzca el ID del ticket: ");
+				JOptionPane.showMessageDialog(this, mundo.darInfoTicket(Integer.parseInt(id)));
+			}
+			if(evento.getActionCommand().equals("empleado"))
+				JOptionPane.showMessageDialog(this, mundo.darEmpleadoMenosIncidentes());
+			if(evento.getActionCommand().equals("guardar"))
+				mundo.guardar(RUTA_ARCHIVO);
+			if(evento.getActionCommand().equals("cargar"))
+			{
+				if(JOptionPane.showConfirmDialog(this, "Si importa una nomina nueva, todos sus datos se perderan.\nEsta seguro de que desea continuar?") != JOptionPane.YES_OPTION)
+					return;
+				JFileChooser cargar = new JFileChooser();
+				cargar.setCurrentDirectory(new File("data"));
+				cargar.showOpenDialog(this);
+				if(cargar.getSelectedFile() != null)
+				{
+					reiniciar();
+					mundo = FabricaHelpDesk.getInstance( ).fabricarImplementacion( );
+					cerrarSesion();
+					mundo.cargarListaEmpleados(cargar.getSelectedFile());
+				}
+			}
+			if(evento.getActionCommand().equals("acercaDe"))
+			{
+				JDialog aboutDialog = getAboutDialog();
+				aboutDialog.pack();
+				Point loc = getLocation();
+				loc.translate(20, 20);
+				aboutDialog.setLocation(loc);
+				aboutDialog.setVisible(true);
+			}
+			if(evento.getActionCommand().equals("cerrar"))
+				cerrarSesion();
+		}
+		catch(Exception e)
+		{
+			JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+		}
+			
+	}
 	/**
 	 * Init - inicializa el applet
 	 * @param args
@@ -66,15 +124,19 @@ public class AppletHelpDesk extends JApplet implements IInterfaz {
 	public void init() {
 		super.init();
 		escogerImplementacion( );
-		inicializar( );
+		actualizar(new PanelInicioSesion(this));
 	}
 	
-	private void inicializar() {
+	private void actualizar(JPanel panel) {
 		jContentPane = new JPanel();
-		jContentPane.add(new PanelInicioSesion(this));
+		jContentPane.removeAll();
+		jContentPane.add(panel);
 		jContentPane.setBorder(BorderFactory.createEmptyBorder(100,250,100,100));
+		jContentPane.add( new BarraEstado(this,mundo));
+		jContentPane.validate();
 		add(jContentPane);
 		setSize(800,600);
+		setJMenuBar(getJJMenuBar());
 	}
 
 	/**
@@ -132,7 +194,7 @@ public class AppletHelpDesk extends JApplet implements IInterfaz {
 		if (fileMenu == null) {
 			fileMenu = new JMenu();
 			fileMenu.setText("Archivo");
-			fileMenu.add(getSaveMenuItem());
+			fileMenu.add(getLogoutMenuItem());
 			fileMenu.add(menuCargar());
 			fileMenu.add(getExitMenuItem());
 		}
@@ -164,16 +226,8 @@ public class AppletHelpDesk extends JApplet implements IInterfaz {
 		{
 			prefijos = new JMenuItem();
 			prefijos.setText("Buscar Tickets por empleado...");
-			prefijos.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					String prefijo = JOptionPane.showInputDialog(jFrame, "Introduzca el nombre del empleado.\nPuede usar wildcards (*) para buscar nombres incompletos.");
-					try {
-						JOptionPane.showMessageDialog(jFrame, mundo.darPrefijos(prefijo));
-					}
-					catch(Exception excepcion)
-					{}
-				}
-			});
+			prefijos.addActionListener(this);
+			prefijos.setActionCommand("prefijos");
 		}
 		return prefijos;
 	}
@@ -184,16 +238,8 @@ public class AppletHelpDesk extends JApplet implements IInterfaz {
 			itemTicket.setText("Ver ticket...");
 			itemTicket.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T,
 					Event.CTRL_MASK, true));
-			itemTicket.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					String id = JOptionPane.showInputDialog(jFrame, "Introduzca el ID del ticket: ");
-					try {
-						JOptionPane.showMessageDialog(jFrame, mundo.darInfoTicket(Integer.parseInt(id)));
-					}
-					catch(Exception excepcion)
-					{}
-				}
-			});
+			itemTicket.addActionListener(this);
+			itemTicket.setActionCommand("ticket");
 		}
 		return itemTicket;
 	}
@@ -204,11 +250,8 @@ public class AppletHelpDesk extends JApplet implements IInterfaz {
 			itemEmpleado.setText("Ver empleado con menos incidentes...");
 			itemEmpleado.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,
 					Event.CTRL_MASK, true));
-			itemEmpleado.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					JOptionPane.showMessageDialog(jFrame, mundo.darEmpleadoMenosIncidentes());
-				}
-			});
+			itemEmpleado.addActionListener(this);
+			itemEmpleado.setActionCommand("empleado");
 		}
 		return itemEmpleado;
 	}
@@ -221,21 +264,11 @@ public class AppletHelpDesk extends JApplet implements IInterfaz {
 	private JMenuItem getExitMenuItem() {
 		if (exitMenuItem == null) {
 			exitMenuItem = new JMenuItem();
-			exitMenuItem.setText("Salir");
-			exitMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X,
+			exitMenuItem.setText("Guardar...");
+			exitMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G,
 					Event.CTRL_MASK, true));
-			exitMenuItem.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent evento) {
-					try {
-						mundo.guardar(RUTA_ARCHIVO);
-					}
-					catch(Exception e)
-					{
-						JOptionPane.showMessageDialog(jFrame, e.getMessage());
-					}
-					System.exit(0);
-				}
-			});
+			exitMenuItem.addActionListener(this);
+			exitMenuItem.setActionCommand("guardar");
 		}
 		return exitMenuItem;
 	}
@@ -252,28 +285,8 @@ public class AppletHelpDesk extends JApplet implements IInterfaz {
 			menuCargar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
 					Event.CTRL_MASK, true));
 			
-			menuCargar.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					try {
-						if(JOptionPane.showConfirmDialog(jFrame, "Si importa una nomina nueva, todos sus datos se perderan.\nEsta seguro de que desea continuar?") != JOptionPane.YES_OPTION)
-							return;
-						JFileChooser cargar = new JFileChooser();
-						cargar.setCurrentDirectory(new File("data"));
-						cargar.showOpenDialog(jFrame);
-						if(cargar.getSelectedFile() != null)
-						{
-							reiniciar();
-							mundo = FabricaHelpDesk.getInstance( ).fabricarImplementacion( );
-							cerrarSesion();
-							mundo.cargarListaEmpleados(cargar.getSelectedFile());
-						}
-					}
-					catch(Exception e1)
-					{
-						JOptionPane.showMessageDialog(jFrame, e1.getMessage());
-					}
-				}
-			});
+			menuCargar.addActionListener(this);
+			menuCargar.setActionCommand("cargar");
 			}
 			
 		return menuCargar;
@@ -293,16 +306,8 @@ public class AppletHelpDesk extends JApplet implements IInterfaz {
 		if (aboutMenuItem == null) {
 			aboutMenuItem = new JMenuItem();
 			aboutMenuItem.setText("Acerca de...");
-			aboutMenuItem.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					JDialog aboutDialog = getAboutDialog();
-					aboutDialog.pack();
-					Point loc = getJFrame().getLocation();
-					loc.translate(20, 20);
-					aboutDialog.setLocation(loc);
-					aboutDialog.setVisible(true);
-				}
-			});
+			aboutMenuItem.addActionListener(this);
+			aboutMenuItem.setActionCommand("acercaDe");
 		}
 		return aboutMenuItem;
 	}
@@ -354,17 +359,14 @@ public class AppletHelpDesk extends JApplet implements IInterfaz {
 	 * 	
 	 * @return javax.swing.JMenuItem	
 	 */
-	private JMenuItem getSaveMenuItem() {
+	private JMenuItem getLogoutMenuItem() {
 		if (iniciarSesionMenuItem == null) {
 			iniciarSesionMenuItem = new JMenuItem();
 			iniciarSesionMenuItem.setText("Cerrar Sesion");
 			iniciarSesionMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X,
 					Event.CTRL_MASK, true));
-			iniciarSesionMenuItem.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					cerrarSesion();
-				}
-			});
+			iniciarSesionMenuItem.addActionListener(this);
+			iniciarSesionMenuItem.setActionCommand("cerrar");
 		}
 		return iniciarSesionMenuItem;
 	}
@@ -443,36 +445,37 @@ public class AppletHelpDesk extends JApplet implements IInterfaz {
 		
 		if( IUsuario.NOMBRE_ADMIN.equals(nombre) )
 		{
-			jFrame.setSize(800, 500);
+			setSize(1200, 500);
 			jContentPane.removeAll();
 			jContentPane.add( new PanelAdmin( this,mundo.darListaTicketsEntreFechas(new Date(), new Date()), mundo.darEmpleadosDelMes(),mundo.darListaPersonasAtendidas(), mundo.darListaIncidentes(true, new Date())), BorderLayout.CENTER);
 			jContentPane.add( new BarraEstado(this,mundo));
 			jContentPane.validate();
 			jContentPane.setBorder(null);
+			add(jContentPane);
+			setJMenuBar(getJJMenuBar());
 		}
 		else JOptionPane.showMessageDialog(jFrame, "Por favor no trate de violar nuestra \"seguridad\".");
-		jFrame.validate();
+		validate();
 	}
 
-	public void iniciarSesion(IUsuario usuario) {
-		
+	public void iniciarSesion(IUsuario usuario)
+	{
 		mundo.iniciarSesion(usuario);
 		
 		setSize(670, 500);
 		jContentPane.removeAll();
 		
 		if( usuario.esEmpleado() )
-		{
 			jContentPane.add( new PanelEmpleado(this,mundo.darListaTicketsUsuarioActual()) );
-		}
 		else
-		{
 			jContentPane.add(new PanelCliente(this,mundo.darListaTicketsUsuarioActual()));
-		}
 		jContentPane.add( new BarraEstado(this,mundo));
 		jContentPane.validate();
 		jContentPane.setBorder(null);	
 		validate();
+		setJMenuBar(getJJMenuBar());
+		add(jContentPane);
+
 	}
 
 	public void cerrarSesion() {
@@ -480,20 +483,18 @@ public class AppletHelpDesk extends JApplet implements IInterfaz {
 		mundo.iniciarSesion(null);
 		
 		jContentPane.removeAll();
-		jFrame.setSize(670, 500);
+		setSize(670, 500);
 		jContentPane.add( new PanelInicioSesion(this) );
 		jContentPane.validate();
 		jContentPane.setBorder(BorderFactory.createEmptyBorder(100,250,100,100));
-		jFrame.setTitle("HelpDesk" );	
-		jFrame.validate();
+		validate();
 	}
 	
 	public void crearCliente(String text) {
 		
 		JDialog dialogo = new DialogoClienteNuevo( this,text );
 		dialogo.setVisible(true);
-		dialogo.setLocationRelativeTo(jFrame);
-		setEnabled(false);
+		dialogo.setLocationRelativeTo(this);
 		validate();			
 	}
 
@@ -509,7 +510,7 @@ public class AppletHelpDesk extends JApplet implements IInterfaz {
 		try {
 			mundo.reapertura(ticketActual, empleado, comentario);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(jFrame, e.getMessage());
+			JOptionPane.showMessageDialog(this, e.getMessage());
 		}
 	}
 

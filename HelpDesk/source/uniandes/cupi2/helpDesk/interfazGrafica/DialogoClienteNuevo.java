@@ -52,7 +52,6 @@ public class DialogoClienteNuevo extends JDialog implements ActionListener {
 	public void actionPerformed(ActionEvent evento) {
 		if(evento.getActionCommand().equals("Aceptar"))
 			principal.iniciarSesion(principal.nuevoCliente(nombre, textoEmail.getText(), (String)listaTipo.getSelectedItem()));
-		principal.getJFrame().setEnabled(true);
 		dispose();
 	}
 

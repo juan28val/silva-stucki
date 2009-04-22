@@ -6,6 +6,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import uniandes.cupi2.collections.listaEncadenadaOrdenada.ListaEncadenadaOrdenada;
+import uniandes.cupi2.collections.listaEncadenadaOrdenada.NoExisteException;
 import uniandes.cupi2.collections.tablaHashing.tablaHashingDinamica.TablaHashingDinamica;
 import uniandes.cupi2.helpDesk.digiturno.Actividad;
 import uniandes.cupi2.helpDesk.interfazMundo.IActividad;
@@ -20,11 +21,14 @@ public class GrafoAciclico implements IGrafo {
 
 	private ListaEncadenadaOrdenada<Actividad> caminoPorTiempo;
 	
+	private String[] verticesCriticos;
+	
 	public GrafoAciclico()
 	{
 		tablaVertices = new TablaHashingDinamica<String, Actividad>();
 		listaVerticesSinPadre = new ArrayList<String>();
 		caminoPorTiempo = new ListaEncadenadaOrdenada<Actividad>();
+		verticesCriticos = new String[2];
 	}
 	
 	public void agregarVertice(Actividad actividad) throws Exception
@@ -34,6 +38,11 @@ public class GrafoAciclico implements IGrafo {
 			tablaVertices.agregar(actividad.darId(), actividad);
 			listaVerticesSinPadre.add(actividad.darId());
 			caminoPorTiempo.insertar(actividad);
+			if(verticesCriticos[0]==null)
+				verticesCriticos[0]=actividad.darId();
+			else if(verticesCriticos[1]==null)
+				verticesCriticos[1]=actividad.darId();
+			
 		}
 		else
 		{
@@ -59,8 +68,18 @@ public class GrafoAciclico implements IGrafo {
 	}
 
 	public IActividad[] darActividadesCriticas() {
-		// TODO Auto-generated method stub
-		return null;
+
+		IActividad[] actividades = new IActividad[2];
+		
+		if(verticesCriticos[1]!=null)
+		{
+			actividades[0] = tablaVertices.dar(verticesCriticos[0]).darNumeroVecesEjecutada()>tablaVertices.dar(verticesCriticos[1]).darNumeroVecesEjecutada()?tablaVertices.dar(verticesCriticos[0]):tablaVertices.dar(verticesCriticos[1]);
+			actividades[1] = tablaVertices.dar(verticesCriticos[0]).darNumeroVecesEjecutada()>tablaVertices.dar(verticesCriticos[1]).darNumeroVecesEjecutada()?tablaVertices.dar(verticesCriticos[1]):tablaVertices.dar(verticesCriticos[0]);		            
+		}
+		else if(verticesCriticos[0]!=null)
+			actividades[0] = tablaVertices.dar(verticesCriticos[0]);
+		
+		return actividades;
 	}
 
 	public IActividad darActividad(String nombre) {
@@ -89,7 +108,25 @@ public class GrafoAciclico implements IGrafo {
 
 	public void agregarDatoAActividad(String nombre, float tiempo)
 	{
-		tablaVertices.dar(nombre).agregarDato(tiempo);	
+		tablaVertices.dar(nombre).agregarDato(tiempo);
+		
+		try 
+		{
+			caminoPorTiempo.eliminar(tablaVertices.dar(nombre));
+			caminoPorTiempo.insertar(tablaVertices.dar(nombre));
+		} 
+		catch (NoExisteException e) {
+			
+			e.printStackTrace();
+		}
+		
+		if(tablaVertices.dar(verticesCriticos[0]).darNumeroVecesEjecutada()<tablaVertices.dar(nombre).darPromedioTiempo())
+		{
+			verticesCriticos[1] = verticesCriticos[0];
+			verticesCriticos[0] = nombre;
+		}
+		else if(tablaVertices.dar(verticesCriticos[1]).darNumeroVecesEjecutada()<tablaVertices.dar(nombre).darPromedioTiempo()) 
+			verticesCriticos[1] = nombre;
 	}
 	
 	public void guardar(Element elementoActividades, Document documento) {

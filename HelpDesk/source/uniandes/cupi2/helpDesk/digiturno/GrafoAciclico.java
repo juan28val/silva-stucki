@@ -6,7 +6,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import uniandes.cupi2.collections.listaEncadenadaOrdenada.ListaEncadenadaOrdenada;
-import uniandes.cupi2.collections.listaEncadenadaOrdenada.NoExisteException;
 import uniandes.cupi2.collections.tablaHashing.tablaHashingDinamica.TablaHashingDinamica;
 import uniandes.cupi2.helpDesk.digiturno.Actividad;
 import uniandes.cupi2.helpDesk.interfazMundo.IActividad;
@@ -120,16 +119,6 @@ public class GrafoAciclico implements IGrafo {
 	public void agregarDatoAActividad(String nombre, float tiempo)
 	{
 		tablaVertices.dar(nombre).agregarDato(tiempo);
-		
-		try 
-		{
-			caminoPorTiempo.eliminar(tablaVertices.dar(nombre));
-			caminoPorTiempo.insertar(tablaVertices.dar(nombre));
-		} 
-		catch (NoExisteException e) {
-			
-			e.printStackTrace();
-		}
 		
 		if(tablaVertices.dar(verticesCriticos[0]).darNumeroVecesEjecutada()<tablaVertices.dar(nombre).darNumeroVecesEjecutada())
 		{

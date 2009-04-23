@@ -391,7 +391,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	/**
 	 * pre: el usuario actual es un empleado
 	 */
-	public void atenderTicket(ITicket ticket) throws Exception {
+	public void atenderTicket(ITicket ticket) {
 		
 		Long inicio = new Date().getTime();
 		
@@ -578,8 +578,8 @@ public class HelpDesk extends Observable implements IHelpDesk {
    		entrada.close();
 	}
 	
-	public void reapertura(ITicket ticket, IUsuario empleado, String comentarioReapertura) throws Exception {
-		
+	public void reapertura(ITicket ticket, IUsuario empleado, String comentarioReapertura) throws Exception 
+	{
 		Long inicio = new Date().getTime();
 		((Ticket)ticket).cifrar(((Empleado)ticket.darEmpleado()).darClave());
 		((Ticket)ticket).cifrar(((Empleado)empleado).darClave());

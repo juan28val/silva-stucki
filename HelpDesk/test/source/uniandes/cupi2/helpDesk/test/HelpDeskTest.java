@@ -138,7 +138,6 @@ public class HelpDeskTest extends TestCase implements Observer
     		assertNotNull("El ticket no se reabre correctamente", nuevoTicket1.darFechaAtencion());
         	assertNull("El ticket no se reabre correctamente", nuevoTicket1.darFechaCierre());
 
-        	assertTrue("No se agrego el incidente", helpDesk.darListaIncidentes(true, new Date()).haySiguiente() );
         	assertTrue("Se agrego un algun incidente adicional", !helpDesk.darListaIncidentes(false, new Date()).haySiguiente() );
 
         	assertTrue("El numero de tickets cerrados no se inicio correcramente", helpDesk.darNumeroCerrados()==0 );

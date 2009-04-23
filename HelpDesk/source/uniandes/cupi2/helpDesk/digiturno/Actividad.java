@@ -63,7 +63,6 @@ public class Actividad extends Vertice<String> implements IActividad, Comparable
 	{
 		promedioTiempo = (promedioTiempo*numeroVecesEjecutada +tiempo)/(numeroVecesEjecutada+1);
 		numeroVecesEjecutada++;
-		
 	}
 
 	public float darTiempoPromedioEspera() {

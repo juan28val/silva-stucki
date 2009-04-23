@@ -133,8 +133,8 @@ public class PanelAdmin extends JPanel implements ActionListener, PropertyChange
 		}
 		panelTickets.remove(listaTickets);
 		JTree jArbol = new JTree(raizTickets);
-		ImageIcon leafIcon = new ImageIcon("./data/iconos/hoja.gif");
-		ImageIcon empleadoIcon = new ImageIcon("./data/iconos/empleado.gif");
+		ImageIcon leafIcon = new ImageIcon("../data/iconos/hoja.gif");
+		ImageIcon empleadoIcon = new ImageIcon("../data/iconos/empleado.gif");
 		if(leafIcon!=null)
 		{
 			DefaultTreeCellRenderer render = new DefaultTreeCellRenderer();

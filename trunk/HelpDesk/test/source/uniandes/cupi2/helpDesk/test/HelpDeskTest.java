@@ -116,14 +116,8 @@ public class HelpDeskTest extends TestCase implements Observer
     		assertNotNull("La nueva solicitud no se agrego", nuevoTicket1 );
     		assertNotNull("El nuevo ticket no se inicio correctamente.", nuevoTicket1.darFechaCreacion() );
     		
-    		try{
-    			helpDesk.atenderTicket(nuevoTicket1);
-    			fail("No intento enviar el email, puede se por en firewall.");
-    		}
-    		catch(Exception e)
-    		{
-    			//Tiene que pasar por aqui
-    		}
+    		helpDesk.atenderTicket(nuevoTicket1);
+    		
     		assertNotNull("El ticket no se atiende correctamente", nuevoTicket1.darFechaAtencion());
     		
     		try{
@@ -139,14 +133,8 @@ public class HelpDeskTest extends TestCase implements Observer
     	
     		assertTrue("No deberia haber incidentes", !helpDesk.darListaIncidentes(true, new Date()).haySiguiente() );
     		
-    		try{
-    			helpDesk.reapertura(nuevoTicket1, helpDesk.darUsuario( "Danilo", IUsuario.EMPLEADO_RECLAMO), "fue reabierto para el test");
-    			fail("No intento enviar el email");
-    		}
-    		catch(Exception e)
-			{
-				//Tiene que pasar por aqui
-			}
+   			helpDesk.reapertura(nuevoTicket1, helpDesk.darUsuario( "Danilo", IUsuario.EMPLEADO_RECLAMO), "fue reabierto para el test");
+
     		assertNotNull("El ticket no se reabre correctamente", nuevoTicket1.darFechaAtencion());
         	assertNull("El ticket no se reabre correctamente", nuevoTicket1.darFechaCierre());
 

@@ -18,13 +18,13 @@ public class Actividad extends Vertice<String> implements IActividad, Comparable
 
 	private boolean marcado;
 	
-	private float promedioTiempo;
+	private long promedioTiempo;
 	
 	private int numeroVecesEjecutada;
 
 	TablaHashingDinamica<String, Actividad> tablaActividades;
 	
-	public Actividad(String nombreActividad, float promedioTiempo, int numeroVecesEjecutada, TablaHashingDinamica<String, Actividad> tablaVertices)
+	public Actividad(String nombreActividad, long promedioTiempo, int numeroVecesEjecutada, TablaHashingDinamica<String, Actividad> tablaVertices)
 	{
 		hijos = new ArrayList<String>();
 		this.elem = nombreActividad;
@@ -49,7 +49,7 @@ public class Actividad extends Vertice<String> implements IActividad, Comparable
 		return promedioTiempo;
 	}
 	
-	public void guardar(Element elementoActividades, Document documento, TablaHashingDinamica<String, Actividad> tablaActividades)
+	public void guardar(Element elementoActividades, Document documento)
 	{
 		marcado = true;
 		
@@ -66,10 +66,11 @@ public class Actividad extends Vertice<String> implements IActividad, Comparable
 		}
 		
 		elementoActividades.appendChild(e);
+		
 		for(int i=0; i<hijos.size(); i++)
 		{
 			if(!tablaActividades.dar(hijos.get(i)).estaMarcado())
-				tablaActividades.dar(hijos.get(i)).guardar(elementoActividades, documento,tablaActividades);
+				tablaActividades.dar(hijos.get(i)).guardar(elementoActividades, documento);
 		}
 	}
 
@@ -79,7 +80,7 @@ public class Actividad extends Vertice<String> implements IActividad, Comparable
 
 	public void quitarMarcas(TablaHashingDinamica<String, Actividad> tablaActividades) {
 
-		marcado = true;
+		marcado = false;
 		
 		for(int i=0; i<hijos.size(); i++)
 		{
@@ -88,7 +89,7 @@ public class Actividad extends Vertice<String> implements IActividad, Comparable
 		}
 	}
 
-	public void agregarDato(float tiempo)
+	public void agregarDato(long tiempo)
 	{
 		promedioTiempo = (promedioTiempo*numeroVecesEjecutada +tiempo)/(numeroVecesEjecutada+1);
 		numeroVecesEjecutada++;

@@ -487,9 +487,10 @@ public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener
 		jContentPane.add( new BarraEstado(this,mundo));
 		jContentPane.validate();
 		jContentPane.setBorder(null);	
-		validate();
+		
 		setJMenuBar(getJJMenuBar());
 		add(jContentPane);
+		validate();
 
 	}
 

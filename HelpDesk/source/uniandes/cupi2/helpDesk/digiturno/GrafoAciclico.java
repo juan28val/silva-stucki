@@ -35,7 +35,7 @@ public class GrafoAciclico implements IGrafo {
 		agregarVertice(nombre, 0, 0);
 	}
 	
-	public void agregarVertice(String nombre, float promedioTiempo, int numeroVecesEjecutada) throws Exception
+	public void agregarVertice(String nombre, long promedioTiempo, int numeroVecesEjecutada) throws Exception
 	{
 		Actividad actividad = new Actividad(nombre, promedioTiempo, numeroVecesEjecutada, tablaVertices);
 		
@@ -116,7 +116,7 @@ public class GrafoAciclico implements IGrafo {
 		return new IteradorListaActividadesPorTiempo(caminoPorTiempo, this);
 	}
 
-	public void agregarDatoAActividad(String nombre, float tiempo)
+	public void agregarDatoAActividad(String nombre, long tiempo)
 	{
 		tablaVertices.dar(nombre).agregarDato(tiempo);
 		
@@ -133,7 +133,7 @@ public class GrafoAciclico implements IGrafo {
 		
 		for(int i=0;i<listaVerticesSinPadre.size();i++)
 		{
-			tablaVertices.dar(listaVerticesSinPadre.get(i)).guardar(elementoActividades, documento, tablaVertices);
+			tablaVertices.dar(listaVerticesSinPadre.get(i)).guardar(elementoActividades, documento);
 		}
 		quitarMarcas();
 	}

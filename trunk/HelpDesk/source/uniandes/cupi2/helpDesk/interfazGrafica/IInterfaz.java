@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.swing.JFrame;
 
+import uniandes.cupi2.helpDesk.interfazMundo.IGrafo;
 import uniandes.cupi2.helpDesk.interfazMundo.IIterador;
 import uniandes.cupi2.helpDesk.interfazMundo.ITicket;
 import uniandes.cupi2.helpDesk.interfazMundo.IUsuario;
@@ -51,5 +52,7 @@ public interface IInterfaz {
 	IIterador darEmpleados();
 
 	void nuevaSolicitud(int i, String text, boolean selected);
+
+	public IGrafo darDigiturno();
 
 }

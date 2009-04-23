@@ -25,6 +25,9 @@ import javax.swing.JMenu;
 import javax.swing.JFrame;
 import javax.swing.JDialog;
 
+import uniandes.cupi2.helpDesk.digiturno.GrafoAciclico;
+import uniandes.cupi2.helpDesk.interfazMundo.IActividad;
+import uniandes.cupi2.helpDesk.interfazMundo.IGrafo;
 import uniandes.cupi2.helpDesk.interfazMundo.IHelpDesk;
 import uniandes.cupi2.helpDesk.interfazMundo.IIterador;
 import uniandes.cupi2.helpDesk.interfazMundo.ITicket;
@@ -59,6 +62,20 @@ public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener
 	private JMenuItem prefijos;
 
 	private JMenuItem grafo;
+
+	private JMenuItem criticas;
+
+	private JMenuItem lentas;
+
+	private JMenuItem actividad;
+
+	private JMenuItem listaActividades;
+
+	private JMenuItem tiempoActividad;
+	
+	private DialogoGrafo dialogoGrafo;
+	
+	private GrafoAciclico digiturno;
 
 	
 	// ------------------------------------------
@@ -113,7 +130,47 @@ public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener
 			if(evento.getActionCommand().equals("cerrar"))
 				cerrarSesion();
 			if(evento.getActionCommand().equals("grafo"))
-				new DialogoGrafo().setVisible(true);
+				dialogoGrafo.setVisible(true);
+			if(evento.getActionCommand().equals("criticas"))
+			{
+				IActividad[] act = mundo.darDigiturno().darActividadesCriticas();
+				String lista = act[0].darNombre();
+				for(int i=1; i<act.length; i++)
+					lista += "\n" + act[i].darNombre();
+				JOptionPane.showMessageDialog(this, lista);
+			}
+			if(evento.getActionCommand().equals("lentas"))
+			{
+				IActividad[] act = mundo.darDigiturno().darActividadesMasLentas();
+				String lista = act[0].darNombre();
+				for(int i=1; i<act.length; i++)
+					lista += "\n" + act[i].darNombre();
+				JOptionPane.showMessageDialog(this, lista);
+			}
+			if(evento.getActionCommand().equals("actividad"))
+			{
+				String id = JOptionPane.showInputDialog(this, "Introduzca el nombre de la actividad: ");
+				IActividad act = mundo.darDigiturno().darActividad(id);
+				String respuesta = "Ejecuciones: " + act.darNumeroVecesEjecutada() + "\nTiempo promedio: " + 
+				act.darPromedioTiempo() ;
+				JOptionPane.showMessageDialog(this, respuesta);
+			}
+			if(evento.getActionCommand().equals("listaActividades"))
+			{
+				IIterador i = mundo.darDigiturno().darListaActividadesPorTiempo();
+				String lista = ((IActividad)i.darSiguiente()).darNombre();
+				while(i.haySiguiente())
+					lista += "\n" + ((IActividad) i.darSiguiente()).darNombre();
+				JOptionPane.showMessageDialog(this, lista);
+			}
+			if(evento.getActionCommand().equals("tiempoActividad"))
+			{
+				String id = JOptionPane.showInputDialog(this, "Introduzca el nombre de la actividad: ");
+				IActividad act = mundo.darDigiturno().darActividad(id);
+				String respuesta = "Tiempo promedio acumulado: " + act.darTiempoPromedioEspera();
+				JOptionPane.showMessageDialog(this, respuesta);
+			}
+				
 		}
 		catch(Exception e)
 		{
@@ -129,6 +186,8 @@ public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener
 		super.init();
 		escogerImplementacion( );
 		actualizar(new PanelInicioSesion(this));
+		digiturno = mundo.darDigiturno();
+		dialogoGrafo = new DialogoGrafo(this, digiturno);
 	}
 	
 	private void actualizar(JPanel panel) {
@@ -219,13 +278,67 @@ public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener
 			menuInfo.add(getAboutMenuItem());
 			menuInfo.add(getPrefijos());
 			menuInfo.add(getGrafo());
-			
+			menuInfo.add(getCriticas());
+			menuInfo.add(getLentas());
+			menuInfo.add(getActividad());
+			menuInfo.add(getListaActividades());
+			menuInfo.add(getTiempoActividad());
 		}
 		return menuInfo;
 	}
 
 
 
+	private JMenuItem getTiempoActividad() {
+		if(tiempoActividad == null)
+		{
+			tiempoActividad = new JMenuItem();
+			tiempoActividad.setText("Ver el tiempo promedio de una actividad...");
+			tiempoActividad.addActionListener(this);
+			tiempoActividad.setActionCommand("tiempoActividad");
+		}
+		return tiempoActividad;
+	}
+	private JMenuItem getListaActividades() {
+		if(listaActividades == null)
+		{
+			listaActividades = new JMenuItem();
+			listaActividades.setText("Ver lista de actividades...");
+			listaActividades.addActionListener(this);
+			listaActividades.setActionCommand("listaActividades");
+		}
+		return listaActividades;
+	}
+	private JMenuItem getActividad() {
+		if(actividad == null)
+		{
+			actividad = new JMenuItem();
+			actividad.setText("Estadisticas de una actividad...");
+			actividad.addActionListener(this);
+			actividad.setActionCommand("actividad");
+		}
+		return actividad;
+	}
+	private JMenuItem getLentas() {
+		if(lentas == null)
+		{
+			lentas = new JMenuItem();
+			lentas.setText("Ver actividades lentas...");
+			lentas.addActionListener(this);
+			lentas.setActionCommand("lentas");
+		}
+		return lentas;
+	}
+	private JMenuItem getCriticas() {
+		if(criticas == null)
+		{
+			criticas = new JMenuItem();
+			criticas.setText("Ver actividades criticas...");
+			criticas.addActionListener(this);
+			criticas.setActionCommand("criticas");
+		}
+		return criticas;
+	}
 	private JMenuItem getGrafo() {
 		if(grafo == null)
 		{
@@ -552,6 +665,9 @@ public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener
 
 	public IIterador darListaTickets() {
 		return mundo.darListaTicketsUsuarioActual();
+	}
+	public IGrafo darDigiturno() {
+		return mundo.darDigiturno();
 	}
 
 }

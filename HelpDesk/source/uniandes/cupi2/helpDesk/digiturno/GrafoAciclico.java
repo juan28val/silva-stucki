@@ -1,6 +1,7 @@
 package uniandes.cupi2.helpDesk.digiturno;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -12,7 +13,7 @@ import uniandes.cupi2.helpDesk.interfazMundo.IActividad;
 import uniandes.cupi2.helpDesk.interfazMundo.IGrafo;
 import uniandes.cupi2.helpDesk.interfazMundo.IIterador;
 
-public class GrafoAciclico implements IGrafo {
+public class GrafoAciclico extends Observable implements IGrafo {
 
 	private TablaHashingDinamica<String, Actividad> tablaVertices;
 	
@@ -127,6 +128,8 @@ public class GrafoAciclico implements IGrafo {
 		}
 		else if(tablaVertices.dar(verticesCriticos[1]).darNumeroVecesEjecutada()<tablaVertices.dar(nombre).darNumeroVecesEjecutada()) 
 			verticesCriticos[1] = nombre;
+		setChanged();
+		notifyObservers();
 	}
 	
 	public void guardar(Element elementoActividades, Document documento) {

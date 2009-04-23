@@ -31,6 +31,7 @@ import uniandes.cupi2.collections.trie.ElementoExisteException;
 import uniandes.cupi2.collections.trie.PalabraInvalidaException;
 import uniandes.cupi2.collections.trie.Trie;
 import uniandes.cupi2.helpDesk.digiturno.GrafoAciclico;
+import uniandes.cupi2.helpDesk.interfazMundo.IGrafo;
 import uniandes.cupi2.helpDesk.interfazMundo.IHelpDesk;
 import uniandes.cupi2.helpDesk.interfazMundo.IIterador;
 import uniandes.cupi2.helpDesk.interfazMundo.ITicket;
@@ -737,5 +738,10 @@ public class HelpDesk extends Observable implements IHelpDesk {
 
 	public IUsuario darUsuario(int llave) {
 		return tablaUsuarios.dar(llave);
+	}
+	
+	public GrafoAciclico darDigiturno()
+	{
+		return digiturno;
 	}
 }

@@ -25,5 +25,10 @@ public interface IActividad {
 	 * @return int: el tiempo promedio de ejecucion de la actividad  mas todas las que siguen.
 	 */
 	public float darTiempoPromedioEspera();
+	
+	/**
+	 * Retorna el nombre de la actividad.
+	 */
+	public String darNombre();
 
 }

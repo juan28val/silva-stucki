@@ -25,6 +25,7 @@ import javax.swing.JMenu;
 import javax.swing.JFrame;
 import javax.swing.JDialog;
 
+import uniandes.cupi2.helpDesk.interfazMundo.IGrafo;
 import uniandes.cupi2.helpDesk.interfazMundo.IHelpDesk;
 import uniandes.cupi2.helpDesk.interfazMundo.IIterador;
 import uniandes.cupi2.helpDesk.interfazMundo.ITicket;
@@ -537,6 +538,11 @@ public class InterfazHelpDesk implements IInterfaz {
 
 	public IIterador darListaTickets() {
 		return mundo.darListaTicketsUsuarioActual();
+	}
+
+	public IGrafo darDigiturno() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

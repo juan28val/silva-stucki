@@ -3,6 +3,8 @@ package uniandes.cupi2.helpDesk.interfazMundo;
 import java.io.File;
 import java.util.Date;
 
+import uniandes.cupi2.helpDesk.digiturno.GrafoAciclico;
+
 
 /**
  * Interfaz que expone los contratos funcionales de un intérprete del help desk
@@ -275,5 +277,7 @@ public interface IHelpDesk
 	 * @param file: el archivo donde se guardara la informacion
 	 */
 	public void guardar(String ruta) throws Exception;
+
+	public GrafoAciclico darDigiturno();
 
 }

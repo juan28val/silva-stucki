@@ -88,4 +88,9 @@ public class Actividad extends Vertice<String> implements IActividad, Comparable
 	public int compareTo(Actividad otro) {
 		return otro.darPromedioTiempo()>promedioTiempo?1:otro.darPromedioTiempo()>promedioTiempo?0:-1;
 	}
+	
+	public String darNombre()
+	{
+		return elem;
+	}
 }

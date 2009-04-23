@@ -128,6 +128,7 @@ public class GrafoAciclico extends Observable implements IGrafo {
 		}
 		else if(tablaVertices.dar(verticesCriticos[1]).darNumeroVecesEjecutada()<tablaVertices.dar(nombre).darNumeroVecesEjecutada()) 
 			verticesCriticos[1] = nombre;
+		System.out.print("grago notify\n");
 		setChanged();
 		notifyObservers();
 	}

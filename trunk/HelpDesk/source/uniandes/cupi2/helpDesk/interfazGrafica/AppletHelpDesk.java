@@ -25,7 +25,6 @@ import javax.swing.JMenu;
 import javax.swing.JFrame;
 import javax.swing.JDialog;
 
-import uniandes.cupi2.helpDesk.digiturno.GrafoAciclico;
 import uniandes.cupi2.helpDesk.interfazMundo.IActividad;
 import uniandes.cupi2.helpDesk.interfazMundo.IGrafo;
 import uniandes.cupi2.helpDesk.interfazMundo.IHelpDesk;
@@ -74,8 +73,6 @@ public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener
 	private JMenuItem tiempoActividad;
 	
 	private DialogoGrafo dialogoGrafo;
-	
-	private GrafoAciclico digiturno;
 
 	
 	// ------------------------------------------
@@ -117,6 +114,7 @@ public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener
 					cerrarSesion();
 					mundo.cargarListaEmpleados(cargar.getSelectedFile());
 				}
+				cerrarSesion();
 			}
 			if(evento.getActionCommand().equals("acercaDe"))
 			{
@@ -130,28 +128,30 @@ public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener
 			if(evento.getActionCommand().equals("cerrar"))
 				cerrarSesion();
 			if(evento.getActionCommand().equals("grafo"))
+			{
 				dialogoGrafo.setVisible(true);
+			}
 			if(evento.getActionCommand().equals("criticas"))
 			{
 				IActividad[] act = mundo.darDigiturno().darActividadesCriticas();
-				String lista = act[0].darNombre();
+				String lista = act[0].darNombre()+" - ejecutada "+act[0].darNumeroVecesEjecutada()+" veces.";
 				for(int i=1; i<act.length; i++)
-					lista += "\n" + act[i].darNombre();
+					lista += "\n" + act[i].darNombre()+" - ejecutada "+act[i].darNumeroVecesEjecutada()+" veces.";
 				JOptionPane.showMessageDialog(this, lista);
 			}
 			if(evento.getActionCommand().equals("lentas"))
 			{
 				IActividad[] act = mundo.darDigiturno().darActividadesMasLentas();
-				String lista = act[0].darNombre();
+				String lista = act[0].darNombre()+" - dura "+act[0].darPromedioTiempo()+" milisegundos en promedio.";
 				for(int i=1; i<act.length; i++)
-					lista += "\n" + act[i].darNombre();
+					lista += "\n" + act[i].darNombre()+" - dura "+act[i].darPromedioTiempo()+" milisegundos en promedio.";
 				JOptionPane.showMessageDialog(this, lista);
 			}
 			if(evento.getActionCommand().equals("actividad"))
 			{
 				String id = JOptionPane.showInputDialog(this, "Introduzca el nombre de la actividad: ");
 				IActividad act = mundo.darDigiturno().darActividad(id);
-				String respuesta = "Ejecuciones: " + act.darNumeroVecesEjecutada() + "\nTiempo promedio: " + 
+				String respuesta = act.darNombre()+"\n  Ejecuciones: " + act.darNumeroVecesEjecutada() + "\n  Tiempo promedio: " + 
 				act.darPromedioTiempo() ;
 				JOptionPane.showMessageDialog(this, respuesta);
 			}
@@ -167,7 +167,7 @@ public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener
 			{
 				String id = JOptionPane.showInputDialog(this, "Introduzca el nombre de la actividad: ");
 				IActividad act = mundo.darDigiturno().darActividad(id);
-				String respuesta = "Tiempo promedio acumulado: " + act.darTiempoPromedioEspera();
+				String respuesta = act.darNombre()+"\n  Tiempo promedio acumulado: " + act.darTiempoPromedioEspera();
 				JOptionPane.showMessageDialog(this, respuesta);
 			}
 				
@@ -186,8 +186,7 @@ public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener
 		super.init();
 		escogerImplementacion( );
 		actualizar(new PanelInicioSesion(this));
-		digiturno = mundo.darDigiturno();
-		dialogoGrafo = new DialogoGrafo(this, digiturno);
+		dialogoGrafo = new DialogoGrafo(this, mundo.darDigiturno());
 	}
 	
 	private void actualizar(JPanel panel) {

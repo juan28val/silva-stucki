@@ -25,6 +25,7 @@ import javax.swing.JMenu;
 import javax.swing.JFrame;
 import javax.swing.JDialog;
 
+import uniandes.cupi2.helpDesk.digiturno.GrafoAciclico;
 import uniandes.cupi2.helpDesk.interfazMundo.IActividad;
 import uniandes.cupi2.helpDesk.interfazMundo.IGrafo;
 import uniandes.cupi2.helpDesk.interfazMundo.IHelpDesk;
@@ -73,6 +74,8 @@ public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener
 	private JMenuItem tiempoActividad;
 	
 	private DialogoGrafo dialogoGrafo;
+
+	private GrafoAciclico digiturno;
 
 	
 	// ------------------------------------------
@@ -185,7 +188,8 @@ public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener
 		super.init();
 		escogerImplementacion( );
 		actualizar(new PanelInicioSesion(this));
-		dialogoGrafo = new DialogoGrafo(this, mundo.darDigiturno());
+		digiturno = mundo.darDigiturno();
+		dialogoGrafo = new DialogoGrafo(this,digiturno);
 	}
 	
 	private void actualizar(JPanel panel) {
@@ -509,6 +513,7 @@ public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener
 		{
 			JOptionPane.showMessageDialog(jFrame, "Ha ocurrido un error: " + e.getMessage());
 		}
+		dialogoGrafo.actualizar();
 	}
 
 	public IUsuario nuevoCliente(String nombre, String email, String tipo) {
@@ -537,7 +542,7 @@ public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(jFrame, "Ha ocurrido un error enviando el mensaje.");
 		}
-		
+		dialogoGrafo.actualizar();
 	}
 
 	public void cerrarTicket(ITicket ticketActual, String comentario) {
@@ -546,7 +551,7 @@ public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(jFrame, "Ha ocurrido un error enviando el mensaje.");
 		}
-		
+		dialogoGrafo.actualizar();
 	}
 	
     private void escogerImplementacion( )
@@ -639,6 +644,7 @@ public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, e.getMessage());
 		}
+		dialogoGrafo.actualizar();
 	}
 
 	public String descifrar(ITicket ticketActual) {

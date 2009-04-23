@@ -128,14 +128,14 @@ public class GrafoAciclico extends Observable implements IGrafo {
 			verticesCriticos[1] = verticesCriticos[0];
 			verticesCriticos[0] = nombre;
 		}
-		else if(tablaVertices.dar(verticesCriticos[1]).darNumeroVecesEjecutada()<tablaVertices.dar(nombre).darNumeroVecesEjecutada()) 
+		else if(tablaVertices.dar(verticesCriticos[1]).darNumeroVecesEjecutada()<tablaVertices.dar(nombre).darNumeroVecesEjecutada() && !tablaVertices.dar(verticesCriticos[0]).darNombre().equals(nombre)) 
 			verticesCriticos[1] = nombre;
 		
 		setChanged();
 		notifyObservers();
 	}
 	
-	private void actualizarCamino() {
+	public void actualizarCamino() {
 		ListaEncadenadaOrdenada<Actividad> temp = new ListaEncadenadaOrdenada<Actividad>();
 		IIterador it = darListaActividadesPorTiempo();
 		while(it.haySiguiente())

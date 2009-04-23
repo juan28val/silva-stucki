@@ -114,7 +114,7 @@ public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener
 					cerrarSesion();
 					mundo.cargarListaEmpleados(cargar.getSelectedFile());
 				}
-				cerrarSesion();
+				
 			}
 			if(evento.getActionCommand().equals("acercaDe"))
 			{
@@ -135,8 +135,7 @@ public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener
 			{
 				IActividad[] act = mundo.darDigiturno().darActividadesCriticas();
 				String lista = act[0].darNombre()+" - ejecutada "+act[0].darNumeroVecesEjecutada()+" veces.";
-				for(int i=1; i<act.length; i++)
-					lista += "\n" + act[i].darNombre()+" - ejecutada "+act[i].darNumeroVecesEjecutada()+" veces.";
+				lista += "\n" + act[1].darNombre()+" - ejecutada "+act[1].darNumeroVecesEjecutada()+" veces.";
 				JOptionPane.showMessageDialog(this, lista);
 			}
 			if(evento.getActionCommand().equals("lentas"))

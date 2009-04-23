@@ -48,7 +48,7 @@ public class GrafoAciclico extends Observable implements IGrafo {
 			
 			if(verticesCriticos[0]==null)
 				verticesCriticos[0]=actividad.darId();
-			else if(verticesCriticos[1]==null)
+			else if(verticesCriticos[1]==null && !verticesCriticos[0].equals(actividad.darId()) )
 				verticesCriticos[1]=actividad.darId();
 			else if(tablaVertices.dar(verticesCriticos[0]).darNumeroVecesEjecutada()<tablaVertices.dar(actividad.darId()).darNumeroVecesEjecutada())
 			{
@@ -121,18 +121,30 @@ public class GrafoAciclico extends Observable implements IGrafo {
 	{
 		tablaVertices.dar(nombre).agregarDato(tiempo);
 		
-		if(tablaVertices.dar(verticesCriticos[0]).darNumeroVecesEjecutada()<tablaVertices.dar(nombre).darNumeroVecesEjecutada())
+		actualizarCamino();
+		
+		if(tablaVertices.dar(verticesCriticos[0]).darNumeroVecesEjecutada()<tablaVertices.dar(nombre).darNumeroVecesEjecutada() && !tablaVertices.dar(verticesCriticos[0]).darNombre().equals(nombre))
 		{
 			verticesCriticos[1] = verticesCriticos[0];
 			verticesCriticos[0] = nombre;
 		}
 		else if(tablaVertices.dar(verticesCriticos[1]).darNumeroVecesEjecutada()<tablaVertices.dar(nombre).darNumeroVecesEjecutada()) 
 			verticesCriticos[1] = nombre;
-		System.out.print("grago notify\n");
+		
 		setChanged();
 		notifyObservers();
 	}
 	
+	private void actualizarCamino() {
+		ListaEncadenadaOrdenada<Actividad> temp = new ListaEncadenadaOrdenada<Actividad>();
+		IIterador it = darListaActividadesPorTiempo();
+		while(it.haySiguiente())
+		{
+			temp.insertar((Actividad)it.darSiguiente());
+		}
+		caminoPorTiempo = temp;		
+	}
+
 	public void guardar(Element elementoActividades, Document documento) {
 		
 		IIterador it = darListaActividadesPorTiempo();

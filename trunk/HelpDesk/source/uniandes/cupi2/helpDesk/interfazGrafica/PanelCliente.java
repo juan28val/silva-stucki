@@ -109,8 +109,8 @@ public class PanelCliente extends JPanel implements ActionListener, TreeSelectio
 		}
 		panelIzquierda.remove(listaTickets);
 		jArbol = new JTree(raizTickets);
-		ImageIcon leafIcon = new ImageIcon("./data/iconos/hoja.gif");
-		ImageIcon empleadoIcon = new ImageIcon("./data/iconos/empleado.gif");
+		ImageIcon leafIcon = new ImageIcon("../data/iconos/hoja.gif");
+		ImageIcon empleadoIcon = new ImageIcon("../data/iconos/empleado.gif");
 		if(leafIcon!=null)
 		{
 			DefaultTreeCellRenderer render = new DefaultTreeCellRenderer();

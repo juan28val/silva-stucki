@@ -30,7 +30,6 @@ import uniandes.cupi2.collections.tablaHashing.tablaHashingDinamica.TablaHashing
 import uniandes.cupi2.collections.trie.ElementoExisteException;
 import uniandes.cupi2.collections.trie.PalabraInvalidaException;
 import uniandes.cupi2.collections.trie.Trie;
-import uniandes.cupi2.helpDesk.digiturno.Actividad;
 import uniandes.cupi2.helpDesk.digiturno.GrafoAciclico;
 import uniandes.cupi2.helpDesk.interfazMundo.IHelpDesk;
 import uniandes.cupi2.helpDesk.interfazMundo.IIterador;
@@ -134,13 +133,13 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	{
 		try 
 		{
-			digiturno.agregarVertice(new Actividad(ACTIVIDAD_NUEVA_SOLICITUD));
-			digiturno.agregarVertice(new Actividad(ACTIVIDAD_CIFRAR));
-			digiturno.agregarVertice(new Actividad(ACTIVIDAD_ASIGNAR_TICKET));
-			digiturno.agregarVertice(new Actividad(ACTIVIDAD_ATENDER));
-			digiturno.agregarVertice(new Actividad(ACTIVIDAD_CERRAR));
-			digiturno.agregarVertice(new Actividad(ACTIVIDAD_NOTFICAR));
-			digiturno.agregarVertice(new Actividad(ACTIVIDAD_REABRIR));
+			digiturno.agregarVertice(ACTIVIDAD_NUEVA_SOLICITUD);
+			digiturno.agregarVertice(ACTIVIDAD_CIFRAR);
+			digiturno.agregarVertice(ACTIVIDAD_ASIGNAR_TICKET);
+			digiturno.agregarVertice(ACTIVIDAD_ATENDER);
+			digiturno.agregarVertice(ACTIVIDAD_CERRAR);
+			digiturno.agregarVertice(ACTIVIDAD_NOTFICAR);
+			digiturno.agregarVertice(ACTIVIDAD_REABRIR);
 
 			digiturno.agregarArco(ACTIVIDAD_NUEVA_SOLICITUD, ACTIVIDAD_ASIGNAR_TICKET );
 			digiturno.agregarArco(ACTIVIDAD_ASIGNAR_TICKET, ACTIVIDAD_ATENDER );
@@ -272,8 +271,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
  		for(int i=0; i<hijos.getLength(); i++)
  		{
  			Element hijo = (Element)hijos.item(i);
- 			Actividad actividad = new Actividad(hijo.getAttribute("nombre"),  Float.valueOf(hijo.getAttribute("promedioTiempo")), Integer.parseInt(hijo.getAttribute("numeroVecesEjecutada")));		
- 			digiturno.agregarVertice(actividad);
+ 			digiturno.agregarVertice(hijo.getAttribute("nombre"),  Float.valueOf(hijo.getAttribute("promedioTiempo")), Integer.parseInt(hijo.getAttribute("numeroVecesEjecutada")));
  			NodeList nietos = hijo.getChildNodes();
  	 		for(int j=0; j<nietos.getLength(); j++)
  	 		{

@@ -1,20 +1,13 @@
 package uniandes.cupi2.helpDesk.digiturno;
 
-import java.util.ArrayList;
-
 import uniandes.cupi2.collections.iterador.Iterador;
 import uniandes.cupi2.collections.listaEncadenadaOrdenada.ListaEncadenadaOrdenada;
-import uniandes.cupi2.collections.tablaHashing.tablaHashingDinamica.TablaHashingDinamica;
 import uniandes.cupi2.helpDesk.interfazMundo.IActividad;
 import uniandes.cupi2.helpDesk.interfazMundo.IIterador;
 
 public class IteradorListaActividadesPorTiempo implements IIterador {
 
 	private Iterador<Actividad> vertice;
-
-	public IteradorListaActividadesPorTiempo(TablaHashingDinamica<String, Actividad> tablaActividades, ArrayList<String> listaActividadesSinPadre, GrafoAciclico grafo) {
-
-	}
 
 	public IteradorListaActividadesPorTiempo(ListaEncadenadaOrdenada<Actividad> listaVertices, GrafoAciclico grafo) {
 		vertice = listaVertices.darIterador();

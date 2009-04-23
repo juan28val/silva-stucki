@@ -114,10 +114,15 @@ public class Actividad extends Vertice<String> implements IActividad, Comparable
 			numVecesEjecutado += tablaActividades.dar(hijos.get(i)).darNumeroVecesEjecutada();
 		}
 		
-		return promedioTiempo+promedio/numVecesEjecutado;
+		return numVecesEjecutado!=0 ? promedioTiempo+promedio/numVecesEjecutado : 0;
 	}
 
+	public boolean equals(Actividad otra)
+	{
+		return otra.darId().equals(elem);
+	}
+	
 	public int compareTo(Actividad otro) {
-		return otro.darPromedioTiempo()>promedioTiempo?-1:otro.darPromedioTiempo()>promedioTiempo?0:1;
+		return otro.darPromedioTiempo()>promedioTiempo?1:otro.darPromedioTiempo()>promedioTiempo?0:-1;
 	}
 }

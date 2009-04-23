@@ -38,11 +38,18 @@ public class GrafoAciclico implements IGrafo {
 			tablaVertices.agregar(actividad.darId(), actividad);
 			listaVerticesSinPadre.add(actividad.darId());
 			caminoPorTiempo.insertar(actividad);
+			
 			if(verticesCriticos[0]==null)
 				verticesCriticos[0]=actividad.darId();
 			else if(verticesCriticos[1]==null)
 				verticesCriticos[1]=actividad.darId();
-			
+			else if(tablaVertices.dar(verticesCriticos[0]).darNumeroVecesEjecutada()<tablaVertices.dar(actividad.darId()).darNumeroVecesEjecutada())
+			{
+				verticesCriticos[1] = verticesCriticos[0];
+				verticesCriticos[0] = actividad.darId();
+			}
+			else if(tablaVertices.dar(verticesCriticos[1]).darNumeroVecesEjecutada()<tablaVertices.dar(actividad.darId()).darNumeroVecesEjecutada()) 
+				verticesCriticos[1] = actividad.darId();
 		}
 		else
 		{
@@ -55,6 +62,7 @@ public class GrafoAciclico implements IGrafo {
 		if(tablaVertices.dar(nombrePadre)!=null)
 		{
 			tablaVertices.dar(nombrePadre).agregarHijo(nombreHijo);
+			
 			for(int i=0;i<listaVerticesSinPadre.size();i++)
 			{
 				if( listaVerticesSinPadre.get(i).equals(nombreHijo) )
@@ -101,9 +109,20 @@ public class GrafoAciclico implements IGrafo {
 	public IIterador darListaActividadesPorTiempo() {
 		return new IteradorListaActividadesPorTiempo(caminoPorTiempo, this);
 	}
-	
-	public float darTiempoPromedioEspera(String nombre) {
-		return tablaVertices.dar(nombre).darTiempoPromedioEspera(tablaVertices);
+
+	public float darTiempoPromedioEspera() {
+		float promedio = 0;
+		int numVecesEjecutado = 0;
+		
+		for(int i=0;i<listaVerticesSinPadre.size();i++)
+		{
+			Actividad actual = tablaVertices.dar(listaVerticesSinPadre.get(i));
+			
+			promedio += actual.darTiempoPromedioEspera(tablaVertices)*actual.darNumeroVecesEjecutada();
+			numVecesEjecutado += actual.darNumeroVecesEjecutada();
+		}
+		
+		return numVecesEjecutado!=0 ? promedio/numVecesEjecutado : 0;
 	}
 
 	public void agregarDatoAActividad(String nombre, float tiempo)
@@ -120,12 +139,12 @@ public class GrafoAciclico implements IGrafo {
 			e.printStackTrace();
 		}
 		
-		if(tablaVertices.dar(verticesCriticos[0]).darNumeroVecesEjecutada()<tablaVertices.dar(nombre).darPromedioTiempo())
+		if(tablaVertices.dar(verticesCriticos[0]).darNumeroVecesEjecutada()<tablaVertices.dar(nombre).darNumeroVecesEjecutada())
 		{
 			verticesCriticos[1] = verticesCriticos[0];
 			verticesCriticos[0] = nombre;
 		}
-		else if(tablaVertices.dar(verticesCriticos[1]).darNumeroVecesEjecutada()<tablaVertices.dar(nombre).darPromedioTiempo()) 
+		else if(tablaVertices.dar(verticesCriticos[1]).darNumeroVecesEjecutada()<tablaVertices.dar(nombre).darNumeroVecesEjecutada()) 
 			verticesCriticos[1] = nombre;
 	}
 	

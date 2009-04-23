@@ -15,8 +15,6 @@ public class Actividad extends Vertice<String> implements IActividad, Comparable
 	 * 
 	 */
 	private static final long serialVersionUID = 364546531L;
-
-	private boolean marcado;
 	
 	private long promedioTiempo;
 	
@@ -31,12 +29,6 @@ public class Actividad extends Vertice<String> implements IActividad, Comparable
 		this.promedioTiempo = promedioTiempo;
 		this.numeroVecesEjecutada = numeroVecesEjecutada;
 		this.tablaActividades = tablaVertices;
-		marcado = false;
-	}
-
-	public void marcar(boolean marcado)
-	{
-		this.marcado = marcado;
 	}
 	
 	public int darNumeroVecesEjecutada()
@@ -51,7 +43,6 @@ public class Actividad extends Vertice<String> implements IActividad, Comparable
 	
 	public void guardar(Element elementoActividades, Document documento)
 	{
-		marcado = true;
 		
 		Element e = documento.createElement("actividad");
 		e.setAttribute("nombre", String.valueOf(elem));
@@ -66,27 +57,6 @@ public class Actividad extends Vertice<String> implements IActividad, Comparable
 		}
 		
 		elementoActividades.appendChild(e);
-		
-		for(int i=0; i<hijos.size(); i++)
-		{
-			if(!tablaActividades.dar(hijos.get(i)).estaMarcado())
-				tablaActividades.dar(hijos.get(i)).guardar(elementoActividades, documento);
-		}
-	}
-
-	private boolean estaMarcado() {
-		return marcado;
-	}
-
-	public void quitarMarcas(TablaHashingDinamica<String, Actividad> tablaActividades) {
-
-		marcado = false;
-		
-		for(int i=0; i<hijos.size(); i++)
-		{
-			tablaActividades.dar(hijos.get(i)).quitarMarcas(tablaActividades);
-	
-		}
 	}
 
 	public void agregarDato(long tiempo)

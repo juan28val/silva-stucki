@@ -131,17 +131,10 @@ public class GrafoAciclico implements IGrafo {
 	
 	public void guardar(Element elementoActividades, Document documento) {
 		
-		for(int i=0;i<listaVerticesSinPadre.size();i++)
+		IIterador it = darListaActividadesPorTiempo();
+		while(it.haySiguiente())
 		{
-			tablaVertices.dar(listaVerticesSinPadre.get(i)).guardar(elementoActividades, documento);
-		}
-		quitarMarcas();
-	}
-
-	private void quitarMarcas() {
-		for(int i=0;i<listaVerticesSinPadre.size();i++)
-		{
-			tablaVertices.dar(listaVerticesSinPadre.get(i)).quitarMarcas(tablaVertices);
+			((Actividad)it.darSiguiente()).guardar(elementoActividades, documento);
 		}
 	}
 }

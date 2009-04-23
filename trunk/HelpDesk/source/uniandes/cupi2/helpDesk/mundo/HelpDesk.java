@@ -271,7 +271,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
  		for(int i=0; i<hijos.getLength(); i++)
  		{
  			Element hijo = (Element)hijos.item(i);
- 			digiturno.agregarVertice(hijo.getAttribute("nombre"),  Float.valueOf(hijo.getAttribute("promedioTiempo")), Integer.parseInt(hijo.getAttribute("numeroVecesEjecutada")));
+ 			digiturno.agregarVertice(hijo.getAttribute("nombre"),  Long.valueOf(hijo.getAttribute("promedioTiempo")), Integer.parseInt(hijo.getAttribute("numeroVecesEjecutada")));
  			NodeList nietos = hijo.getChildNodes();
  	 		for(int j=0; j<nietos.getLength(); j++)
  	 		{
@@ -350,8 +350,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		((Cliente) usuarioActual).agregarTicket(ticket.darId());
 		tablaTickets.agregar(ticket.darId(), ticket);
 		cambiarNumeroTicketsSinAtender(numeroTicketsSinAtender+1);
-		
-		digiturno.agregarDatoAActividad(ACTIVIDAD_NUEVA_SOLICITUD, (new Date().getTime() - inicio)/1000);
+		digiturno.agregarDatoAActividad(ACTIVIDAD_NUEVA_SOLICITUD, new Date().getTime() - inicio);
 		
 		asignarTicket(ticket);
 	}
@@ -379,12 +378,12 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		ultimoEmpleado = encargado;
 		ticket.asignar(encargado);
 		
-		digiturno.agregarDatoAActividad(ACTIVIDAD_ASIGNAR_TICKET, (new Date().getTime() - inicio)/1000);
+		digiturno.agregarDatoAActividad(ACTIVIDAD_ASIGNAR_TICKET, new Date().getTime() - inicio);
 		inicio = new Date().getTime();
 		if(ticket.estaCifrado())
 		{
 			ticket.cifrar(encargado.darClave());
-			digiturno.agregarDatoAActividad(ACTIVIDAD_CIFRAR, (new Date().getTime() - inicio)/1000);
+			digiturno.agregarDatoAActividad(ACTIVIDAD_CIFRAR, new Date().getTime() - inicio);
 		}
 	}
 
@@ -411,7 +410,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		}
 		((Ticket)ticket).darCliente().cambiarFechaAtencion(ticket.darFechaAtencion());
 		
-		digiturno.agregarDatoAActividad(ACTIVIDAD_ATENDER, ( (new Date().getTime() - inicio))/1000);	
+		digiturno.agregarDatoAActividad(ACTIVIDAD_ATENDER, new Date().getTime() - inicio);	
 	}
 
 	/**
@@ -438,13 +437,13 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		cambiarNumeroTicketesCerrados(numeroTicketsCerrados+1);
 		((Ticket)ticket).cerrar(comentario);
 		
-		digiturno.agregarDatoAActividad(ACTIVIDAD_CERRAR, ( new Date().getTime() - inicio )/1000);	
+		digiturno.agregarDatoAActividad(ACTIVIDAD_CERRAR, new Date().getTime() - inicio );	
 		
 		inicio = new Date().getTime();
 		
 		enviarEmail(ticket, ticket.darFechaAtencion().toString() + "\n\n\nEstimado " + ticket.darNombreCliente() + ":\n\nSu ticket ha sido cerrado por " + ticket.darNombreEmpleado()+", quien le remite estas humildes palabras: \n\n"+ticket.darComentarioEmpleado() + "\n\n\nGracias por preferirnos.\n\n\n\n\n\nCupi2HelpDesk");
 		
-		digiturno.agregarDatoAActividad(ACTIVIDAD_NOTFICAR, ( new Date().getTime() - inicio )/1000);	
+		digiturno.agregarDatoAActividad(ACTIVIDAD_NOTFICAR, new Date().getTime() - inicio );	
 	}
 
 	/**
@@ -533,11 +532,11 @@ public class HelpDesk extends Observable implements IHelpDesk {
         try
         {
             email.enviar( EMAIL_SERVIDOR, EMAIL_LOGIN, EMAIL_PASSWORD );
-    		digiturno.agregarDatoAActividad(ACTIVIDAD_NOTFICAR, (new Date().getTime() - inicio)/1000);
+    		digiturno.agregarDatoAActividad(ACTIVIDAD_NOTFICAR, new Date().getTime() - inicio);
         }
         catch( Exception e )
         {
-    		digiturno.agregarDatoAActividad(ACTIVIDAD_NOTFICAR, (new Date().getTime() - inicio)/1000);
+    		digiturno.agregarDatoAActividad(ACTIVIDAD_NOTFICAR, new Date().getTime() - inicio);
 
     		throw new Exception( "Error al enviar el mensaje a la cuenta de correo del cliente", e );
         }
@@ -583,7 +582,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		Long inicio = new Date().getTime();
 		((Ticket)ticket).cifrar(((Empleado)ticket.darEmpleado()).darClave());
 		((Ticket)ticket).cifrar(((Empleado)empleado).darClave());
-		digiturno.agregarDatoAActividad(ACTIVIDAD_CIFRAR, (new Date().getTime()-inicio)/1000);
+		digiturno.agregarDatoAActividad(ACTIVIDAD_CIFRAR, new Date().getTime()-inicio);
 		
 		inicio = new Date().getTime();
 		Incidente incidente = new Incidente(new Date(), (Empleado)empleado, ((Ticket)ticket).darCliente(), (Ticket)ticket, comentarioReapertura); 
@@ -600,7 +599,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		cambiarNumeroTicketesCerrados(numeroTicketsCerrados-1);
 		cambiarNumeroTicketsSinAtender(numeroTicketsSinAtender+1);
 	
-		digiturno.agregarDatoAActividad(ACTIVIDAD_REABRIR, (new Date().getTime() - inicio)/1000);		
+		digiturno.agregarDatoAActividad(ACTIVIDAD_REABRIR, new Date().getTime() - inicio);		
 	}
 	
 	public String darEmpleadoMenosIncidentes() {

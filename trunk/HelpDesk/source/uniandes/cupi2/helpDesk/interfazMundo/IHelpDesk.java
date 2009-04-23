@@ -13,19 +13,19 @@ public interface IHelpDesk
     // Constantes
     // -------------------------------------------------------------------
 	
-	static final String ACTIVIDAD_NUEVA_SOLICITUD = "Hacer solicitud nuevo ticket (cliente)";
+	static final String ACTIVIDAD_NUEVA_SOLICITUD = "Nueva solicitud (Cliente)";
 
-	static final String ACTIVIDAD_CIFRAR = "Cifrar solicitud segun empleado (sistema)";
+	static final String ACTIVIDAD_CIFRAR = "Cifrar ticket (Sistema)";
 
-	static final String ACTIVIDAD_ASIGNAR_TICKET = "Asignar ticket segun fila virtual (sistema)";
+	static final String ACTIVIDAD_ASIGNAR_TICKET = "Asignar ticket(Sistema)";
 
-	static final String ACTIVIDAD_ATENDER = "Atender solicitud (empleado)";
+	static final String ACTIVIDAD_ATENDER = "Atender ticket (Empleado)";
 
-	static final String ACTIVIDAD_CERRAR = "Cerrar ticket (empleado)";
+	static final String ACTIVIDAD_CERRAR = "Cerrar ticket (Empleado)";
 
-	static final String ACTIVIDAD_NOTFICAR = "Notificar al cliente (sistema)";
+	static final String ACTIVIDAD_NOTFICAR = "Notificar al cliente (Sistema)";
 
-	static final String ACTIVIDAD_REABRIR = "Reabrir ticket (cliente)";
+	static final String ACTIVIDAD_REABRIR = "Reabrir ticket (Cliente)";
 	
 	
     // -------------------------------------------------------------------

@@ -17,4 +17,13 @@ public interface IActividad {
 	 * @return int: el tiempo promedio de ejecucion de la actividad.
 	 */
 	public float darPromedioTiempo();
+	
+	/**
+	 * Da el tiempo promedio de ejecucion de la actividad mas todas las que siguen.
+	 * pre: (no hay precondiciones)
+	 * post: (no hay postcondiciones)
+	 * @return int: el tiempo promedio de ejecucion de la actividad  mas todas las que siguen.
+	 */
+	public float darTiempoPromedioEspera();
+
 }

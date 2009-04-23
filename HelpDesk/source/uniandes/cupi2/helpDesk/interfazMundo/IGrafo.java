@@ -33,5 +33,5 @@ public interface IGrafo {
 	 * post: (no hay postcondiciones)
 	 * @return IIterador: el iterador sobre las actividades. 
 	 */
-	public IIterador darListaActividadesPorTiempo();	
+	public IIterador darListaActividadesPorTiempo();
 }

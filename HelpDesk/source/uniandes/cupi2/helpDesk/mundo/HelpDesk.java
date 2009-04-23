@@ -441,9 +441,15 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		
 		inicio = new Date().getTime();
 		
-		enviarEmail(ticket, ticket.darFechaAtencion().toString() + "\n\n\nEstimado " + ticket.darNombreCliente() + ":\n\nSu ticket ha sido cerrado por " + ticket.darNombreEmpleado()+", quien le remite estas humildes palabras: \n\n"+ticket.darComentarioEmpleado() + "\n\n\nGracias por preferirnos.\n\n\n\n\n\nCupi2HelpDesk");
-		
-		digiturno.agregarDatoAActividad(ACTIVIDAD_NOTFICAR, new Date().getTime() - inicio );	
+		try
+		{
+			enviarEmail(ticket, ticket.darFechaAtencion().toString() + "\n\n\nEstimado " + ticket.darNombreCliente() + ":\n\nSu ticket ha sido cerrado por " + ticket.darNombreEmpleado()+", quien le remite estas humildes palabras: \n\n"+ticket.darComentarioEmpleado() + "\n\n\nGracias por preferirnos.\n\n\n\n\n\nCupi2HelpDesk");
+		}
+		catch( Exception e)
+		{
+			digiturno.agregarDatoAActividad(ACTIVIDAD_NOTFICAR, new Date().getTime() - inicio );	
+			throw new Exception(e.getMessage());
+		}
 	}
 
 	/**

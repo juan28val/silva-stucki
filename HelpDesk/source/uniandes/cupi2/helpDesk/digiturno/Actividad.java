@@ -22,24 +22,16 @@ public class Actividad extends Vertice<String> implements IActividad, Comparable
 	
 	private int numeroVecesEjecutada;
 
+	TablaHashingDinamica<String, Actividad> tablaActividades;
 	
-	
-	public Actividad(String nombreActividad, float promedioTiempo, int numeroVecesEjecutada)
+	public Actividad(String nombreActividad, float promedioTiempo, int numeroVecesEjecutada, TablaHashingDinamica<String, Actividad> tablaVertices)
 	{
 		hijos = new ArrayList<String>();
 		this.elem = nombreActividad;
 		this.promedioTiempo = promedioTiempo;
-		this.numeroVecesEjecutada = numeroVecesEjecutada;		
+		this.numeroVecesEjecutada = numeroVecesEjecutada;
+		this.tablaActividades = tablaVertices;
 		marcado = false;
-	}
-	
-	public Actividad(String nombreActividad) 
-	{
-		hijos = new ArrayList<String>();
-		this.elem = nombreActividad;
-		promedioTiempo = 0;
-		numeroVecesEjecutada = 0;		
-		marcado = false;	
 	}
 
 	public void marcar(boolean marcado)
@@ -103,14 +95,14 @@ public class Actividad extends Vertice<String> implements IActividad, Comparable
 		
 	}
 
-	public float darTiempoPromedioEspera(TablaHashingDinamica<String, Actividad> tablaActividades) {
+	public float darTiempoPromedioEspera() {
 
 		float promedio = 0;
 		int numVecesEjecutado = 0;
 		
 		for(int i=0;i<hijos.size();i++)
 		{
-			promedio += tablaActividades.dar(hijos.get(i)).darTiempoPromedioEspera(tablaActividades)*tablaActividades.dar(hijos.get(i)).darNumeroVecesEjecutada();
+			promedio += tablaActividades.dar(hijos.get(i)).darTiempoPromedioEspera()*tablaActividades.dar(hijos.get(i)).darNumeroVecesEjecutada();
 			numVecesEjecutado += tablaActividades.dar(hijos.get(i)).darNumeroVecesEjecutada();
 		}
 		

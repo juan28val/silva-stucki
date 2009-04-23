@@ -1,5 +1,7 @@
 package uniandes.cupi2.helpDesk.interfazMundo;
 
+
+
 public interface IGrafo {
 
 	/**

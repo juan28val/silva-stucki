@@ -12,6 +12,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import uniandes.cupi2.helpDesk.digiturno.GrafoAciclico;
 import uniandes.cupi2.helpDesk.interfazMundo.IActividad;
 import uniandes.cupi2.helpDesk.interfazMundo.IGrafo;
 import uniandes.cupi2.helpDesk.interfazMundo.IHelpDesk;
@@ -27,7 +28,7 @@ public class DialogoGrafo extends JDialog implements Observer {
 	/**
 	 * Serial Version UID
 	 */
-	private static final long serialVersionUID = -5257681133158714098L;
+	private static final long serialVersionUID = -5257681158714098L;
 	
 	/**
 	 * Panel principal
@@ -87,16 +88,16 @@ public class DialogoGrafo extends JDialog implements Observer {
 	/**
 	 * Constructor de la clase
 	 */
-	public DialogoGrafo(IInterfaz principal, Observable o)
+	public DialogoGrafo(IInterfaz principal, IGrafo grafo)
 	{
-		o.addObserver(this);
 		this.principal = principal;
 		setSize(960, 740);
 		setResizable(false);
-		
-		actualizar();
+		((GrafoAciclico)grafo).addObserver(this);	
+		inicializar();
 	}
-	public void actualizar()
+	
+	public void inicializar()
 	{
 		panel = new JPanel() {
 			private static final long serialVersionUID = 1L;
@@ -351,8 +352,54 @@ public class DialogoGrafo extends JDialog implements Observer {
 		repaint();
 	}
 
-	public void update(Observable o, Object nombre) {
-		removeAll();
+	public void actualizar()
+	{
+		IGrafo grafo = principal.darDigiturno();
+		IActividad act = grafo.darActividad(IHelpDesk.ACTIVIDAD_NUEVA_SOLICITUD);
+		if(act != null) {
+			nuevo1.setText("" + act.darNumeroVecesEjecutada());
+			nuevo2.setText("" + act.darPromedioTiempo());
+			nuevo3.setText("" + act.darTiempoPromedioEspera());
+		}
+		act = grafo.darActividad(IHelpDesk.ACTIVIDAD_CIFRAR);
+		if(act != null) {
+			cifrar1.setText("" + act.darNumeroVecesEjecutada());
+			cifrar2.setText("" + act.darPromedioTiempo());
+			cifrar3.setText("" + act.darTiempoPromedioEspera());
+		}
+		act = grafo.darActividad(IHelpDesk.ACTIVIDAD_ASIGNAR_TICKET);
+		if(act != null) {
+			asignar1.setText("" + act.darNumeroVecesEjecutada());
+			asignar2.setText("" + act.darPromedioTiempo());
+			asignar3.setText("" + act.darTiempoPromedioEspera());
+		}
+		act = grafo.darActividad(IHelpDesk.ACTIVIDAD_ATENDER);
+		if(act != null) {
+			atender1.setText("" + act.darNumeroVecesEjecutada());
+			atender2.setText("" + act.darPromedioTiempo());
+			atender3.setText("" + act.darTiempoPromedioEspera());
+		}
+		act = grafo.darActividad(IHelpDesk.ACTIVIDAD_CERRAR);
+		if(act != null) {
+			cerrar1.setText("" + act.darNumeroVecesEjecutada());
+			cerrar2.setText("" + act.darPromedioTiempo());
+			cerrar3.setText("" + act.darTiempoPromedioEspera());
+		}
+		act = grafo.darActividad(IHelpDesk.ACTIVIDAD_NOTFICAR);
+		if(act != null) {
+			notificar1.setText("" + act.darNumeroVecesEjecutada());
+			notificar2.setText("" + act.darPromedioTiempo());
+			notificar3.setText("" + act.darTiempoPromedioEspera());
+		}
+		act = grafo.darActividad(IHelpDesk.ACTIVIDAD_REABRIR);
+		if(act != null) {
+			reabrir1.setText("" + act.darNumeroVecesEjecutada());
+			reabrir2.setText("" + act.darPromedioTiempo());
+			reabrir3.setText("" + act.darTiempoPromedioEspera());
+		}
+	}
+
+	public void update(Observable arg0, Object arg1) {
 		actualizar();
 	}
 }

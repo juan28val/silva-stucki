@@ -21,9 +21,19 @@ public class Autenticador implements IAutenticador {
 		return instancia;
 	}
 	
-	public void agregarUsuario(String login, String password, String llave, int tipo)
+	/**
+	 * pre: el usuario no existe
+	 */
+	public void agregarUsuario(String login, String password, String llave, int tipo) throws Exception
 	{
-		
+		if( password==null )
+			throw new Exception("password invalido.");
+		else if( llave==null )
+			throw new Exception("llave invalida.");
+		else if( tipo!=TIPO_ADMINISTRADOR || tipo!=TIPO_CLIENTE || tipo!=TIPO_EMPLEADO )
+			throw new Exception("tipo invalido.");
+	
+		usuarios.put(login, new Usuario(login,password,llave,tipo));
 	}
 	
 	public boolean existeUsuario(String login)

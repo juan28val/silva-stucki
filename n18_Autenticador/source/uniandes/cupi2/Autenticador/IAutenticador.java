@@ -8,6 +8,7 @@ public interface IAutenticador {
 	
 	public static int TIPO_ADMINISTRADOR = 932;
 
+	
 	/**
 	 * 
 	 * @param login
@@ -18,4 +19,19 @@ public interface IAutenticador {
 	 */
 	public String validar(String login, String password, int tipo) throws Exception;
 	
+	/**
+	 * 
+	 * @param login
+	 * @param password
+	 * @param llave
+	 * @param tipo
+	 */
+	public void agregarUsuario(String login, String password, String llave, int tipo);
+	
+/**
+ * 
+ * @param login
+ * @return
+ */
+	public boolean existeUsuario(String login);
 }

@@ -25,8 +25,9 @@ public interface IAutenticador {
 	 * @param password
 	 * @param llave
 	 * @param tipo
+	 * @throws Exception
 	 */
-	public void agregarUsuario(String login, String password, String llave, int tipo);
+	public void agregarUsuario(String login, String password, String llave, int tipo) throws Exception;
 	
 /**
  * 

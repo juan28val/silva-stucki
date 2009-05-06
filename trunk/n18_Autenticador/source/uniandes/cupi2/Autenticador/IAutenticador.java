@@ -10,8 +10,12 @@ public interface IAutenticador {
 
 	/**
 	 * 
-	 * @return la llave del usuario.
+	 * @param login
+	 * @param password
+	 * @param tipo
+	 * @return la llave del usuario
+	 * @throws Exception
 	 */
-	public String validar();
+	public String validar(String login, String password, int tipo) throws Exception;
 	
 }

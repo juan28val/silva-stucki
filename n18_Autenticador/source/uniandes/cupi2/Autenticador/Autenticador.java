@@ -4,15 +4,28 @@ import java.util.HashMap;
 
 public class Autenticador implements IAutenticador {
 
+	/**
+	 * instancia de esta clase.
+	 */
 	private static Autenticador instancia = null;
 	
+	/**
+	 * tabla de Hashing con todos los usuarios con su login como llave
+	 */
 	private HashMap<String, Usuario> usuarios;
 	
+	/**
+	 * Constructor: inicializa el HashMap de usuarios
+	 */
 	private Autenticador()
 	{
 		usuarios = new HashMap<String, Usuario>();
 	}
 	
+	/**
+	 * Da la instancia (segun el formato de singleton)
+	 * @return instancia
+	 */
 	public static Autenticador getInstance()
 	{
 		if( instancia == null )
@@ -21,9 +34,6 @@ public class Autenticador implements IAutenticador {
 		return instancia;
 	}
 	
-	/**
-	 * pre: el usuario no existe
-	 */
 	public void agregarUsuario(String login, String password, String llave, int tipo) throws Exception
 	{
 		if( password==null )

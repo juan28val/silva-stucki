@@ -14,6 +14,8 @@ public class Cliente implements IUsuario {
 	
 	private int id;
 	private String nombre;
+	private String login;
+	private String password;
 	private int tipo;
 	private String email;
 	private ArrayList<Integer> listaTickets;
@@ -22,10 +24,12 @@ public class Cliente implements IUsuario {
 	private Cliente siguienteAtendido;
 	private Date fechaPrimeraAtencion;
 	
-	public Cliente(int id, String nombre, int tipo, String email, Cliente siguiente, Date fechaPrimeraAtencion)
+	public Cliente(int id, String nombre, String login, String password, int tipo, String email, Cliente siguiente, Date fechaPrimeraAtencion)
 	{
 		this.id = id;
 		this.nombre = nombre;
+		this.login = login;
+		this.password = password;
 		this.tipo = tipo;
 		this.email = email;
 		this.siguiente = siguiente;
@@ -135,6 +139,8 @@ public class Cliente implements IUsuario {
 		Element e = documento.createElement("cliente");
 		e.setAttribute("id", String.valueOf(id));
 		e.setAttribute("nombre", nombre);
+		e.setAttribute("login", login);
+		e.setAttribute("password", password);
 		e.setAttribute("tipo", String.valueOf(tipo));
 		e.setAttribute("email", email);
 		e.setAttribute("fechaAtencion", fechaPrimeraAtencion == null ? "" : String.valueOf(fechaPrimeraAtencion.getTime()));

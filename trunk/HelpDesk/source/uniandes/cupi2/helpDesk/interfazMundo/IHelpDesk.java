@@ -127,11 +127,13 @@ public interface IHelpDesk
 	 * pre: tal cliente no existe
 	 * post: se creo el cliente y es retornado
 	 * @param nombre: el nombre del cliente
+	 * @param login: el login del cliente
+	 * @param password: el password del cliente
 	 * @param tipoCliente: el tipo del cliente
 	 * @param email: el email del cliente
 	 * @return IUsuario el usuario que se acaba de crear
 	 */
-	public IUsuario crearCliente(String nombre, int tipoCliente, String email);
+	public IUsuario crearCliente(String nombre, String login, String password, int tipoCliente, String email);
 	
 	/**
 	 * Da un iterador sobre todos los tickets ordenados por fecha de creacion, que 

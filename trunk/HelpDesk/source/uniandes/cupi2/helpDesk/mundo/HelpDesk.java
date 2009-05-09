@@ -23,6 +23,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import uniandes.cupi2.Autenticador.Autenticador;
 import uniandes.cupi2.collections.arbol.arbol2_3.Arbol2_3;
 import uniandes.cupi2.collections.iterador.Iterador;
 import uniandes.cupi2.collections.lista.Lista;
@@ -91,6 +92,8 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	
 	private int numeroTicketsCerrados;
 	
+	private Autenticador autenticador;
+	
 	/**
 	 * Estructura Trie que permite referenciar los nombres en funcion de sus prefijos
 	 */
@@ -125,6 +128,14 @@ public class HelpDesk extends Observable implements IHelpDesk {
     		numeroTicketsCerrados = 0;
     		idTickets = 10000;
     		idUsuarios = 25000;
+    		autenticador = Autenticador.getInstance();
+    		
+    		try {
+				autenticador.agregarUsuario("e.silva82", "pass", "", Autenticador.TIPO_ADMINISTRADOR);
+				autenticador.agregarUsuario("n.stucki49", "pass", "", Autenticador.TIPO_ADMINISTRADOR);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
     		
     		inicializarDigiturno();
     }
@@ -161,6 +172,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		arbolIncidentes = new Arbol2_3<Incidente>();
 		prefijosEmpleados = new Trie<Empleado>();
 		digiturno = new GrafoAciclico();
+		autenticador = Autenticador.getInstance();
 		
 		BufferedReader lector = new BufferedReader(new FileReader(ruta));
 		String cadena;
@@ -194,8 +206,13 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		for(int i=0; i<hijos.getLength(); i++)
 		{
 			Element hijo = (Element)hijos.item(i);
-			Cliente cliente = new Cliente(Integer.parseInt(hijo.getAttribute("id")), hijo.getAttribute("nombre"), Integer.parseInt(hijo.getAttribute("tipo")), hijo.getAttribute("email"), primerCliente, hijo.getAttribute("fechaAtencion").equals("") ? null : new Date(Long.parseLong(hijo.getAttribute("fechaAtencion"))));
+			Cliente cliente = new Cliente(Integer.parseInt(hijo.getAttribute("id")), hijo.getAttribute("nombre"), hijo.getAttribute("login"), hijo.getAttribute("password"), Integer.parseInt(hijo.getAttribute("tipo")), hijo.getAttribute("email"), primerCliente, hijo.getAttribute("fechaAtencion").equals("") ? null : new Date(Long.parseLong(hijo.getAttribute("fechaAtencion"))));
 			tablaUsuarios.agregar(cliente.darId(), cliente);
+			try {
+				autenticador.agregarUsuario( hijo.getAttribute("login"),  hijo.getAttribute("password"), hijo.getAttribute("login"), Integer.parseInt(hijo.getAttribute("tipo")));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			primerCliente = cliente;
 			if(cliente.darFechaAtencion() != null)
 				if(primerClienteAtendido == null)
@@ -237,8 +254,13 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		for(int i=0; i<hijos.getLength(); i++)
 		{
 			Element hijo = (Element)hijos.item(i);
-			Empleado empleado = new Empleado(Integer.parseInt(hijo.getAttribute("id")), hijo.getAttribute("nombre"), primerEmpleado, Integer.parseInt(hijo.getAttribute("tipo")), Integer.parseInt(hijo.getAttribute("calificacion")), Byte.valueOf(hijo.getAttribute("clave")), Integer.parseInt(hijo.getAttribute("incidentes")));
+			Empleado empleado = new Empleado(Integer.parseInt(hijo.getAttribute("id")), hijo.getAttribute("nombre"), hijo.getAttribute("login"), hijo.getAttribute("password"), primerEmpleado, Integer.parseInt(hijo.getAttribute("tipo")), Integer.parseInt(hijo.getAttribute("calificacion")), Byte.valueOf(hijo.getAttribute("clave")), Integer.parseInt(hijo.getAttribute("incidentes")));
 			tablaUsuarios.agregar(empleado.darId(), empleado);
+			try {
+				autenticador.agregarUsuario( hijo.getAttribute("login"),  hijo.getAttribute("password"), hijo.getAttribute("login"), Integer.parseInt(hijo.getAttribute("tipo")));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			empleado.cambiarSiguienteDelMes(primerEmpleado);
 			if(primerEmpleado!=null)
 				primerEmpleado.cambiarAnteriorDelMes(empleado);
@@ -455,9 +477,9 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	/**
 	 * pre: el nombre del cliente no existe
 	 */
-	public IUsuario crearCliente(String nombreCliente, int tipoCliente, String email) {
+	public IUsuario crearCliente(String nombreCliente, String loginCliente, String passwordCliente, int tipoCliente, String email) {
 		idUsuarios++;
-		Cliente cliente = new Cliente(idUsuarios, nombreCliente, tipoCliente, email, primerCliente, null);
+		Cliente cliente = new Cliente(idUsuarios, nombreCliente, loginCliente, passwordCliente, tipoCliente, email, primerCliente, null);
 		tablaUsuarios.agregar(idUsuarios, cliente);
 		primerCliente = cliente;
 		
@@ -562,7 +584,8 @@ public class HelpDesk extends Observable implements IHelpDesk {
    		if(tamano > 0)
    		{
    			idUsuarios++;
-   			primerEmpleado = new Empleado(idUsuarios, lista.getProperty("Empleado0.nombre"), null, (lista.getProperty("Empleado0.tipo").equals("queja") ? IUsuario.EMPLEADO_QUEJA : (lista.getProperty("Empleado0.tipo").equals("reclamo") ? IUsuario.EMPLEADO_RECLAMO : IUsuario.EMPLEADO_SOLICITUD)), 0, (byte) (Math.random()*254+1), 0);
+   			primerEmpleado = new Empleado(idUsuarios, lista.getProperty("Empleado0.nombre"), lista.getProperty("Empleado0.login"),lista.getProperty("Empleado0.password"), null, (lista.getProperty("Empleado0.tipo").equals("queja") ? IUsuario.EMPLEADO_QUEJA : (lista.getProperty("Empleado0.tipo").equals("reclamo") ? IUsuario.EMPLEADO_RECLAMO : IUsuario.EMPLEADO_SOLICITUD)), 0, (byte) (Math.random()*254+1), 0);
+   			autenticador.agregarUsuario(lista.getProperty("Empleado0.login"), lista.getProperty("Empleado0.password"), lista.getProperty("Empleado0.nombre"), Autenticador.TIPO_EMPLEADO);
    			empleadoDelMes = primerEmpleado;
    			ultimoEmpleado = primerEmpleado;
    			prefijosEmpleados.insertar(primerEmpleado);
@@ -572,7 +595,8 @@ public class HelpDesk extends Observable implements IHelpDesk {
    			for(int i=1; i<tamano; i++)
    			{
    				idUsuarios++;
-   				Empleado empleado = new Empleado(idUsuarios, lista.getProperty("Empleado" + i + ".nombre"), primerEmpleado, lista.getProperty("Empleado" + i + ".tipo").equals("queja") ? IUsuario.EMPLEADO_QUEJA : (lista.getProperty("Empleado" + i + ".tipo").equals("reclamo") ? IUsuario.EMPLEADO_RECLAMO : IUsuario.EMPLEADO_SOLICITUD), 0, (byte) (Math.random()*254+1), 0);
+   				Empleado empleado = new Empleado(idUsuarios, lista.getProperty("Empleado" + i + ".nombre"), lista.getProperty("Empleado" + i + ".login"), lista.getProperty("Empleado" + i + ".password"), primerEmpleado, lista.getProperty("Empleado" + i + ".tipo").equals("queja") ? IUsuario.EMPLEADO_QUEJA : (lista.getProperty("Empleado" + i + ".tipo").equals("reclamo") ? IUsuario.EMPLEADO_RECLAMO : IUsuario.EMPLEADO_SOLICITUD), 0, (byte) (Math.random()*254+1), 0);
+   				autenticador.agregarUsuario(lista.getProperty("Empleado" + i + ".login"), lista.getProperty("Empleado" + i + ".password"), lista.getProperty("Empleado" + i + ".nombre"), Autenticador.TIPO_EMPLEADO);
    				empleado.cambiarSiguienteDelMes(primerEmpleado);
    				primerEmpleado.cambiarAnteriorDelMes(empleado);
    				empleadoDelMes = empleado;

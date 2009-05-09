@@ -88,7 +88,7 @@ public abstract class ServletTemplate extends HttpServlet
         respuesta.write( "   <tr>\r\n" );
         respuesta.write( "       <td>\r\n" );
         respuesta.write( "       <p align=\"center\">\r\n" );
-        respuesta.write( "       <img border=\"0\" src=\"imagenes/titulo.jpg\" width=\"640\" height=\"100\"></td>\r\n" );
+        respuesta.write( "       <img border=\"0\" src=\"imagenes/logo.jpg\" width=\"640\" height=\"100\"></td>\r\n" );
         respuesta.write( "   </tr>\r\n" );
         respuesta.write( "   <tr>\r\n" );
         respuesta.write( "       <td>&nbsp;</td>\r\n" );
@@ -98,35 +98,13 @@ public abstract class ServletTemplate extends HttpServlet
         respuesta.write( "       <table border=\"1\" width=\"100%\" style=\"border-collapse: collapse\" bordercolor=\"#999999\" id=\"table2\">\r\n" );
         respuesta.write( "           <tr>\r\n" );
         respuesta.write( "               <td class=\"h2\" height=\"30\">\r\n" );
-        respuesta.write( "               <h1 align=\"center\">Tienda de Documentos en línea</td>\r\n" );
+        respuesta.write( "               <h1 align=\"center\">Help Desk en linea</td>\r\n" );
         respuesta.write( "           </tr>\r\n" );
         respuesta.write( "           <tr>\r\n" );
         respuesta.write( "               <td bgcolor=\"#000000\" height=\"3px\"></td>\r\n" );
         respuesta.write( "           </tr>\r\n" );
         respuesta.write( "           <tr>\r\n" );
-        respuesta.write( "               <td>\r\n" );
-        respuesta.write( "               <table border=\"0\" width=\"710\" id=\"table3\">\r\n" );
-        respuesta.write( "                   <tr>\r\n" );
-        respuesta.write( "                       <td width=\"696\" colspan=\"4\" bgcolor=\"#E2E2E2\">\r\n" );
-        respuesta.write( "                       <table border=\"0\" width=\"614\" id=\"table4\">\r\n" );
-        respuesta.write( "                           <tr>\r\n" );
-        respuesta.write( "                               <td width=\"19\">&nbsp;</td>\r\n" );
-        respuesta.write( "                               <td width=\"21\">\r\n" );
-        respuesta.write( "                               <img border=\"0\" src=\"imagenes/" + darImagenTitulo( request ) + "\" width=\"48\" height=\"48\"></td>\r\n" );
-        respuesta.write( "                               <td width=\"560\"><h2>" + darTituloPagina( request ) + "</td>\r\n" );
-        respuesta.write( "                           </tr>\r\n" );
-        respuesta.write( "                       </table>\r\n" );
-        respuesta.write( "                       </td>\r\n" );
-        respuesta.write( "                   </tr>\r\n" );
-        respuesta.write( "                   <tr>\r\n" );
-        respuesta.write( "                       <td width=\"42\">&nbsp;</td>\r\n" );
-        respuesta.write( "                       <td width=\"572\" colspan=\"2\">&nbsp;</td>\r\n" );
-        respuesta.write( "                       <td width=\"82\">&nbsp;</td>\r\n" );
-        respuesta.write( "                   </tr>\r\n" );
-        respuesta.write( "                   <tr>\r\n" );
-        respuesta.write( "                       <td width=\"42\">&nbsp;</td>\r\n" );
-        respuesta.write( "                       <td width=\"25\">&nbsp;</td>\r\n" );
-        respuesta.write( "                       <td width=\"543\">\r\n" );
+        respuesta.write( "               <td>\r\n" );    
     }
 
     /**
@@ -141,26 +119,16 @@ public abstract class ServletTemplate extends HttpServlet
         PrintWriter respuesta = response.getWriter( );
         //
         // Imprime el footer
-        respuesta.write( "                   </td>\r\n" );
-        respuesta.write( "                       <td width=\"82\">&nbsp;</td>\r\n" );
-        respuesta.write( "                   </tr>\r\n" );
-        respuesta.write( "                   <tr>\r\n" );
-        respuesta.write( "                       <td width=\"42\">&nbsp;</td>\r\n" );
-        respuesta.write( "                       <td width=\"25\">&nbsp;</td>\r\n" );
-        respuesta.write( "                       <td width=\"543\">&nbsp;</td>\r\n" );
-        respuesta.write( "                       <td width=\"82\">&nbsp;</td>\r\n" );
-        respuesta.write( "                   </tr>\r\n" );
-        respuesta.write( "               </table>\r\n" );
         respuesta.write( "               </td>\r\n" );
         respuesta.write( "           </tr>\r\n" );
         respuesta.write( "           <tr>\r\n" );
         respuesta.write( "               <td bgcolor=\"#000000\" height=\"2px\"></td>\r\n" );
         respuesta.write( "           </tr>\r\n" );
         respuesta.write( "           <tr>\r\n" );
-        respuesta.write( "               <td>&nbsp; Amazonas<br>\r\n" );
+        respuesta.write( "               <td>&nbsp; Proyecto CUPI2<br>\r\n" );
         respuesta.write( "               &nbsp;\r\n" );
-        respuesta.write( "               Tienda de Documentos en línea<br>\r\n" );
-        respuesta.write( "               <b>&nbsp; 2006</b></td>\r\n" );
+        respuesta.write( "               Help Desk en línea<br>\r\n" );
+        respuesta.write( "               <b>&nbsp; 2009</b></td>\r\n" );
         respuesta.write( "           </tr>\r\n" );
         respuesta.write( "       </table>\r\n" );
         respuesta.write( "       </td>\r\n" );
@@ -232,13 +200,6 @@ public abstract class ServletTemplate extends HttpServlet
      * @return Título de la página para el Header
      */
     public abstract String darTituloPagina( HttpServletRequest request );
-
-    /**
-     * Devuelve el nombre de la imagen para el título de la página en el Header
-     * @param request Pedido del cliente
-     * @return Nombre de la imagen para el título de la página en el Header
-     */
-    public abstract String darImagenTitulo( HttpServletRequest request );
 
     /**
      * Escribe el contenido de la página

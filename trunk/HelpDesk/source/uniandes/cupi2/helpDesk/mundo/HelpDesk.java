@@ -216,7 +216,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 			Cliente cliente = new Cliente(Integer.parseInt(hijo.getAttribute("id")), hijo.getAttribute("nombre"), hijo.getAttribute("login"), hijo.getAttribute("password"), Integer.parseInt(hijo.getAttribute("tipo")), hijo.getAttribute("email"), primerCliente, hijo.getAttribute("fechaAtencion").equals("") ? null : new Date(Long.parseLong(hijo.getAttribute("fechaAtencion"))));
 			tablaUsuarios.agregar(cliente.darId(), cliente);
 			try {
-				autenticador.agregarUsuario( hijo.getAttribute("login"),  hijo.getAttribute("password"), hijo.getAttribute("login"), Integer.parseInt(hijo.getAttribute("tipo")));
+				autenticador.agregarUsuario( hijo.getAttribute("login"),  hijo.getAttribute("password"), Integer.parseInt(hijo.getAttribute("login")), Integer.parseInt(hijo.getAttribute("tipo")));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

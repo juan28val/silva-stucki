@@ -16,7 +16,7 @@ public class Usuario {
 	/**
 	 * llave del usuario
 	 */
-	private String llave;
+	int llave;
 	
 	/**
 	 * tipo del usuario
@@ -30,7 +30,7 @@ public class Usuario {
 	 * @param llave llave del nuevon usuario
 	 * @param tipo tipo del nuevo usuario
 	 */
-	public Usuario(String login, String password, String llave, int tipo)
+	public Usuario(String login, String password, int llave, int tipo)
 	{
 		this.login = login;
 		this.password = password;
@@ -45,7 +45,7 @@ public class Usuario {
 	 * @return la llave del usuario
 	 * @throws Exception si no se valida
 	 */
-	public String validar(String password, int tipo) throws Exception
+	public int validar(String password, int tipo) throws Exception
 	{
 		if( !this.password.equals(password) || this.tipo!=tipo )
 			throw new Exception("password o tipo incorrecto.");

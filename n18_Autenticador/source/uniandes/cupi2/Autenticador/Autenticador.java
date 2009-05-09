@@ -34,12 +34,10 @@ public class Autenticador implements IAutenticador {
 		return instancia;
 	}
 	
-	public void agregarUsuario(String login, String password, String llave, int tipo) throws Exception
+	public void agregarUsuario(String login, String password, int llave, int tipo) throws Exception
 	{
 		if( password==null )
 			throw new Exception("password invalido.");
-		else if( llave==null )
-			throw new Exception("llave invalida.");
 		else if( tipo!=TIPO_ADMINISTRADOR || tipo!=TIPO_CLIENTE || tipo!=TIPO_EMPLEADO )
 			throw new Exception("tipo invalido.");
 	
@@ -51,7 +49,7 @@ public class Autenticador implements IAutenticador {
 		return usuarios.get(login)==null?false:true;
 	}
 	
-	public String validar(String login, String password, int tipo) throws Exception {
+	public int validar(String login, String password, int tipo) throws Exception {
 		if(usuarios.get(login)==null)
 			throw new Exception("usuario no existe.");
 		

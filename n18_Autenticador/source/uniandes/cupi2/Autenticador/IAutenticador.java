@@ -26,7 +26,7 @@ public interface IAutenticador {
 	 * @return la llave del usuario
 	 * @throws Exception si no se valido el usuario
 	 */
-	public String validar(String login, String password, int tipo) throws Exception;
+	public int validar(String login, String password, int tipo) throws Exception;
 	
 	/**
 	 * Agrega un nuevo usuario al Autenticador.
@@ -37,7 +37,7 @@ public interface IAutenticador {
 	 * @param tipo tipo del nuevo usuario
 	 * @throws Exception si alguno de los parametros es invalido
 	 */
-	public void agregarUsuario(String login, String password, String llave, int tipo) throws Exception;
+	public void agregarUsuario(String login, String password, int llave, int tipo) throws Exception;
 	
 /**
  * Comprueba si un usuario ya existe.

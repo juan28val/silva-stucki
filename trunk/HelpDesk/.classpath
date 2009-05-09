@@ -11,5 +11,7 @@
 	<classpathentry kind="lib" path="lib/mail.jar"/>
 	<classpathentry kind="lib" path="lib/mailer.jar"/>
 	<classpathentry kind="lib" path="lib/autenticador.jar"/>
+	<classpathentry kind="lib" path="lib/javax.servlet.jar"/>
+	<classpathentry kind="lib" path="lib/jboss-system.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

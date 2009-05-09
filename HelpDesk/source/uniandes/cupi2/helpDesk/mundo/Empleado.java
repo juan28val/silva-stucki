@@ -13,6 +13,8 @@ public class Empleado implements IUsuario {
 	
 	private int id;
 	private String nombre;
+	private String login;
+	private String password;
 	private Empleado siguiente;
 	private Empleado anteriorDelMes;
 	private Empleado siguienteDelMes;
@@ -22,10 +24,12 @@ public class Empleado implements IUsuario {
 	private int incidentes;
 	private byte clave;
 
-	public Empleado(int id, String nombre, Empleado siguiente, int tipo, int sumaCalificacion, byte clave, int incidentes)
+	public Empleado(int id, String nombre, String login, String password, Empleado siguiente, int tipo, int sumaCalificacion, byte clave, int incidentes)
 	{
 		this.id = id;
 		this.nombre = nombre;
+		this.login = login;
+		this.password = password;
 		this.siguiente = siguiente;
 		listaTickets = new ArrayList<Integer>();
 		this.tipo = tipo; 
@@ -232,6 +236,8 @@ public class Empleado implements IUsuario {
 		Element e = documento.createElement("empleado");
 		e.setAttribute("id", String.valueOf(id));
 		e.setAttribute("nombre", nombre);
+		e.setAttribute("login", login);
+		e.setAttribute("password", password);
 		e.setAttribute("clave", String.valueOf(clave));
 		e.setAttribute("tipo", String.valueOf(tipo));
 		e.setAttribute("calificacion", String.valueOf(sumaCalificacion));

@@ -48,9 +48,9 @@ public class HelpDeskTest extends TestCase implements Observer
     {
     	setupEscenario1();
     	
-    	helpDesk.crearCliente("Juan", 4, "email");
-    	helpDesk.crearCliente("John", 5, "email2");
-    	helpDesk.crearCliente("Judas", 6, "email3");
+    	helpDesk.crearCliente("Juan","","", 4, "email");
+    	helpDesk.crearCliente("John","","", 5, "email2");
+    	helpDesk.crearCliente("Judas","","", 6, "email3");
     }
 
     private void setupEscenario3( ) throws Exception
@@ -67,8 +67,8 @@ public class HelpDeskTest extends TestCase implements Observer
     {
         setupEscenario1( );
     
-        Cliente cliente = new Cliente(123, "Juan",1,"email@hotmail.com",null, null);
-        Cliente cliente2 = new Cliente(321, "Carlos",3,"email2",cliente, null);
+        Cliente cliente = new Cliente(123,"","", "Juan",1,"email@hotmail.com",null, null);
+        Cliente cliente2 = new Cliente(321,"","", "Carlos",3,"email2",cliente, null);
     	helpDesk.iniciarSesion(cliente);
 
         assertEquals("El cliente no se crea con el nombre correcto.", "Juan", cliente.darNombre());

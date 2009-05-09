@@ -780,6 +780,16 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	{
 		return digiturno;
 	}
+	
+	/**
+	 * Valida un nuevo usuario, haciendo un llamado al metodo validar del Autenticador
+	 * @return int llave, la llave del usuario si éste existe
+	 * @throws Exception, si no existe el usuario
+	 */
+	public int validar(String login, String password, int tipo)
+	{
+		autenticador.validar(login, password);
+	}
 
 	public static HelpDesk getInstance() {
 		if(instancia == null)

@@ -27,7 +27,7 @@ public class ServletLogin extends ServletTemplate
 	public void doPost(HttpServletRequest peticion, HttpServletResponse respuesta ) throws ServletException, IOException
 	{
 		HelpDesk mundo = HelpDesk.getInstance();
-		if(mundo.iniciarSesion(peticion.getParameter("login"))
+		if(mundo.validar(peticion.getParameter("login"), peticion.)
 	}	
 	
 

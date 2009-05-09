@@ -56,6 +56,9 @@ public class HelpDesk extends Observable implements IHelpDesk {
 
 	private static final String EMAIL_PASSWORD = "nicolas";
 
+	public static final String RUTA_ARCHIVO = "data/persistencia.xml";
+
+	private static final String RUTA_NOMINA = "data/nomina.properties";
 	
     //-----------------------------------------------------------------
     // Atributos
@@ -105,6 +108,10 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	
 	private GrafoAciclico digiturno;
 	
+	/**
+	 * Atributo que representa la instancia del mundo
+	 */
+	private static HelpDesk instancia;
 
     //-----------------------------------------------------------------
     // Constructores
@@ -772,5 +779,24 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	public GrafoAciclico darDigiturno()
 	{
 		return digiturno;
+	}
+
+	public static HelpDesk getInstance() {
+		if(instancia == null)
+		{
+			try {
+				instancia = new HelpDesk(RUTA_ARCHIVO);
+			}
+			catch(Exception e)
+			{
+				instancia = new HelpDesk();
+				try {
+					instancia.cargarListaEmpleados(new File(RUTA_NOMINA));
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+		return instancia;
 	}
 }

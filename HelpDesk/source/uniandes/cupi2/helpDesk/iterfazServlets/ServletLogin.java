@@ -26,12 +26,23 @@ public class ServletLogin extends ServletTemplate
 	 */
 	public void doPost(HttpServletRequest peticion, HttpServletResponse respuesta ) throws ServletException, IOException
 	{
+		respuesta.setContentType("text/html");
 		HelpDesk mundo = HelpDesk.getInstance();
-		if(mundo.validar(peticion.getParameter("login"), peticion.)
+		try {
+			int llave = mundo.validar(peticion.getParameter("login"), peticion.getParameter("password"), Integer.parseInt(peticion.getParameter("tipo")));
+		} catch (Exception e) {
+			paginaError(respuesta.getWriter(), e.getMessage());
+		}
 	}	
 	
+	
+    private void paginaError(PrintWriter out) {
+		// TODO Auto-generated method stub
+		
+	}
 
-    /**
+
+	/**
      * Devuelve el título de la página para el Header
      * @param request Pedido del cliente
      * @return Título de la página para el Header

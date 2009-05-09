@@ -138,8 +138,8 @@ public class HelpDesk extends Observable implements IHelpDesk {
     		autenticador = Autenticador.getInstance();
     		
     		try {
-				autenticador.agregarUsuario("e.silva82", "pass", "", Autenticador.TIPO_ADMINISTRADOR);
-				autenticador.agregarUsuario("n.stucki49", "pass", "", Autenticador.TIPO_ADMINISTRADOR);
+				autenticador.agregarUsuario("e.silva82", "pass", 1234567890, Autenticador.TIPO_ADMINISTRADOR);
+				autenticador.agregarUsuario("n.stucki49", "pass", 987654321, Autenticador.TIPO_ADMINISTRADOR);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -264,7 +264,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 			Empleado empleado = new Empleado(Integer.parseInt(hijo.getAttribute("id")), hijo.getAttribute("nombre"), hijo.getAttribute("login"), hijo.getAttribute("password"), primerEmpleado, Integer.parseInt(hijo.getAttribute("tipo")), Integer.parseInt(hijo.getAttribute("calificacion")), Byte.valueOf(hijo.getAttribute("clave")), Integer.parseInt(hijo.getAttribute("incidentes")));
 			tablaUsuarios.agregar(empleado.darId(), empleado);
 			try {
-				autenticador.agregarUsuario( hijo.getAttribute("login"),  hijo.getAttribute("password"), hijo.getAttribute("login"), Integer.parseInt(hijo.getAttribute("tipo")));
+				autenticador.agregarUsuario( hijo.getAttribute("login"),  hijo.getAttribute("password"), Integer.parseInt(hijo.getAttribute("id")), Integer.parseInt(hijo.getAttribute("tipo")));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -592,7 +592,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
    		{
    			idUsuarios++;
    			primerEmpleado = new Empleado(idUsuarios, lista.getProperty("Empleado0.nombre"), lista.getProperty("Empleado0.login"),lista.getProperty("Empleado0.password"), null, (lista.getProperty("Empleado0.tipo").equals("queja") ? IUsuario.EMPLEADO_QUEJA : (lista.getProperty("Empleado0.tipo").equals("reclamo") ? IUsuario.EMPLEADO_RECLAMO : IUsuario.EMPLEADO_SOLICITUD)), 0, (byte) (Math.random()*254+1), 0);
-   			autenticador.agregarUsuario(lista.getProperty("Empleado0.login"), lista.getProperty("Empleado0.password"), lista.getProperty("Empleado0.nombre"), Autenticador.TIPO_EMPLEADO);
+   			autenticador.agregarUsuario(lista.getProperty("Empleado0.login"), lista.getProperty("Empleado0.password"), Integer.parseInt(lista.getProperty("Empleado0.id")), Autenticador.TIPO_EMPLEADO);
    			empleadoDelMes = primerEmpleado;
    			ultimoEmpleado = primerEmpleado;
    			prefijosEmpleados.insertar(primerEmpleado);
@@ -603,7 +603,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
    			{
    				idUsuarios++;
    				Empleado empleado = new Empleado(idUsuarios, lista.getProperty("Empleado" + i + ".nombre"), lista.getProperty("Empleado" + i + ".login"), lista.getProperty("Empleado" + i + ".password"), primerEmpleado, lista.getProperty("Empleado" + i + ".tipo").equals("queja") ? IUsuario.EMPLEADO_QUEJA : (lista.getProperty("Empleado" + i + ".tipo").equals("reclamo") ? IUsuario.EMPLEADO_RECLAMO : IUsuario.EMPLEADO_SOLICITUD), 0, (byte) (Math.random()*254+1), 0);
-   				autenticador.agregarUsuario(lista.getProperty("Empleado" + i + ".login"), lista.getProperty("Empleado" + i + ".password"), lista.getProperty("Empleado" + i + ".nombre"), Autenticador.TIPO_EMPLEADO);
+   				autenticador.agregarUsuario(lista.getProperty("Empleado" + i + ".login"), lista.getProperty("Empleado" + i + ".password"), Integer.parseInt(lista.getProperty("Empleado" + i + ".id")), Autenticador.TIPO_EMPLEADO);
    				empleado.cambiarSiguienteDelMes(primerEmpleado);
    				primerEmpleado.cambiarAnteriorDelMes(empleado);
    				empleadoDelMes = empleado;
@@ -786,9 +786,20 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	 * @return int llave, la llave del usuario si éste existe
 	 * @throws Exception, si no existe el usuario
 	 */
-	public int validar(String login, String password, int tipo)
+	public int validar(String login, String password, int tipo) throws Exception
 	{
-		autenticador.validar(login, password);
+		return autenticador.validar(login, password, modulacionDeTipo(tipo));
+	}
+	
+	/**
+	 * Cambia el tipo de usuario para que pueda ser usado por el autenticador
+	 * @return el tipo de autenticador
+	 */
+	public int modulacionDeTipo(int tipo)
+	{
+		return tipo == 1 ? Autenticador.TIPO_CLIENTE :
+				tipo == 2 ? Autenticador.TIPO_EMPLEADO :
+				Autenticador.TIPO_ADMINISTRADOR;
 	}
 
 	public static HelpDesk getInstance() {

@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import uniandes.cupi2.helpDesk.mundo.*;
+import uniandes.cupi2.helpDesk.mundo.HelpDesk;
 
 /**
  * Servlet para el manejo 
@@ -26,7 +26,7 @@ public class ServletRegistrarCliente2 extends ServletTemplate
      */
     public String darTituloPagina( HttpServletRequest request )
     {
-        return "Registrar Cliente";
+        return "Registro Exitoso";
     }
 
     /**

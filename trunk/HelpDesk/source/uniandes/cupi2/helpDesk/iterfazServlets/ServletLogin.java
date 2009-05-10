@@ -21,13 +21,6 @@ public class ServletLogin extends ServletTemplate
     // Métodos
     // -----------------------------------------------------------------
 	
-	
-	
-
-    private void paginaError(PrintWriter respuesta, String mensaje) {
-		respuesta.write("<h1>Error</h1><br><br>Ha ocurrido un error: " + mensaje + "<br><br><form action='inicio.html'><input type=button text='Volver...'></form>");
-		
-	}
 
     private void paginaCliente(PrintWriter respuesta) 
     {
@@ -139,7 +132,7 @@ public class ServletLogin extends ServletTemplate
 		} 
 		catch (Exception e) {
 		
-			paginaError(respuesta, e.getMessage());
+			imprimirMensajeError(respuesta, e.getMessage());
 		}
     }
 }

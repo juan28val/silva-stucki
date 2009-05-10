@@ -825,4 +825,8 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		}
 		return instancia;
 	}
+
+	public boolean existeUsuario(String login) {
+		return autenticador.existeUsuario(login);
+	}
 }

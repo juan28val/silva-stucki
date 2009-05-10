@@ -13,7 +13,9 @@ import uniandes.cupi2.helpDesk.interfazMundo.IUsuario;
 import uniandes.cupi2.helpDesk.mundo.*;
 
 /**
- * Servlet para el manejo 
+ * Servlet para el inicio de sesion y el manejo de usuarios
+ * @author Nicolas Alexandre Stucki Borgeaud
+ * @author Chayanne Emilio Silva Schlenker
  */
 @SuppressWarnings("serial")
 public class ServletLogin extends ServletTemplate

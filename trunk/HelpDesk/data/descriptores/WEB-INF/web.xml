@@ -22,7 +22,7 @@
 
    <servlet>
       <servlet-name>Login</servlet-name>
-      <servlet-class>uniandes.cupi2.helpDesk.interfazServlets.ServletLogin</servlet-class>
+      <servlet-class>uniandes.cupi2.helpDesk.iterfazServlets.ServletLogin</servlet-class>
    </servlet>
    
    
@@ -40,7 +40,7 @@
    
    <servlet-mapping>
       <servlet-name>Login</servlet-name>
-      <url-pattern>/login</url-pattern>
+      <url-pattern>/login.htm</url-pattern>
    </servlet-mapping>
 
 </web-app>

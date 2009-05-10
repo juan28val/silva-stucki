@@ -3,8 +3,35 @@
 <head>
 <meta http-equiv="Content-Language" content="es-co">
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-<title>Calculadora Web - Principal</title>
+<title>Cupi2HelpDesk - Empleado</title>
 <link type="text/css" rel="stylesheet" href="../Workspace/n18_calculadoraWeb/data/html/style/calc.css">
+<script language="javascript" type="text/javascript">
+function seleccionar()
+{
+form = document.forms[0]
+
+if(form.tickets.options[form.tickets.selectedIndex].id == 0) {
+	form.info.disabled = false;
+	form.atender.disabled = false;
+	form.cerrar.disabled = true;
+	}
+else if(form.tickets.options[form.tickets.selectedIndex].id == 1) {
+	form.info.disabled = false;
+	form.atender.disabled = true;
+	form.cerrar.disabled = false;
+	}
+else if(form.tickets.options[form.tickets.selectedIndex].id == 2) {
+	form.info.disabled = false;
+	form.atender.disabled = true;
+	form.cerrar.disabled = true;
+	}
+else if(form.tickets.options[form.tickets.selectedIndex].id == -1) {
+	form.info.disabled = true;
+	form.atender.disabled = true;
+	form.cerrar.disabled = true;
+	}
+}
+</script>
 </head>
 
 <body>
@@ -20,14 +47,26 @@
 		</td>
 	</tr>
 	<tr>
-		<td width="261">
-			<select size=10><option value="0">______ * --- Lista de Tickets --- * ______</option></select>
+		<td colspan="2" align="center">
+			<h3>Empleado</h3>
 		</td>
-		<td width="443" align="center">
-			<form action="javascript:alert('hola');"><input type="button" value="Ver informacion asociada"></form>
-			<form action="javascript:alert('hola');"><input type="button" value="Atender ticket                 "></form>
-			<form action="javascript:alert('hola');"><input type="button" value="Cerrar ticket                    "></form>
+	</tr>
+	<tr>
+	<form method="post" action="">
+		<td width="50%">
+			<select size=10 name="tickets">
+				<option value="35345" id="-1" onClick="seleccionar()"> ___________ * --- Lista de Tickets --- * ___________ </option>
+				<option value="123456" id="0" onClick="seleccionar()">hola</option>
+				<option value="123456" id="1" onClick="seleccionar()">quiubo</option>
+				<option value="123456" id="2" onClick="seleccionar()">chao</option>
+			</select>
 		</td>
+		<td width="50%" align="center">
+			<input type="button" name="info" disabled value="Ver informacion asociada" ><br><br>
+			<input type="button" name="atender" disabled onClick="atender()" value="         Atender ticket        "><br><br>
+			<input type="button" name="cerrar" disabled onClick="cerrar()" value="           Cerrar ticket         ">
+		</td>
+	</form>
 	</tr>
 	<tr>
 		<td colspan=2>&nbsp; <b>Proyecto CUPI2</b><br>

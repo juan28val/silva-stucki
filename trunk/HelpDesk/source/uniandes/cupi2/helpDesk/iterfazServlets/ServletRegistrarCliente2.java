@@ -6,8 +6,6 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import uniandes.cupi2.helpDesk.interfazMundo.IIterador;
-import uniandes.cupi2.helpDesk.interfazMundo.IUsuario;
 import uniandes.cupi2.helpDesk.mundo.*;
 
 /**
@@ -95,7 +93,7 @@ public class ServletRegistrarCliente2 extends ServletTemplate
         	respuesta.write( "                              </tr>\r\n" );
         	respuesta.write( "                              <tr>\r\n" );
         	respuesta.write( "                              <td align=\"right\"><b>tipo:</b></td>\r\n" );
-        	respuesta.write( "                             <td>" + tipo + "</td> \r\n" );
+        	respuesta.write( "                             <td>" + (tipo==4?"Estudiante":tipo==5?"Profesor":"Personal Administrativo") + "</td> \r\n" );
         	respuesta.write( "                              </tr>\r\n" );
         	respuesta.write( "                              </table></td>\r\n" );
         	respuesta.write( "                              <td width=\"82\">&nbsp;</td>\r\n" );

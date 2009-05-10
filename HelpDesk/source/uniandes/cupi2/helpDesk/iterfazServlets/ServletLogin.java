@@ -6,6 +6,8 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import uniandes.cupi2.helpDesk.interfazMundo.IIterador;
+import uniandes.cupi2.helpDesk.interfazMundo.IUsuario;
 import uniandes.cupi2.helpDesk.mundo.*;
 
 /**
@@ -29,7 +31,8 @@ public class ServletLogin extends ServletTemplate
 
     private void paginaCliente(PrintWriter respuesta) 
     {
-		
+		HelpDesk mundo = HelpDesk.getInstance();
+    	
         respuesta.write( "                              <table border=\"0\" width=\"710\" id=\"table3\">\r\n" );
         respuesta.write( "                              <tr>\r\n" );
         respuesta.write( "                              <td width=\"696\" colspan=\"4\" bgcolor=\"#E2E2E2\">\r\n" );
@@ -55,7 +58,15 @@ public class ServletLogin extends ServletTemplate
         respuesta.write( "                              </tr>\r\n" );
         respuesta.write( "                              <tr>\r\n" );
         respuesta.write( "                              <th height=\"121\" align=\"left\" scope=\"row\"><select name=\"empleados\" size=\"10\" class=\"normal\">\r\n" );
-        respuesta.write( "                              <option value=\"1\" selected>Nombre Empleado - ****</option>\r\n" );
+        
+        IIterador it = mundo.darEmpleadosDelMesServlet();
+        while( it.haySiguiente() )
+        {
+        	IUsuario usuario = (IUsuario)it.darSiguiente();
+        	   respuesta.write( "                              <option selected>" + usuario.darNombre() + " - " + usuario.darSumaCalificacion() + "</option>\r\n" );
+        	        	
+        }
+        
         respuesta.write( "                              </select></th>\r\n" );
         respuesta.write( "                              </tr>\r\n" );
         respuesta.write( "                              <tr>\r\n" );

@@ -97,8 +97,6 @@ public abstract class ServletTemplate extends HttpServlet
         respuesta.write( "       <td>\r\n" );
         respuesta.write( "       <table border=\"1\" width=\"100%\" style=\"border-collapse: collapse\" bordercolor=\"#999999\" id=\"table2\">\r\n" );
         respuesta.write( "           <tr>\r\n" );
-        respuesta.write( "               <td class=\"h2\" height=\"30\">\r\n" );
-        respuesta.write( "               <h1 align=\"center\">Help Desk en linea</td>\r\n" );
         respuesta.write( "           </tr>\r\n" );
         respuesta.write( "           <tr>\r\n" );
         respuesta.write( "               <td bgcolor=\"#000000\" height=\"3px\"></td>\r\n" );

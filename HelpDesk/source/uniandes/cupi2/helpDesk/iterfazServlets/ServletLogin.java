@@ -24,7 +24,17 @@ public class ServletLogin extends ServletTemplate
 
     private void paginaCliente(PrintWriter respuesta) 
     {
-		HelpDesk mundo = HelpDesk.getInstance();
+		
+	
+	}
+
+    private void paginaEmpleado(PrintWriter respuesta) {
+		// TODO Auto-generated method stub
+		
+	}
+    
+    private void paginaAdministrador(PrintWriter respuesta) {
+HelpDesk mundo = HelpDesk.getInstance();
     	
         respuesta.write( "                              <table border=\"0\" width=\"710\" id=\"table3\">\r\n" );
         respuesta.write( "                              <tr>\r\n" );
@@ -78,16 +88,6 @@ public class ServletLogin extends ServletTemplate
         respuesta.write( "                              <td width=\"82\">&nbsp;</td>\r\n" );
         respuesta.write( "                              </tr>\r\n" );
         respuesta.write( "                              </table>\r\n" );
-	
-	}
-
-    private void paginaEmpleado(PrintWriter respuesta) {
-		// TODO Auto-generated method stub
-		
-	}
-    
-    private void paginaAdministrador(PrintWriter respuesta) {
-		// TODO Auto-generated method stub
 		
 	}
     

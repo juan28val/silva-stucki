@@ -2,11 +2,13 @@ package uniandes.cupi2.helpDesk.iterfazServlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import uniandes.cupi2.helpDesk.interfazMundo.IIterador;
+import uniandes.cupi2.helpDesk.interfazMundo.ITicket;
 import uniandes.cupi2.helpDesk.interfazMundo.IUsuario;
 import uniandes.cupi2.helpDesk.mundo.*;
 
@@ -87,9 +89,18 @@ public class ServletLogin extends ServletTemplate
 	
 	}
 
-    private void paginaEmpleado(PrintWriter respuesta) {
+    private void paginaEmpleado(int llaveEmpleado, PrintWriter respuesta) {
+    	HelpDesk mundo = HelpDesk.getInstance();
+    	Empleado empleado = (Empleado) mundo.darUsuario(llaveEmpleado);
+    	ArrayList<Integer> tickets = empleado.darListaTickets();
 		respuesta.write("<tr><form method=\"post\" action=\"\"><td width=\"50%\"><select size=10 name=\"tickets\"><option id=\"-1\" onClick=\"seleccionar()\"> ___________ * --- Lista de Tickets --- * ___________ </option>");
-		
+		for(Integer id : tickets)
+		{
+			ITicket ticket = mundo.darTicket(id);
+			String info = ticket.toString();
+			int estado = ticket.darFechaAtencion() == null ? 0 : ticket.darFechaCierre() == null ? 1 : 2;
+			respuesta.write("<option value='" + id + "' id='" + estado + "' onClick='seleccionar()'>" + info + "</option>");
+		}
 		respuesta.write("</select></td><td width=\"50%\" align=\"center\"><input type=\"button\" name=\"info\" disabled value=\"Ver informacion asociada\" ><br><br><input type=\"button\" name=\"atender\" disabled onClick=\"atender()\" value=\"         Atender ticket        \"><br><br><input type=\"button\" name=\"cerrar\" disabled onClick=\"cerrar()\" value=\"           Cerrar ticket         \"></td></form></tr>");
 	}
     
@@ -125,7 +136,7 @@ public class ServletLogin extends ServletTemplate
 			}
 			else if(mundo.darUsuario(llave).esEmpleado())
 			{
-				paginaEmpleado(respuesta);
+				paginaEmpleado(llave, respuesta);
 			}
 			else 
 			{

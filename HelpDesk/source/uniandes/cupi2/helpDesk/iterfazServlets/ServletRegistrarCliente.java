@@ -38,28 +38,8 @@ public class ServletRegistrarCliente extends ServletTemplate
         //
         // Saca el Printer
         PrintWriter respuesta = response.getWriter( );
-        //
-        // Saca los parámetros de la búsqueda
-        String doc = request.getParameter( "doc" );
-        if( doc == null )
-        {
-            //
-            // Imprime el mensaje de la excepción
-            imprimirMensajeError( respuesta, "Error al recibir el documento", "No se especificó el documento a comprar" );
-        }
-        else
-        {
-            imprimirResultado( respuesta, doc );
-        }
-    }
+        
 
-    /**
-     * Imprime el resultado de la búsqueda
-     * @param respuesta Respuesta HTML
-     * @param doc Documento a comprar
-     */
-    private void imprimirResultado( PrintWriter respuesta, String doc )
-    {
         respuesta.write( "                           <table border=\"0\" width=\"710\" id=\"table3\">\r\n" );
         respuesta.write( "                              <tr>\r\n" );
         respuesta.write( "                             		<td width=\"696\" colspan=\"4\" bgcolor=\"#E2E2E2\"> \r\n" );
@@ -125,7 +105,6 @@ public class ServletRegistrarCliente extends ServletTemplate
         respuesta.write( "                              	</td>\r\n" );
         respuesta.write( "                              	<td width=\"82\">&nbsp;</td>\r\n" );
         respuesta.write( "                              </tr>\r\n" );
-        respuesta.write( "                           </table>\r\n" );     				
+        respuesta.write( "                           </table>\r\n" );     	
     }
-
 }

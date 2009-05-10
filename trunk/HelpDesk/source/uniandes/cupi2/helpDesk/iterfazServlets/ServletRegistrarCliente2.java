@@ -6,6 +6,8 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import uniandes.cupi2.helpDesk.interfazMundo.IIterador;
+import uniandes.cupi2.helpDesk.interfazMundo.IUsuario;
 import uniandes.cupi2.helpDesk.mundo.*;
 
 /**
@@ -17,11 +19,7 @@ public class ServletRegistrarCliente2 extends ServletTemplate
 
     // -----------------------------------------------------------------
     // Métodos
-    // -----------------------------------------------------------------
-<<<<<<< .mine
-	
-	
-	
+    // -----------------------------------------------------------------	
 
     private void paginaError(PrintWriter respuesta, String mensaje) {
 		respuesta.write("<h1>Error</h1><br><br>Ha ocurrido un error: " + mensaje + "<br><br><form action='inicio.html'><input type=button text='Volver...'></form>");
@@ -92,8 +90,6 @@ public class ServletRegistrarCliente2 extends ServletTemplate
 		
 		respuesta.write("</select></td><td width=\"50%\" align=\"center\"><input type=\"button\" name=\"info\" disabled value=\"Ver informacion asociada\" ><br><br><input type=\"button\" name=\"atender\" disabled onClick=\"atender()\" value=\"         Atender ticket        \"><br><br><input type=\"button\" name=\"cerrar\" disabled onClick=\"cerrar()\" value=\"           Cerrar ticket         \"></td></form></tr>");
 	}
-=======
->>>>>>> .r132
     
 	/**
      * Devuelve el título de la página para el Header
@@ -121,7 +117,7 @@ public class ServletRegistrarCliente2 extends ServletTemplate
         String password2 = request.getParameter("password2");
         String email = request.getParameter("email");
         int tipo = Integer.parseInt(request.getParameter("tipo"));
-        
+    
         HelpDesk mundo = HelpDesk.getInstance();
         
         if( nombre.equals("") || login.equals("") || password.equals("") || !password.equals(password2))

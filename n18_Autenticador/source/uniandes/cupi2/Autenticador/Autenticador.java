@@ -38,7 +38,7 @@ public class Autenticador implements IAutenticador {
 	{
 		if( password==null )
 			throw new Exception("password invalido.");
-		else if( tipo!=TIPO_ADMINISTRADOR || tipo!=TIPO_CLIENTE || tipo!=TIPO_EMPLEADO )
+		else if( tipo!=TIPO_ADMINISTRADOR && tipo!=TIPO_CLIENTE && tipo!=TIPO_EMPLEADO )
 			throw new Exception("tipo invalido.");
 	
 		usuarios.put(login, new Usuario(login,password,llave,tipo));

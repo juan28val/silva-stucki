@@ -504,6 +504,11 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		return new IteradorEmpleadosDelMes(empleadoDelMes);
 	}
 
+	public IIterador darEmpleadosDelMesServlet() {
+		
+		return new IteradorEmpleadosDelMesServlet(empleadoDelMes);
+	}
+
 	public IIterador darListaPersonasAtendidas() {
 	
 		return new IteradorClientesAtendidos(primerClienteAtendido);

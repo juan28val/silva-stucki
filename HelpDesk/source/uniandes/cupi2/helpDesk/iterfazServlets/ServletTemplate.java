@@ -146,47 +146,17 @@ public abstract class ServletTemplate extends HttpServlet
      * @param titulo Título del error
      * @param mensaje Mensaje del error
      */
-    protected void imprimirMensajeError( PrintWriter respuesta, String titulo, String mensaje )
+    protected void imprimirMensajeError( PrintWriter respuesta, String mensaje )
     {
         respuesta.write( "                      <p class=\"error\"><b>Ha ocurrido un error!:<br>\r\n" );
-        respuesta.write( "                      </b>" + titulo + "</p><p>" + mensaje + ". </p>\r\n" );
+        respuesta.write( "                      <p>" + mensaje + ". </p>\r\n" );
         respuesta.write( "                      <p>Intente la \r\n" );
         respuesta.write( "                      operación nuevamente. Si el problema persiste, contacte \r\n" );
         respuesta.write( "                      al administrador del sistema.</p>\r\n" );
         respuesta.write( "                      <p><a href=\"index.htm\">Volver a la página principal</a>\r\n" );
     }
 
-    /**
-     * Imprime un mensaje de error
-     * @param respuesta Respuesta al cliente
-     * @param titulo Título del error
-     * @param exception Excepción de error
-     * @param mensaje Mensaje del error
-     */
-    protected void imprimirMensajeError( PrintWriter respuesta, String titulo, String mensaje, Exception exception )
-    {
-        respuesta.write( "                      <p class=\"error\"><b>Ha ocurrido un error!:<br>\r\n" );
-        respuesta.write( "                      </b>" + titulo + "</p><p>" + mensaje + ". Mas Información:<br>" );
-        exception.printStackTrace( respuesta );
-        respuesta.write( "</p>\r\n" );
-        respuesta.write( "                      <p>Intente la \r\n" );
-        respuesta.write( "                      operación nuevamente. Si el problema persiste, contacte \r\n" );
-        respuesta.write( "                      al administrador del sistema.</p>\r\n" );
-        respuesta.write( "                      <p><a href=\"index.htm\">Volver a la página principal</a>\r\n" );
-    }
 
-    /**
-     * Imprime un mensaje de éxito
-     * @param respuesta Respuesta al cliente
-     * @param titulo Título del mensaje
-     * @param mensaje Contenido del mensaje
-     */
-    protected void imprimirMensajeOk( PrintWriter respuesta, String titulo, String mensaje )
-    {
-        respuesta.write( "                      <p class=\"ok\"><b>Operación exitosa:<br>\r\n" );
-        respuesta.write( "                      </b>" + titulo + "</p><p>" + mensaje + ". </p>\r\n" );
-        respuesta.write( "                      <p><a href=\"index.htm\">Volver a la página principal</a>\r\n" );
-    }
 
     // -----------------------------------------------------------------
     // Métodos Abstractos

@@ -78,6 +78,32 @@ public abstract class ServletTemplate extends HttpServlet
         respuesta.write( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=windows-1252\">\r\n" );
         respuesta.write( "<title>Help Desk - " + darTituloPagina( request ) + "</title>\r\n" );
         respuesta.write( "<link type=\"text/css\" rel=\"stylesheet\" href=\"style/style.css\">\r\n" );
+        respuesta.write( "<script language=\"javascript\" type=\"text/javascript\">\r\n" );
+        respuesta.write( "function seleccionar()\r\n" );
+        respuesta.write( "{\r\n" );
+        respuesta.write( "form = document.forms[0]\r\n" );
+        respuesta.write( "if(form.tickets.options[form.tickets.selectedIndex].id == 0) {\r\n" );
+        respuesta.write( "form.info.disabled = false;\r\n" );
+        respuesta.write( "form.atender.disabled = false;\r\n" );
+        respuesta.write( "form.cerrar.disabled = true;\r\n" );
+        respuesta.write( "}\r\n" );
+        respuesta.write( "else if(form.tickets.options[form.tickets.selectedIndex].id == 1) {\r\n" );
+        respuesta.write( "form.info.disabled = false;\r\n" );
+        respuesta.write( "form.atender.disabled = true;\r\n" );
+        respuesta.write( "form.cerrar.disabled = false;\r\n" );
+        respuesta.write( "}\r\n" );
+        respuesta.write( "else if(form.tickets.options[form.tickets.selectedIndex].id == 2) {\r\n" );
+        respuesta.write( "\form.info.disabled = false;r\n" );
+        respuesta.write( "form.atender.disabled = true;\r\n" );
+        respuesta.write( "form.cerrar.disabled = true;\r\n" );
+        respuesta.write( "}\r\n" );
+        respuesta.write( "else if(form.tickets.options[form.tickets.selectedIndex].id == -1) {\r\n" );
+        respuesta.write( "form.info.disabled = true;\r\n" );
+        respuesta.write( "form.atender.disabled = true;\r\n" );
+        respuesta.write( "form.cerrar.disabled = true;\r\n" );
+        respuesta.write( "}  }\r\n" );
+        respuesta.write( "</script>\r\n" );
+         
         respuesta.write( "</head>\r\n" );
 
         respuesta.write( "<body>\r\n" );

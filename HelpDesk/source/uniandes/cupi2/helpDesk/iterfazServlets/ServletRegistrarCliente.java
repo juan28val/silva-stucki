@@ -82,6 +82,10 @@ public class ServletRegistrarCliente extends ServletTemplate
         respuesta.write( "                              			<td valign=\"top\"><input type=\"password\" name=\"password2\" size=\"30\" class=\"normal\"></td>\r\n" );
         respuesta.write( "                             			</tr>\r\n" );
         respuesta.write( "                              		<tr>\r\n" );
+        respuesta.write( "                              			<td height=\"32\" valign=\"top\"><p align=\"right\"><b>email:</b></td>\r\n" );
+        respuesta.write( "                              			<td valign=\"top\"><input type=\"text\" name=\"email\" size=\"30\" class=\"normal\"></td>\r\n" );
+        respuesta.write( "                             			</tr>\r\n" );
+        respuesta.write( "                              		<tr>\r\n" );
         respuesta.write( "                              			<td align=\"right\"><b>tipo:</b></td>\r\n" );
         respuesta.write( "                              			<td><select name=\"tipo\" size=\"1\" class=\"normal\">\r\n" );
         respuesta.write( "                              				<option value=\"4\">Estudiante</option>\r\n" );

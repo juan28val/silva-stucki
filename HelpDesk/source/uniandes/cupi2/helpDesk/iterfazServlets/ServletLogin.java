@@ -79,7 +79,7 @@ public class ServletLogin extends ServletTemplate
         respuesta.write( "                              <tr>\r\n" );
         respuesta.write( "                              <td width=\"42\">&nbsp;</td>\r\n" );
         respuesta.write( "                              <td width=\"25\">&nbsp;</td>\r\n" );
-        respuesta.write( "                              <td width=\"543\"><form method=\"POST\" action=\"inicio.htm\">\r\n" );
+        respuesta.write( "                              <td width=\"543\"><form method=\"POST\" action=\"index.htm\">\r\n" );
         respuesta.write( "                              <input type=\"submit\" value=\"Cerrar sesion\" name=\"B2\" class=\"normal\">\r\n" );
         respuesta.write( "                              </form>\r\n" );
         respuesta.write( "                              </td>\r\n" );
@@ -130,18 +130,19 @@ public class ServletLogin extends ServletTemplate
 		{
 			int llave = mundo.validar(request.getParameter("login"), request.getParameter("password"), Integer.parseInt(request.getParameter("tipo")));
 		
-			if(!mundo.darUsuario(llave).esEmpleado())
-			{
-				paginaCliente(respuesta);
-			}
-			else if(mundo.darUsuario(llave).esEmpleado())
-			{
-				paginaEmpleado(llave, respuesta);
-			}
-			else 
+			if(mundo.darUsuario(llave)==null)
 			{
 				paginaAdministrador(respuesta);
 			}
+			else if(!mundo.darUsuario(llave).esEmpleado())
+			{
+				paginaCliente(respuesta);
+			}
+			else if( mundo.darUsuario(llave).esEmpleado() )
+			{
+				paginaEmpleado(llave, respuesta);
+			}
+
 		} 
 		catch (Exception e) {
 		

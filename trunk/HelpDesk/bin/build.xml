@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="helpDesk" default="build" basedir="../">
+<project name="helpDesk" default="deploy" basedir="../">
 
 	<!--
 	*******************************************************
@@ -8,43 +8,36 @@
 	*******************************************************
 	-->
 
-	<!-- Classpath para compilación -->
+	<!-- Classpath para compilación: incluye todos los jar del directorio lib -->
 	<path id="classpath">
 		<fileset dir="./lib">
 			<include name="*.jar" />
 		</fileset>
 	</path>
 
-	<!-- Classpath para compilación de pruebas -->
-	<path id="classpathTests">
-		<fileset dir="./test/lib">
-			<include name="**/*.jar" />
-		</fileset>
-		<fileset dir="./lib">
-			<include name="**/*.jar" />
-		</fileset>
-		<pathelement location="classes" />
-	</path>
-
-	<!-- Inicialización de las Propiedades -->
+	<!-- Inicialización de las propiedades -->
 	<target name="init" description="Inicializa las propiedades">
 		<!-- Definición de Propiedades -->
+
+		<!--  Cambie esta línea según el punto en el que esté instalado JBboss -->
+		<property environment="env" />
+		<property name="jboss.home" value="${env.JBOSS_HOME}" />
+
+		<property name="server.path" value="server/default" />
 		<property name="source" value="./source" />
 		<property name="classes" value="./classes" />
 		<property name="data" value="./data" />
-		<property name="jar" value="helpDesk.jar" />
-		<property name="bin" value="./bin" />
-		<property name="lib" value="./lib" />
-		<property name="test" value="./test" />
 		<property name="dist" value="./dist" />
-		<property name="javadoc" value="./docs/api" />
+		<property name="lib" value="./lib" />
+		<property name="propiedades" value="./data/propiedades" />
+		<property name="web.xml" value="./data/descriptores/WEB-INF/web.xml" />
+		<property name="war" value="helpDesk.war" />
+
 		<!-- Borra y crea los directorios nuevamente -->
-		<delete dir="${classes}" />
-		<mkdir dir="${classes}" />
-		<delete dir="${test}/${classes}" />
-		<mkdir dir="${test}/${classes}" />
 		<delete dir="${dist}" />
 		<mkdir dir="${dist}" />
+		<delete dir="${classes}" />
+		<mkdir dir="${classes}" />
 	</target>
 
 	<!--
@@ -61,50 +54,35 @@
 		</javac>
 	</target>
 
-	<!-- Creación de JAR -->
-	<target name="build" depends="compile" description="Crea el JAR de la aplicación">
-		<!-- Empaqueta las clases en un JAR -->
-		<jar jarfile="${dist}/${jar}">
-			<fileset dir="${classes}" />
-			<!--Variables del manifest-->
-			<manifest>
-				<attribute name="Class-Path" value="${lib}/cupi2Collections.jar" />
-				<attribute name="Main-Class" value="uniandes.cupi2.helpDesk.interfaz.InterfazHelpDesk" />
-			</manifest>
-		</jar>
-		<!-- Copia la librería de cupi2Collections en dist -->
-		<copy file="${lib}/cupi2Collections_1_1_c.jar" todir="${dist}/${lib}" />
-		<!-- Copia la carpeta data a dist -->
-		<copy todir="${dist}/${data}">
-			<fileset dir="${data}" />
+	<!-- Creación del WAR -->
+	<target name="build" depends="compile" description="Crea el WAR de la aplicación">
+		
+		<war destfile="${dist}/${war}" webxml="${web.xml}">
+			<fileset dir="${data}\html" />
+			<lib dir="${lib}">
+				 <exclude name="jboss-system.jar"/>
+				 <exclude name="javax.servlet.jar"/>
+			</lib>	
+		    <classes dir="${classes}"/>
+		</war>
+		
+	</target>
+
+	<!-- Deploy -->
+	<target name="deploy" depends="build" description="Realiza deploy de la aplicación sobre JBoss">
+
+		<!-- Copia el archivo de configuración en la carpeta data del servidor -->
+		<copy file="${propiedades}/helpDesk.properties" todir="${jboss.home}/${server.path}/data/helpDesk" />
+		
+		<!-- Por último el archivo WAR -->
+		<copy todir="${jboss.home}/${server.path}/deploy">
+			<fileset file="${dist}/${war}" />
 		</copy>
 	</target>
 
-	<!-- Compila las pruebas -->
-	<target name="compileTest" description="Compilación de las pruebas" depends="compile">
-		<javac destdir="${test}/${classes}" debug="on" deprecation="on" optimize="on" classpathref="classpathTests">
-			<src path="${test}/${source}" />
-		</javac>
-	</target>
-
-
-	<!-- Ejecución de las pruebas -->
-	<target name="runTest" depends="compileTest" description="Ejecuta las pruebas del sistema">
-		<java classname="junit.swingui.TestRunner" fork="yes">
-			<classpath>
-				<path refid="classpathTests" />
-				<pathelement location="${test}/${classes}" />
-			</classpath>
-			<arg value="uniandes.cupi2.helpDesk.test.HelpDeskTest" />
-			<jvmarg value="-ea" />
-		</java>
-	</target>
-
-	<!-- Generación del javadoc -->
-	<target name="javaDoc" depends="init" description="Genera el java doc de la aplicación">
-		<javadoc destdir="${javadoc}">
-			<fileset dir="${source}" />
-		</javadoc>
+	<!-- Undeploy -->
+	<target name="undeploy" depends="init" description="Borra todos los archivos instalados en JBoss">
+			<delete file="${jboss.home}/${server.path}/deploy/${war}" />
 	</target>
 
 </project>

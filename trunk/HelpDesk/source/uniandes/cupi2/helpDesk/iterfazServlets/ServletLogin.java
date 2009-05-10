@@ -36,8 +36,8 @@ public class ServletLogin extends ServletTemplate
 	}	
 	
 	
-    private void paginaError(PrintWriter out) {
-		// TODO Auto-generated method stub
+    private void paginaError(PrintWriter respuesta, String mensaje) {
+		respuesta.write("<html><head><title>Error...</title></head><body></body></html>")
 		
 	}
 

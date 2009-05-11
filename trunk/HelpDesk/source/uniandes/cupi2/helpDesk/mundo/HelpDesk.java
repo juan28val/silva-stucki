@@ -56,11 +56,8 @@ public class HelpDesk extends Observable implements IHelpDesk {
 
 	private static final String EMAIL_PASSWORD = "nicolas";
 
-	public static final String RUTA_ARCHIVO = ""; // "data/persistencia.xml";
+	public static final String RUTA_ARCHIVO = File.separator + "persistenciaHelpDesk.xml";
 
-	//mac
-	//private static final String RUTA_NOMINA = "/Users/imac/Documents/workspace/n18_HelpDesk/data/nomina.properties";
-	//pc
 	public static final String RUTA_NOMINA = "nomina.properties";
 
 
@@ -221,7 +218,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 			Cliente cliente = new Cliente(Integer.parseInt(hijo.getAttribute("id")), hijo.getAttribute("nombre"), hijo.getAttribute("login"), hijo.getAttribute("password"), Integer.parseInt(hijo.getAttribute("tipo")), hijo.getAttribute("email"), primerCliente, hijo.getAttribute("fechaAtencion").equals("") ? null : new Date(Long.parseLong(hijo.getAttribute("fechaAtencion"))));
 			tablaUsuarios.agregar(cliente.darId(), cliente);
 			try {
-				autenticador.agregarUsuario( hijo.getAttribute("login"),  hijo.getAttribute("password"), Integer.parseInt(hijo.getAttribute("id")), Integer.parseInt(hijo.getAttribute("tipo")));
+				autenticador.agregarUsuario( hijo.getAttribute("login"),  hijo.getAttribute("password"), Integer.parseInt(hijo.getAttribute("id")), modulacionDeTipo(Integer.parseInt(hijo.getAttribute("tipo"))));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -269,7 +266,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 			Empleado empleado = new Empleado(Integer.parseInt(hijo.getAttribute("id")), hijo.getAttribute("nombre"), hijo.getAttribute("login"), hijo.getAttribute("password"), primerEmpleado, Integer.parseInt(hijo.getAttribute("tipo")), Integer.parseInt(hijo.getAttribute("calificacion")), Byte.valueOf(hijo.getAttribute("clave")), Integer.parseInt(hijo.getAttribute("incidentes")));
 			tablaUsuarios.agregar(empleado.darId(), empleado);
 			try {
-				autenticador.agregarUsuario( hijo.getAttribute("login"),  hijo.getAttribute("password"), Integer.parseInt(hijo.getAttribute("id")), Integer.parseInt(hijo.getAttribute("tipo")));
+				autenticador.agregarUsuario( hijo.getAttribute("login"),  hijo.getAttribute("password"), Integer.parseInt(hijo.getAttribute("id")), modulacionDeTipo(Integer.parseInt(hijo.getAttribute("tipo"))));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

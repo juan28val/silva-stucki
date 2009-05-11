@@ -47,7 +47,7 @@ public class ServletRegistrarCliente2 extends ServletTemplate
         
         int tipo = Integer.parseInt(request.getParameter("tipo"));
     
-        HelpDesk mundo = HelpDesk.getInstance();
+        HelpDesk mundo = HelpDesk.getInstance(null);
         
         if( nombre.equals("") || login.equals("") || password.equals("") || !password.equals(password2))
         {

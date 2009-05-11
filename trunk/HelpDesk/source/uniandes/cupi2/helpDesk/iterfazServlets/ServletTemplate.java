@@ -1,12 +1,16 @@
 package uniandes.cupi2.helpDesk.iterfazServlets;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import uniandes.cupi2.helpDesk.mundo.HelpDesk;
 
 /**
  * Servelt Abstracto principal con el template del diseño de la página
@@ -47,7 +51,14 @@ public abstract class ServletTemplate extends HttpServlet
      */
     private void procesarPedido( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
-        //
+    	// Inicializa el mundo
+    	InputStream inputStream = getServletContext().getResourceAsStream(HelpDesk.RUTA_NOMINA);
+    	Properties props = new Properties();
+    	
+    	props.load(inputStream); 
+    	HelpDesk.getInstance(props);
+    	inputStream.close();
+    	
         // Comienza con el Header del template
         imprimirHeader( request, response );
         //

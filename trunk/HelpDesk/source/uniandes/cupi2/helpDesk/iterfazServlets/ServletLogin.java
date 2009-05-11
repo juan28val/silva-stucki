@@ -34,7 +34,7 @@ public class ServletLogin extends ServletTemplate
     
     private void paginaAdministrador(PrintWriter respuesta) {
 
-    	HelpDesk mundo = HelpDesk.getInstance();
+    	HelpDesk mundo = HelpDesk.getInstance(null);
     	
         respuesta.write( "                              <table border=\"0\" width=\"710\" id=\"table3\">\r\n" );
         respuesta.write( "                              <tr>\r\n" );
@@ -92,7 +92,7 @@ public class ServletLogin extends ServletTemplate
 	}
 
     private void paginaEmpleado(int llaveEmpleado, PrintWriter respuesta) {
-    	HelpDesk mundo = HelpDesk.getInstance();
+    	HelpDesk mundo = HelpDesk.getInstance(null);
     	Empleado empleado = (Empleado) mundo.darUsuario(llaveEmpleado);
     	ArrayList<Integer> tickets = empleado.darListaTickets();
 		respuesta.write("<tr><form method=\"post\" action=\"\"><td width=\"50%\"><select size=10 name=\"tickets\"><option id=\"-1\" onClick=\"seleccionar()\"> ___________ * --- Lista de Tickets --- * ___________ </option>");
@@ -126,7 +126,7 @@ public class ServletLogin extends ServletTemplate
     {
         PrintWriter respuesta = response.getWriter( );
 		
-		HelpDesk mundo = HelpDesk.getInstance();
+		HelpDesk mundo = HelpDesk.getInstance(null);
 		
 		try 
 		{

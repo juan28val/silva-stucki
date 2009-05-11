@@ -58,7 +58,12 @@ public class HelpDesk extends Observable implements IHelpDesk {
 
 	public static final String RUTA_ARCHIVO = ""; // "data/persistencia.xml";
 
-	public static final String RUTA_NOMINA = "nomina.properties";
+	//mac
+	//private static final String RUTA_NOMINA = "/Users/imac/Documents/workspace/n18_HelpDesk/data/nomina.properties";
+	//pc
+	private static final String RUTA_NOMINA = "nomina.properties";
+
+
 	
     //-----------------------------------------------------------------
     // Atributos

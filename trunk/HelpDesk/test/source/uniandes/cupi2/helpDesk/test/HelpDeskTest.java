@@ -48,9 +48,15 @@ public class HelpDeskTest extends TestCase implements Observer
     {
     	setupEscenario1();
     	
-    	helpDesk.crearCliente("Juan","","", 4, "email");
-    	helpDesk.crearCliente("John","","", 5, "email2");
-    	helpDesk.crearCliente("Judas","","", 6, "email3");
+    	try {
+			helpDesk.crearCliente("Juan","","", 4, "email");
+			helpDesk.crearCliente("John","","", 5, "email2");
+	    	helpDesk.crearCliente("Judas","","", 6, "email3");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
     }
 
     private void setupEscenario3( ) throws Exception

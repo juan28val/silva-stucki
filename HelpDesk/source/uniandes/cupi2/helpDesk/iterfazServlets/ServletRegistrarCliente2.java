@@ -61,6 +61,7 @@ public class ServletRegistrarCliente2 extends ServletTemplate
         {
         	try {
 				mundo.crearCliente(nombre, login, password, tipo-3, email);
+				mundo.guardar(HelpDesk.RUTA_ARCHIVO);
 			} catch (Exception e) {
 				imprimirMensajeError(respuesta, "Error al crear el cliente.");
 				

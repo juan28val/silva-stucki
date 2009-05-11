@@ -133,7 +133,7 @@ public interface IHelpDesk
 	 * @param email: el email del cliente
 	 * @return IUsuario el usuario que se acaba de crear
 	 */
-	public IUsuario crearCliente(String nombre, String login, String password, int tipoCliente, String email);
+	public IUsuario crearCliente(String nombre, String login, String password, int tipoCliente, String email) throws Exception;
 	
 	/**
 	 * Da un iterador sobre todos los tickets ordenados por fecha de creacion, que 

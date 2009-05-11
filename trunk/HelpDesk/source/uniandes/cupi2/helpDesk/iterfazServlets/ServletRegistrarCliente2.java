@@ -44,6 +44,7 @@ public class ServletRegistrarCliente2 extends ServletTemplate
         String password = request.getParameter("password");
         String password2 = request.getParameter("password2");
         String email = request.getParameter("email");
+        
         int tipo = Integer.parseInt(request.getParameter("tipo"));
     
         HelpDesk mundo = HelpDesk.getInstance();
@@ -58,7 +59,12 @@ public class ServletRegistrarCliente2 extends ServletTemplate
         }
         else
         {
-        	mundo.crearCliente(nombre, login, password, tipo+3, email);
+        	try {
+				mundo.crearCliente(nombre, login, password, tipo-3, email);
+			} catch (Exception e) {
+				imprimirMensajeError(respuesta, "Error al crear el cliente.");
+				
+			}
         	
         	respuesta.write( "                              <table border=\"0\" width=\"710\" id=\"table3\">\r\n" );
         	respuesta.write( "                              <tr>\r\n" );

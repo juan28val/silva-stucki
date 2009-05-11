@@ -56,9 +56,9 @@ public class HelpDesk extends Observable implements IHelpDesk {
 
 	private static final String EMAIL_PASSWORD = "nicolas";
 
-	public static final String RUTA_ARCHIVO = "data/persistencia.xml";
+	public static final String RUTA_ARCHIVO = ""; // "data/persistencia.xml";
 
-	private static final String RUTA_NOMINA = "data/nomina.properties";
+	private static final String RUTA_NOMINA = "/Users/imac/Documents/workspace/n18_HelpDesk/data/nomina.properties";
 	
     //-----------------------------------------------------------------
     // Atributos
@@ -483,12 +483,14 @@ public class HelpDesk extends Observable implements IHelpDesk {
 
 	/**
 	 * pre: el nombre del cliente no existe
+	 * @throws Exception 
 	 */
-	public IUsuario crearCliente(String nombreCliente, String loginCliente, String passwordCliente, int tipoCliente, String email) {
+	public IUsuario crearCliente(String nombreCliente, String loginCliente, String passwordCliente, int tipoCliente, String email) throws Exception {
 		idUsuarios++;
 		Cliente cliente = new Cliente(idUsuarios, nombreCliente, loginCliente, passwordCliente, tipoCliente, email, primerCliente, null);
 		tablaUsuarios.agregar(idUsuarios, cliente);
 		primerCliente = cliente;
+		autenticador.agregarUsuario(loginCliente, passwordCliente, idUsuarios, modulacionDeTipo(tipoCliente));
 		
 		return cliente;
 	

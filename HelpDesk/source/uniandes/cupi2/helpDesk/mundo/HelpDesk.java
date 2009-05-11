@@ -599,7 +599,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
    		{
    			idUsuarios++;
    			primerEmpleado = new Empleado(idUsuarios, lista.getProperty("Empleado0.nombre"), lista.getProperty("Empleado0.login"),lista.getProperty("Empleado0.password"), null, (lista.getProperty("Empleado0.tipo").equals("queja") ? IUsuario.EMPLEADO_QUEJA : (lista.getProperty("Empleado0.tipo").equals("reclamo") ? IUsuario.EMPLEADO_RECLAMO : IUsuario.EMPLEADO_SOLICITUD)), 0, (byte) (Math.random()*254+1), 0);
-   			autenticador.agregarUsuario(lista.getProperty("Empleado0.login"), lista.getProperty("Empleado0.password"), idUsuarios, Autenticador.TIPO_EMPLEADO);
+   			autenticador.agregarUsuario(lista.getProperty("Empleado0.nombre"), lista.getProperty("Empleado0.password"), idUsuarios, Autenticador.TIPO_EMPLEADO);
    			empleadoDelMes = primerEmpleado;
    			ultimoEmpleado = primerEmpleado;
    			prefijosEmpleados.insertar(primerEmpleado);
@@ -610,7 +610,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
    			{
    				idUsuarios++;
    				Empleado empleado = new Empleado(idUsuarios, lista.getProperty("Empleado" + i + ".nombre"), lista.getProperty("Empleado" + i + ".login"), lista.getProperty("Empleado" + i + ".password"), primerEmpleado, lista.getProperty("Empleado" + i + ".tipo").equals("queja") ? IUsuario.EMPLEADO_QUEJA : (lista.getProperty("Empleado" + i + ".tipo").equals("reclamo") ? IUsuario.EMPLEADO_RECLAMO : IUsuario.EMPLEADO_SOLICITUD), 0, (byte) (Math.random()*254+1), 0);
-   				autenticador.agregarUsuario(lista.getProperty("Empleado" + i + ".login"), lista.getProperty("Empleado" + i + ".password"), idUsuarios, Autenticador.TIPO_EMPLEADO);
+   				autenticador.agregarUsuario(lista.getProperty("Empleado" + i + ".nombre"), lista.getProperty("Empleado" + i + ".password"), idUsuarios, Autenticador.TIPO_EMPLEADO);
    				empleado.cambiarSiguienteDelMes(primerEmpleado);
    				primerEmpleado.cambiarAnteriorDelMes(empleado);
    				empleadoDelMes = empleado;

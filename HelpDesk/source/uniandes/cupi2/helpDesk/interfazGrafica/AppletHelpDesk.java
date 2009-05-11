@@ -517,8 +517,14 @@ public class AppletHelpDesk extends JApplet implements IInterfaz, ActionListener
 	}
 
 	public IUsuario nuevoCliente(String nombre, String email, String tipo) {
-		return mundo.crearCliente(nombre,nombre,"pass", tipo.equals("Estudiante")?IUsuario.CLIENTE_ESTUDIANTE:tipo.equals("Docente")?IUsuario.CLIENTE_PROFESOR:IUsuario.CLIENTE_PERSONAL_ADMINISTRATIVO, email);
+		try {
+			return mundo.crearCliente(nombre,nombre,"pass", tipo.equals("Estudiante")?IUsuario.CLIENTE_ESTUDIANTE:tipo.equals("Docente")?IUsuario.CLIENTE_PROFESOR:IUsuario.CLIENTE_PERSONAL_ADMINISTRATIVO, email);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//TODO
+		return null;
 	}
 
 	public void calificar(ITicket ticket, String calificacion) {

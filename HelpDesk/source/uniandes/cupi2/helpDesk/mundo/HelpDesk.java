@@ -208,6 +208,13 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		cargarEmpleados(empleados);
 		cargarIncidentes(incidentes);
 		cargarActividades(actividades);
+		
+		try {
+			autenticador.agregarUsuario("e.silva82", "pass", 1234567890, Autenticador.TIPO_ADMINISTRADOR);
+			autenticador.agregarUsuario("n.stucki49", "pass", 987654321, Autenticador.TIPO_ADMINISTRADOR);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
  	private void cargarClientes(Node clientes) {
@@ -844,6 +851,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 				tipo == 2 ? Autenticador.TIPO_EMPLEADO :
 				tipo == 3 ?	Autenticador.TIPO_ADMINISTRADOR :
 					null;
+
 	}
 
 	public static HelpDesk getInstance(Properties lista) {

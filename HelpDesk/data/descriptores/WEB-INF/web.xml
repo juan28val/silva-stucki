@@ -14,11 +14,6 @@
       <servlet-name>RegistrarCliente</servlet-name>
       <servlet-class>uniandes.cupi2.helpDesk.iterfazServlets.ServletRegistrarCliente</servlet-class>
    </servlet>
-   
-   <servlet>
-      <servlet-name>RegistrarCliente2</servlet-name>
-      <servlet-class>uniandes.cupi2.helpDesk.iterfazServlets.ServletRegistrarCliente2</servlet-class>
-   </servlet>
 
    <servlet>
       <servlet-name>Login</servlet-name>
@@ -31,11 +26,6 @@
    <servlet-mapping>
       <servlet-name>RegistrarCliente</servlet-name>
       <url-pattern>/registrarCliente.htm</url-pattern>
-   </servlet-mapping>
-   
-   <servlet-mapping>
-      <servlet-name>RegistrarCliente2</servlet-name>
-      <url-pattern>/registrarCliente2.htm</url-pattern>
    </servlet-mapping>
    
    <servlet-mapping>

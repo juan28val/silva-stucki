@@ -494,7 +494,8 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	 * pre: el nombre del cliente no existe
 	 * @throws Exception 
 	 */
-	public IUsuario crearCliente(String nombreCliente, String loginCliente, String passwordCliente, int tipoCliente, String email) throws Exception {
+	public IUsuario crearCliente(String nombreCliente, String loginCliente, String passwordCliente, int tipoCliente, String email) throws Exception 
+	{
 		idUsuarios++;
 		Cliente cliente = new Cliente(idUsuarios, nombreCliente, loginCliente, passwordCliente, tipoCliente, email, primerCliente, null);
 		tablaUsuarios.agregar(idUsuarios, cliente);
@@ -502,17 +503,16 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		autenticador.agregarUsuario(loginCliente, passwordCliente, idUsuarios, modulacionDeTipo(tipoCliente));
 		
 		return cliente;
-	
 	}
 
-	public IIterador darEmpleados() {
-		
+	public IIterador darEmpleados() 
+	{
 		return new IteradorEmpleados(primerEmpleado);
 	}
 	
-	public IIterador darEmpleadosDelMes() {
-	
-		return new IteradorEmpleadosDelMes(empleadoDelMes);
+	public IIterador darEmpleadosDelMes() 
+	{
+			return new IteradorEmpleadosDelMes(empleadoDelMes);
 	}
 
 	public IIterador darEmpleadosDelMesServlet() {

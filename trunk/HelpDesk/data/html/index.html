@@ -1,0 +1,132 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="es-co">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>HelpDesk - Principal</title>
+<link type="text/css" rel="stylesheet" href="style/style.css">
+<script language="javascript" type="text/javascript">
+function validar()
+{
+	form = document.forms[0];
+	if(form.login.value == "") {
+		alert("Por favor escriba un nombre de usuario.");
+		return false;
+	}
+	if(form.password.value == "") {
+		alert("Por favor escriba una contraseña.");
+		return false;
+	}
+}
+</script>
+</head>
+
+<body>
+
+<div align=center>
+<center>
+
+<table border="0" width="720" id="table1">
+	<tr>
+		<td>
+		<p align="center">
+		<img border="0" src="imagenes/logo.jpg" width="640" height="100"></td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>
+		<table border="1" width="100%" style="border-collapse: collapse" bordercolor="#999999" id="table2">
+			<tr>
+				
+			</tr>
+			<tr>
+				<td bgcolor="#000000" height="3px"></td>
+			</tr>
+			<tr>
+				<td>
+				<table border="0" width="710" id="table3">
+					<tr>
+						<td width="696" colspan="4" bgcolor="#E2E2E2">
+						<table border="0" width="614" id="table4">
+							<tr>
+								<td width="40">&nbsp;</td>
+								<td width="564">
+								Iniciar sesi&oacute;n Help Desk</td>
+							</tr>
+						</table>
+						</td>
+					</tr>
+					<tr>
+						<td width="42">&nbsp;</td>
+						<td width="572" colspan="2">&nbsp;</td>
+						<td width="82">&nbsp;</td>
+					</tr>
+					<tr>
+						<td width="42">&nbsp;</td>
+						<td width="25">&nbsp;</td>
+						<td width="543"><form method="POST" action="login.htm" onsubmit="return validar()">
+						  <table border="0" width="100%" id="table5">
+								<tr>
+									<td width="67" height="30">
+									<p align="right"><b>Nombre de usuario:</b></td>
+									<td width="466">
+									<input type="text" name="login" size="30" class="normal"></td>
+								</tr>
+								<tr>
+									<td width="67" height="33" valign="top">
+									<p align="right"><b>Contrase&ntilde;a:</b></td>
+								  <td valign="top"><input type="password" name="password" size="30" class="normal"></td>
+								</tr>
+								<tr>
+									<td width="67">
+									<p align="right"><b>Tipo de usuario:</b></td>
+									<td><select size="1" name="tipo" class="normal">
+									  <option value="1">Cliente</option>
+									  <option value="2">Empleado</option>
+									  <option value="3">Administrador</option>
+								    </select></td>
+								</tr>
+								<tr>
+									<td>&nbsp;</td>
+									<td><br><br><input type="submit" value="Iniciar sesi&oacute;n" name="B1" class="normal"></td>
+								</tr>
+							</table>
+							<p>
+							
+							</p>
+						</form>
+						<p></td>
+						<td width="82">&nbsp;</td>
+					</tr>
+					<tr>
+						<td width="42">&nbsp;</td>
+						<td width="25">&nbsp;</td>
+						<td width="543"><br><br><br>¿No dispone de un Cupi2 Live ID?<br><br>
+                        <form method="POST" action="registrarCliente.html">
+                          <input type="submit" value="Registrarse" name="B2" class="normal">
+                      </form></td>
+						<td width="82">&nbsp;</td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+			<tr>
+				<td bgcolor="#000000" height="2px"></td>
+			</tr>
+			<tr>
+				<td>Proyecto CUPI2<br>
+Help Desk en línea<br>
+				<b>2009</b></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+
+</center>
+</div>
+</body>
+
+</html>

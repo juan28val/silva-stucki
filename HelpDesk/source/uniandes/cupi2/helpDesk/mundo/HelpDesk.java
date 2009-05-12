@@ -266,7 +266,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 			Empleado empleado = new Empleado(Integer.parseInt(hijo.getAttribute("id")), hijo.getAttribute("nombre"), hijo.getAttribute("login"), hijo.getAttribute("password"), primerEmpleado, Integer.parseInt(hijo.getAttribute("tipo")), Integer.parseInt(hijo.getAttribute("calificacion")), Byte.valueOf(hijo.getAttribute("clave")), Integer.parseInt(hijo.getAttribute("incidentes")));
 			tablaUsuarios.agregar(empleado.darId(), empleado);
 			try {
-				autenticador.agregarUsuario( hijo.getAttribute("login"),  hijo.getAttribute("password"), Integer.parseInt(hijo.getAttribute("id")), modulacionDeTipo(Integer.parseInt(hijo.getAttribute("tipo"))));
+				autenticador.agregarUsuario( hijo.getAttribute("login"),  hijo.getAttribute("password"), Integer.parseInt(hijo.getAttribute("id")), Autenticador.TIPO_EMPLEADO);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -842,7 +842,8 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	{
 		return tipo == 1 ? Autenticador.TIPO_CLIENTE :
 				tipo == 2 ? Autenticador.TIPO_EMPLEADO :
-				Autenticador.TIPO_ADMINISTRADOR;
+				tipo == 3 ?	Autenticador.TIPO_ADMINISTRADOR :
+					null;
 	}
 
 	public static HelpDesk getInstance(Properties lista) {

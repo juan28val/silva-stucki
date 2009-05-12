@@ -59,9 +59,11 @@ public class ServletRegistrarCliente extends ServletTemplate
         }
         else
         {
-        	try {
+        	try 
+        	{
 				mundo.crearCliente(nombre, login, password, tipo, email);
 				mundo.guardar(HelpDesk.RUTA_ARCHIVO);
+				
 				respuesta.write( "                              <table border=\"0\" width=\"710\" id=\"table3\">\r\n" );
 	        	respuesta.write( "                              <tr>\r\n" );
 	        	respuesta.write( "                              <td width=\"696\" colspan=\"4\" bgcolor=\"#E2E2E2\">\r\n" );
@@ -109,9 +111,11 @@ public class ServletRegistrarCliente extends ServletTemplate
 	        	respuesta.write( "                              <td width=\"82\"></td>\r\n" );
 	        	respuesta.write( "                              </tr>\r\n" );
 	        	respuesta.write( "                               </table>\r\n" );
-			} catch (Exception e) {
+	        	
+			} 
+        	catch (Exception e) 
+        	{
 				imprimirMensajeError(respuesta, "Error al crear el cliente.");
-				
 			}
         }
     }

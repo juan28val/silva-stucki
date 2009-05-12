@@ -185,7 +185,7 @@ public abstract class ServletTemplate extends HttpServlet
     protected void imprimirMensajeError( PrintWriter respuesta, String mensaje )
     {
         respuesta.write( "                      <p class=\"error\"><b>Ha ocurrido un error!:<br>\r\n" );
-        respuesta.write( "                      <p>" + mensaje + ". </p>\r\n" );
+        respuesta.write( "                      <p>" + mensaje + " </p>\r\n" );
         respuesta.write( "                      <p>Intente la \r\n" );
         respuesta.write( "                      operación nuevamente. Si el problema persiste, contacte \r\n" );
         respuesta.write( "                      al administrador del sistema.</p>\r\n" );

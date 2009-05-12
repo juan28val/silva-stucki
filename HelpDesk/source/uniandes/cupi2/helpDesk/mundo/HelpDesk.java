@@ -500,7 +500,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		Cliente cliente = new Cliente(idUsuarios, nombreCliente, loginCliente, passwordCliente, tipoCliente, email, primerCliente, null);
 		tablaUsuarios.agregar(idUsuarios, cliente);
 		primerCliente = cliente;
-		autenticador.agregarUsuario(loginCliente, passwordCliente, idUsuarios, modulacionDeTipo(tipoCliente));
+		autenticador.agregarUsuario(loginCliente, passwordCliente, idUsuarios, Autenticador.TIPO_CLIENTE);
 		
 		return cliente;
 	}
@@ -849,8 +849,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	{
 		return tipo == 1 ? Autenticador.TIPO_CLIENTE :
 				tipo == 2 ? Autenticador.TIPO_EMPLEADO :
-				tipo == 3 ?	Autenticador.TIPO_ADMINISTRADOR :
-					null;
+				Autenticador.TIPO_ADMINISTRADOR;
 
 	}
 

@@ -81,7 +81,7 @@ public class ServletLogin extends ServletTemplate
         respuesta.write( "                              <tr>\r\n" );
         respuesta.write( "                              <td width=\"42\">&nbsp;</td>\r\n" );
         respuesta.write( "                              <td width=\"25\">&nbsp;</td>\r\n" );
-        respuesta.write( "                              <td width=\"543\"><form method=\"POST\" action=\"index.htm\">\r\n" );
+        respuesta.write( "                              <td width=\"543\"><form method=\"POST\" action=\"index.html\">\r\n" );
         respuesta.write( "                              <input type=\"submit\" value=\"Cerrar sesion\" name=\"B2\" class=\"normal\">\r\n" );
         respuesta.write( "                              </form>\r\n" );
         respuesta.write( "                              </td>\r\n" );

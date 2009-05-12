@@ -86,7 +86,7 @@ public abstract class ServletTemplate extends HttpServlet
         respuesta.write( "<html>\r\n" );
         respuesta.write( "<head>\r\n" );
         respuesta.write( "<meta http-equiv=\"Content-Language\" content=\"es-co\">\r\n" );
-        respuesta.write( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=windows-1252\">\r\n" );
+        respuesta.write( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\">\r\n" );
         respuesta.write( "<title>Help Desk - " + darTituloPagina( request ) + "</title>\r\n" );
         respuesta.write( "<link type=\"text/css\" rel=\"stylesheet\" href=\"style/style.css\">\r\n" );
         respuesta.write( "<script language=\"javascript\" type=\"text/javascript\">\r\n" );
@@ -160,10 +160,9 @@ public abstract class ServletTemplate extends HttpServlet
         respuesta.write( "               <td bgcolor=\"#000000\" height=\"2px\"></td>\r\n" );
         respuesta.write( "           </tr>\r\n" );
         respuesta.write( "           <tr>\r\n" );
-        respuesta.write( "               <td>&nbsp; Proyecto CUPI2<br>\r\n" );
-        respuesta.write( "               &nbsp;\r\n" );
-        respuesta.write( "               Help Desk en línea<br>\r\n" );
-        respuesta.write( "               <b>&nbsp; 2009</b></td>\r\n" );
+        respuesta.write( "               <td>Proyecto CUPI2<br>\r\n" );
+        respuesta.write( "               Help Desk en l&iacute;nea<br>\r\n" );
+        respuesta.write( "               <b>2009</b></td>\r\n" );
         respuesta.write( "           </tr>\r\n" );
         respuesta.write( "       </table>\r\n" );
         respuesta.write( "       </td>\r\n" );
@@ -190,7 +189,7 @@ public abstract class ServletTemplate extends HttpServlet
         respuesta.write( "                      <p>Intente la \r\n" );
         respuesta.write( "                      operación nuevamente. Si el problema persiste, contacte \r\n" );
         respuesta.write( "                      al administrador del sistema.</p>\r\n" );
-        respuesta.write( "                      <p><a href=\"index.htm\">Volver a la página principal</a>\r\n" );
+        respuesta.write( "                      <p><a href=\"index.html\">Volver a la página principal</a>\r\n" );
     }
 
 

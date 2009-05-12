@@ -22,7 +22,9 @@ public class IteradorEmpleadosDelMesServlet implements IIterador {
 	}
 
 	public IUsuario darSiguiente() {
-		return empleadoActual;
+		IUsuario temp = empleadoActual;
+		empleadoActual = empleadoActual.darSiguienteDelMes();
+		return temp;
 	}
 
 	public boolean haySiguiente() {

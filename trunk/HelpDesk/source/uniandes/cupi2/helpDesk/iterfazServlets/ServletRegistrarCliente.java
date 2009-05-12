@@ -116,6 +116,9 @@ public class ServletRegistrarCliente extends ServletTemplate
         	catch (Exception e) 
         	{
 				imprimirMensajeError(respuesta, "Error al crear el cliente.");
+				return;
+				
+
 			}
         }
     }

@@ -1,0 +1,116 @@
+<html>
+<head>
+<meta http-equiv="Content-Language" content="es-co">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Help Desk - Help Desk</title>
+<link type="text/css" rel="stylesheet" href="style/style.css">
+<script language="javascript" src="hola.js">
+function seleccionar()
+{
+	form = document.forms[0];
+	if(form.tickets.options[form.tickets.selectedIndex].id == 0) {
+		form.info.disabled = false;
+		form.atender.disabled = false;
+		form.cerrar.disabled = true;
+		form.calificar.disabled = true;
+	}
+	else if(form.tickets.options[form.tickets.selectedIndex].id == 1) {
+		form.info.disabled = false;
+		form.atender.disabled = true;
+		form.cerrar.disabled = false;
+		form.calificar.disabled = true;
+	}
+	else if(form.tickets.options[form.tickets.selectedIndex].id == 2) {
+		form.info.disabled = false;
+		form.atender.disabled = true;
+		form.cerrar.disabled = true;
+		document.forms[0].calificar.disabled = false;
+	}
+	else if(form.tickets.options[form.tickets.selectedIndex].id == -1) {
+		form.info.disabled = true;
+		form.atender.disabled = true;
+		form.cerrar.disabled = true;
+		form.calificar.disabled = true;
+	}  
+}
+
+
+function crear() {
+form = document.forms[0];
+	var tipo = form.tipo[0].checked ? "queja" : form.tipo[1].checked ? "reclamo" : "solicitud";
+	location.href = "crearTicket.htm?usuario="Juan"&tipo=" + tipo + "&mensaje=" + form.mensaje.value;
+}
+</script>
+</head>
+<body>
+<div align=center>
+    <center>
+        <table border="0" width="720" id="table1">
+            <tr>
+                <td><p align="center"> <img border="0" src="imagenes/logo.jpg" width="640" height="100"></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+            
+            <td>
+            
+            <table border="1" width="100%" style="border-collapse: collapse" bordercolor="#999999" id="table2">
+                <tr> </tr>
+                <tr>
+                    <td bgcolor="#000000" height="3px"></td>
+                </tr>
+                <tr>
+                    <td>
+                <tr>
+                    <td>
+                <tr>
+                    <form method="post" action="">
+                        <td width="34%"><select size=10 name="tickets">
+                                <option id="2" onClick="javascript:document.forms[0].calificar.disabled=false;"> ___________ * --- Lista de Tickets --- * ___________ </option>
+                            </select></td>
+                        <td width="33%" align="center"><input type="button" name="info" disabled onClick="info()" value="Ver informacion asociada" >
+                            <br>
+                            <br>                           
+                            <input type="button" name="calificar" disabled onClick="calificar()" value="          Calificar ticket         ">
+                            <br>
+                            <br>
+                            <input type="button" name="salir" onClick="salir()" value="  Guardar cambios y salir  "></td>
+                        <td width="33%" align="right"><textarea name="mensaje" rows='8' cols='30' onClick="javascript:value=''">Crear un nuevo ticket...</textarea>
+                            <br>
+                            <input type="radio" name="tipo" value="queja" onClick="javascript:document.forms[0].crear.disabled=false">
+                            Queja
+                            <input type="radio" name="tipo" value="reclamo" onClick="nuevo()">
+                            Reclamo
+                            <input type="radio" name="tipo" value="solicitud" onClick="nuevo()">
+                            Solicitud
+							<br><br>
+							<input type="button" name="crear" disabled onClick="crear()" value="          Crear ticket         ">
+                    </form>
+                </tr>
+                </td>
+                </tr>
+                
+                </td>
+                
+                </tr>
+                
+                <tr>
+                    <td bgcolor="#000000" height="2px"></td>
+                </tr>
+                <tr>
+                    <td>Proyecto CUPI2<br>
+                        Help Desk en l&iacute;nea<br>
+                        <b>2009</b></td>
+                </tr>
+            </table>
+            </td>
+            
+            </tr>
+            
+        </table>
+    </center>
+</div>
+</body>
+</html>

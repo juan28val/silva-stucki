@@ -19,8 +19,12 @@
       <servlet-name>Login</servlet-name>
       <servlet-class>uniandes.cupi2.helpDesk.iterfazServlets.ServletLogin</servlet-class>
    </servlet>
-   
-   
+   <servlet>
+   	<servlet-name>NuevoTicket</servlet-name>
+   	<servlet-class>uniandes.cupi2.helpDesk.interfazServlets.ServletNuevoTicket</servlet-class>
+   </servlet>
+
+
    <!-- MAPPING -->
 	
    <servlet-mapping>
@@ -31,6 +35,10 @@
    <servlet-mapping>
       <servlet-name>Login</servlet-name>
       <url-pattern>/login.htm</url-pattern>
+   </servlet-mapping>
+   <servlet-mapping>
+   	<servlet-name>NuevoTicket</servlet-name>
+   	<url-pattern>/nuevoTicket.htm</url-pattern>
    </servlet-mapping>
 
 </web-app>

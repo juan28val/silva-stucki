@@ -109,6 +109,8 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	private int idUsuarios;
 	
 	private GrafoAciclico digiturno;
+
+	private String loginActual;
 	
 	/**
 	 * Atributo que representa la instancia del mundo
@@ -225,7 +227,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 			Cliente cliente = new Cliente(Integer.parseInt(hijo.getAttribute("id")), hijo.getAttribute("nombre"), hijo.getAttribute("login"), hijo.getAttribute("password"), Integer.parseInt(hijo.getAttribute("tipo")), hijo.getAttribute("email"), primerCliente, hijo.getAttribute("fechaAtencion").equals("") ? null : new Date(Long.parseLong(hijo.getAttribute("fechaAtencion"))));
 			tablaUsuarios.agregar(cliente.darId(), cliente);
 			try {
-				autenticador.agregarUsuario( hijo.getAttribute("login"),  hijo.getAttribute("password"), Integer.parseInt(hijo.getAttribute("id")), modulacionDeTipo(Integer.parseInt(hijo.getAttribute("tipo"))));
+				autenticador.agregarUsuario( hijo.getAttribute("login"),  hijo.getAttribute("password"), Integer.parseInt(hijo.getAttribute("id")), Autenticador.TIPO_CLIENTE);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -838,7 +840,9 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	 */
 	public int validar(String login, String password, int tipo) throws Exception
 	{
-		return autenticador.validar(login, password, modulacionDeTipo(tipo));
+		int llave = autenticador.validar(login, password, modulacionDeTipo(tipo));
+		loginActual = login;
+		return llave;
 	}
 	
 	/**
@@ -874,5 +878,10 @@ public class HelpDesk extends Observable implements IHelpDesk {
 
 	public boolean existeUsuario(String login) {
 		return autenticador.existeUsuario(login);
+	}
+	
+	public String darLoginActual()
+	{
+		return loginActual;
 	}
 }

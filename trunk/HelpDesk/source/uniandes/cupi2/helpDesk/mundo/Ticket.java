@@ -200,7 +200,7 @@ public class Ticket implements ITicket {
 
 	public String toString()
 	{
-		return (tipo==1? "Queja" :tipo==2? "Reclamo" : "Solicitud") + " # " + id + " - " + (fechaAtencion == null ? "Sin atender" : fechaCierre == null ? (!reabierto ? "Abierto" : "Reabierto") : "Cerrado");
+		return (tipo==1? "Queja" :tipo==2? "Reclamo" : "Solicitud") + " # " + id + " - " + (fechaAtencion == null ? "Sin atender" : fechaCierre == null ? (!reabierto ? "Abierto" : "Reabierto") : "Cerrado");// + "asignado a " + empleado.darNombre();
 	}
 
 	public IUsuario darEmpleado() {

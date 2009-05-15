@@ -257,4 +257,25 @@ public class Empleado implements IUsuario {
 		return id;
 	}
 
+	public void insertarEmpleadoPorMes(Empleado empleado) 
+	{
+		if(siguienteDelMes==null)
+		{
+			empleado.cambiarAnteriorDelMes(this);
+			siguienteDelMes = empleado;
+		}
+		else if(anteriorDelMes.darSumaCalificacion()<=empleado.darSumaCalificacion())
+		{
+			empleado.cambiarAnteriorDelMes(anteriorDelMes);
+			empleado.cambiarSiguienteDelMes(this);
+			anteriorDelMes.cambiarSiguiente(empleado);
+			cambiarAnteriorDelMes(empleado);
+		}
+		else
+		{
+			siguienteDelMes.insertarEmpleadoPorMes(empleado);
+		}
+		
+	}
+
 }

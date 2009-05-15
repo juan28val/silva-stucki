@@ -61,7 +61,7 @@ public class ServletCliente extends ServletLogin
     		}
     		catch(Exception f)
     		{
-    			//No debe hacer nada.
+    			
     		}
 		}
     	mundo.cambiarTicketActual(null);

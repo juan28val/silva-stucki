@@ -282,16 +282,30 @@ public class HelpDesk extends Observable implements IHelpDesk {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			empleado.cambiarSiguienteDelMes(primerEmpleado);
 			if(primerEmpleado!=null)
-				primerEmpleado.cambiarAnteriorDelMes(empleado);
-			else ultimoEmpleado = empleado;
-   			empleadoDelMes = empleado;
+			{
+				empleado.cambiarSiguiente(primerEmpleado);
+				
+				
+				if(empleadoDelMes.darSumaCalificacion()<=empleado.darSumaCalificacion())
+				{
+					empleado.cambiarSiguienteDelMes(empleadoDelMes);
+					empleadoDelMes.cambiarAnteriorDelMes(empleado);
+					empleadoDelMes = empleado;
+				}
+				else
+				{
+					empleadoDelMes.insertarEmpleadoPorMes(empleado);
+				}
+			}
+			else 
+			{
+				empleadoDelMes = empleado;
+				ultimoEmpleado = empleado;
+			}	
    			primerEmpleado = empleado;
-		
-   		//TODO lista empleados por calificacion
-   			primerEmpleado.cambiarCalificacion(0, empleadoDelMes);
-		
+   			
+   			
 			for(int j=0; j<hijo.getChildNodes().getLength(); j++)
 			{
 				Element nieto = (Element) ((NodeList)hijo.getChildNodes()).item(j);

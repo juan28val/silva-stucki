@@ -87,7 +87,9 @@ public class ServletLogin extends ServletTemplate
     	respuesta.write("</tr>");
     	respuesta.write("<tr>");
     	respuesta.write("<th height=\"74\" scope=\"row\"><form method=\"POST\" action=\"ticketsALaFecha.htm\">");
-    	respuesta.write(" <p>");
+    	respuesta.write("</form><p>");
+    	respuesta.write("<form action='ticketsALaFecha.htm' method='post'>\n");
+    	respuesta.write("Seleccione la fecha:<br><select name='mes'>" + formMes() + "</select><select name='dia'>" + formDia() + "</select><br>\n");
     	respuesta.write("<input type=\"submit\" value=\"Ver Tickets a la fecha\" name=\"B4\" class=\"normal\">");
     	respuesta.write("</p>");
     	respuesta.write("</form></th>");
@@ -108,7 +110,58 @@ public class ServletLogin extends ServletTemplate
     	respuesta.write("</form></td><td width=\"82\">&nbsp;</td></tr></table>");      
     }
     
-    public void paginaAdministrador(PrintWriter respuesta) {
+    private String formMes() {
+    	return 	"<option name='mes' value='0''>Mes</option>\n" +
+    			"<option name='mes' value='1'>Enero</option>\n" +
+				"<option name='mes' value='2'>Febrero</option>\n" +
+				"<option name='mes' value='3'>Marzo</option>\n" +
+				"<option name='mes' value='4'>Abril</option>\n" +
+				"<option name='mes' value='5'>Mayo</option>\n" +
+				"<option name='mes' value='6'>Junio</option>\n" +
+				"<option name='mes' value='7'>Julio</option>\n" +
+				"<option name='mes' value='8'>Agosto</option>\n" +
+				"<option name='mes' value='9'>Septiembre</option>\n" +
+				"<option name='mes' value='10'>Octubre</option>\n" +
+				"<option name='mes' value='11'>Noviembre</option>\n" +
+				"<option name='mes' value='12'>Diciembre</option>\n";
+	}
+    
+    private String formDia() {
+    	return "<option name='dia' value='0'>Día</option>\n" +
+    			"<option name='dia' value='1'>01</option>\n" +
+    			"<option name='dia' value='2'>02</option>\n" +
+    			"<option name='dia' value='3'>03</option>\n" +
+    			"<option name='dia' value='4'>04</option>\n" +
+    			"<option name='dia' value='5'>05</option>\n" +
+    			"<option name='dia' value='6'>06</option>\n" +
+    			"<option name='dia' value='7'>07</option>\n" +
+    			"<option name='dia' value='8'>08</option>\n" +
+    			"<option name='dia' value='9'>09</option>\n" +
+    			"<option name='dia' value='10'>10</option>\n" +
+    			"<option name='dia' value='11'>11</option>\n" +
+    			"<option name='dia' value='12'>12</option>\n" +
+    			"<option name='dia' value='13'>13</option>\n" +
+    			"<option name='dia' value='14'>14</option>\n" +
+    			"<option name='dia' value='15'>15</option>\n" +
+    			"<option name='dia' value='16'>16</option>\n" +
+    			"<option name='dia' value='17'>17</option>\n" +
+    			"<option name='dia' value='18'>18</option>\n" +
+    			"<option name='dia' value='19'>19</option>\n" +
+    			"<option name='dia' value='20'>20</option>\n" +
+    			"<option name='dia' value='21'>21</option>\n" +
+    			"<option name='dia' value='22'>22</option>\n" +
+    			"<option name='dia' value='23'>23</option>\n" +
+    			"<option name='dia' value='24'>24</option>\n" +
+    			"<option name='dia' value='25'>25</option>\n" +
+    			"<option name='dia' value='26'>26</option>\n" +
+    			"<option name='dia' value='27'>27</option>\n" +
+    			"<option name='dia' value='28'>28</option>\n" +
+    			"<option name='dia' value='29'>29</option>\n" +
+    			"<option name='dia' value='30'>30</option>\n" +
+    			"<option name='dia' value='31'>31</option>\n";
+    }
+
+	public void paginaAdministrador(PrintWriter respuesta) {
 
     	HelpDesk mundo = HelpDesk.getInstance(null);
     	

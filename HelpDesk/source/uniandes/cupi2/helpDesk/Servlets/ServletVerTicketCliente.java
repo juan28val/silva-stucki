@@ -80,7 +80,7 @@ public class ServletVerTicketCliente extends ServletTemplate
 		{
 			respuesta.write("	<tr>");
 			respuesta.write("			<td width=\"70\" height=\"20\" align=\"right\" valign=\"top\">");
-			respuesta.write("		  <p align=\"right\"><b>Comentario emplead</b></td>");
+			respuesta.write("		  <p align=\"right\"><b>Comentario emplead ("+ticket.darEmpleado().darNombre()+")</b></td>");
 			respuesta.write("	  <td valign=\"top\"><textarea name=\"comentario2\" cols=\"60\" rows=\"6\" disabled class=\"normal\">"+ticket.darComentarioEmpleado()+"</textarea></td>");
 			respuesta.write("  <td valign=\"top\">&nbsp;</td>");
 			respuesta.write("</tr>");

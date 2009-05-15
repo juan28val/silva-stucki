@@ -142,7 +142,7 @@ public class ServletLogin extends ServletTemplate
         while( it.haySiguiente() )
         {
         	IUsuario usuario = (IUsuario)it.darSiguiente();
-        	   respuesta.write( "                              <option selected>" + usuario.darNombre() + " - " + usuario.darSumaCalificacion() + "</option>\r\n" );
+        	   respuesta.write( "                              <option selected>" + usuario.darNombre() + " - " + usuario.darSumaCalificacion() + " puntos</option>\r\n" );
         	        	
         }
         
@@ -199,7 +199,7 @@ public class ServletLogin extends ServletTemplate
     	ArrayList<Integer> tickets = mundo.darUsuarioActual().darListaTickets();
     	
     	if(tickets.size()==0)
-    		respuesta.write("<option value=\"\">Usted no ha generado tickets.</option>");
+    		respuesta.write("<option value=\"\">El sistema no le ha asignado tickets.</option>");
     	else
     	{
     		ITicket ticket = mundo.darTicket(tickets.get(0));

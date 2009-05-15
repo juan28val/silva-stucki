@@ -273,6 +273,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		NodeList hijos = empleados.getChildNodes();
 		for(int i=0; i<hijos.getLength(); i++)
 		{
+			
 			Element hijo = (Element)hijos.item(i);
 			Empleado empleado = new Empleado(Integer.parseInt(hijo.getAttribute("id")), hijo.getAttribute("nombre"), hijo.getAttribute("login"), hijo.getAttribute("password"), primerEmpleado, Integer.parseInt(hijo.getAttribute("tipo")), Integer.parseInt(hijo.getAttribute("calificacion")), Byte.valueOf(hijo.getAttribute("clave")), Integer.parseInt(hijo.getAttribute("incidentes")));
 			tablaUsuarios.agregar(empleado.darId(), empleado);
@@ -287,7 +288,10 @@ public class HelpDesk extends Observable implements IHelpDesk {
 			else ultimoEmpleado = empleado;
    			empleadoDelMes = empleado;
    			primerEmpleado = empleado;
-			primerEmpleado.cambiarCalificacion(0, empleadoDelMes);
+		
+   		//TODO lista empleados por calificacion
+   			primerEmpleado.cambiarCalificacion(0, empleadoDelMes);
+		
 			for(int j=0; j<hijo.getChildNodes().getLength(); j++)
 			{
 				Element nieto = (Element) ((NodeList)hijo.getChildNodes()).item(j);

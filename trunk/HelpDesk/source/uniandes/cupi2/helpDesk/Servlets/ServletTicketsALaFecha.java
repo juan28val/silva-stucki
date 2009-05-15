@@ -1,4 +1,4 @@
-package uniandes.cupi2.helpDesk.iterfazServlets;
+package uniandes.cupi2.helpDesk.Servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,7 +12,7 @@ import uniandes.cupi2.helpDesk.mundo.HelpDesk;
  * Servlet para la creacion de tickets
  */
 @SuppressWarnings("serial")
-public class ServletNuevoTicket extends ServletTemplate
+public class ServletTicketsALaFecha extends ServletTemplate
 {
 
     // -----------------------------------------------------------------
@@ -26,7 +26,7 @@ public class ServletNuevoTicket extends ServletTemplate
      */
     public String darTituloPagina( HttpServletRequest request )
     {
-        return "Nuevo Ticket";
+        return "Tickets a la fecha";
     }
 
     /**
@@ -38,13 +38,7 @@ public class ServletNuevoTicket extends ServletTemplate
     public void escribirContenido( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
     	PrintWriter respuesta = response.getWriter();
-        HelpDesk mundo = HelpDesk.getInstance(null);
-        int tipo = Integer.parseInt(request.getParameter("tipo"));
-        try {
-			mundo.nuevaSolicitud(tipo, request.getParameter("mensaje"), false);
-		} catch (Exception e) {
-			this.imprimirMensajeError(respuesta, e.getMessage());
-		}
-		respuesta.write("");
+       
+    	HelpDesk mundo = HelpDesk.getInstance(null);    	
     }
 }

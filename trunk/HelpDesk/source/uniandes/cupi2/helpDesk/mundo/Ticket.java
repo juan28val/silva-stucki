@@ -216,4 +216,9 @@ public class Ticket implements ITicket {
 	public boolean reabierto() {
 		return reabierto;
 	}
+	
+	public String toString2()
+	{
+		return (tipo==1? "Queja" :tipo==2? "Reclamo" : "Solicitud") + " # " + id + " - " + (fechaAtencion == null ? "Sin atender (creado: "+fechaCreacion.toString()+")" : fechaCierre == null ? (!reabierto ? "Abierto (apertura: "+fechaAtencion.toString()+")" : "Reabierto") : "Cerrado (cierre: "+fechaCierre.toString()+")");// + "asignado a " + empleado.darNombre();
+	}
 }

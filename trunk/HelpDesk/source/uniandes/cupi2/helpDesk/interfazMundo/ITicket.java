@@ -159,5 +159,8 @@ public interface ITicket
 	 * @return Cliente: el cliente que creo el ticket.
 	 */
 	public IUsuario darCliente();
+
+	public String toString2();
+	
 	
 }

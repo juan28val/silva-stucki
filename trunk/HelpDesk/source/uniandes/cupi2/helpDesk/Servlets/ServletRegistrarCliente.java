@@ -107,7 +107,7 @@ public class ServletRegistrarCliente extends ServletTemplate
 	        	respuesta.write( "                              <td width=\"25\">&nbsp;</td>\r\n" );
 	        	respuesta.write( "                              <td width=\"543\">\r\n" );
 	        	respuesta.write( "                              <td width=\"543\">\r\n" );
-	        	respuesta.write( "                              <form method=\"POST\" action=\"index.html\"><input type=\"submit\" value=\"Finalizar\" name=\"B2\" class=\"normal\"></form></td>\r\n" );
+	        	respuesta.write( "                              <form method=\"POST\" action=\"index.htm\"><input type=\"submit\" value=\"Finalizar\" name=\"B2\" class=\"normal\"></form></td>\r\n" );
 	        	respuesta.write( "                              <td width=\"82\"></td>\r\n" );
 	        	respuesta.write( "                              </tr>\r\n" );
 	        	respuesta.write( "                               </table>\r\n" );

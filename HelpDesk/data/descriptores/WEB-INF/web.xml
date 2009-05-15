@@ -12,33 +12,83 @@
    
    <servlet>
       <servlet-name>RegistrarCliente</servlet-name>
-      <servlet-class>uniandes.cupi2.helpDesk.iterfazServlets.ServletRegistrarCliente</servlet-class>
+      <servlet-class>uniandes.cupi2.helpDesk.Servlets.ServletRegistrarCliente</servlet-class>
    </servlet>
 
    <servlet>
       <servlet-name>Login</servlet-name>
-      <servlet-class>uniandes.cupi2.helpDesk.iterfazServlets.ServletLogin</servlet-class>
+      <servlet-class>uniandes.cupi2.helpDesk.Servlets.ServletLogin</servlet-class>
    </servlet>
+   
    <servlet>
    	<servlet-name>NuevoTicket</servlet-name>
-   	<servlet-class>uniandes.cupi2.helpDesk.interfazServlets.ServletNuevoTicket</servlet-class>
+   	<servlet-class>uniandes.cupi2.helpDesk.Servlets.ServletNuevoTicket</servlet-class>
    </servlet>
 
+   <servlet>
+   	<servlet-name>VerTicketCliente</servlet-name>
+   	<servlet-class>uniandes.cupi2.helpDesk.Servlets.ServletVerTicketCliente</servlet-class>
+   </servlet>
+
+   <servlet>
+   	<servlet-name>VerTicketEmpleado</servlet-name>
+   	<servlet-class>uniandes.cupi2.helpDesk.Servlets.ServletVerTicketEmpleado</servlet-class>
+   </servlet>
+   
+   <servlet>
+      <servlet-name>Cliente</servlet-name>
+      <servlet-class>uniandes.cupi2.helpDesk.Servlets.ServletCliente</servlet-class>
+   </servlet>
+
+   <servlet>
+      <servlet-name>Empleado</servlet-name>
+      <servlet-class>uniandes.cupi2.helpDesk.Servlets.ServletEmpleado</servlet-class>
+   </servlet>
+   
+   <servlet>
+      <servlet-name>TicketsALaFecha</servlet-name>
+      <servlet-class>uniandes.cupi2.helpDesk.Servlets.ServletTicketsALaFecha</servlet-class>
+   </servlet>
 
    <!-- MAPPING -->
 	
    <servlet-mapping>
       <servlet-name>RegistrarCliente</servlet-name>
-      <url-pattern>/registrarCliente.htm</url-pattern>
+      <url-pattern>/registrarCliente2.htm</url-pattern>
    </servlet-mapping>
    
    <servlet-mapping>
       <servlet-name>Login</servlet-name>
       <url-pattern>/login.htm</url-pattern>
    </servlet-mapping>
+   
    <servlet-mapping>
    	<servlet-name>NuevoTicket</servlet-name>
    	<url-pattern>/nuevoTicket.htm</url-pattern>
    </servlet-mapping>
+   
+   <servlet-mapping>
+   	<servlet-name>VerTicketCliente</servlet-name>
+   	<url-pattern>/verTicketCliente.htm</url-pattern>
+   </servlet-mapping>
+   
+   <servlet-mapping>
+   	<servlet-name>VerTicketEmpleado</servlet-name>
+   	<url-pattern>/verTicketEmpleado.htm</url-pattern>
+   </servlet-mapping>
+   
+   <servlet-mapping>
+   	<servlet-name>Cliente</servlet-name>
+   	<url-pattern>/cliente.htm</url-pattern>
+   </servlet-mapping>
 
+   <servlet-mapping>
+   	<servlet-name>Empleado</servlet-name>
+   	<url-pattern>/empleado.htm</url-pattern>
+   </servlet-mapping>
+   
+   <servlet-mapping>
+   	<servlet-name>TicketsALaFecha</servlet-name>
+   	<url-pattern>/ticketsALaFecha.htm</url-pattern>
+   </servlet-mapping>
 </web-app>

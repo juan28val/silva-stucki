@@ -111,6 +111,8 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	private GrafoAciclico digiturno;
 
 	private String loginActual;
+
+	private ITicket ticketActual;
 	
 	/**
 	 * Atributo que representa la instancia del mundo
@@ -382,7 +384,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	/**
 	 * pre: el usuario actual es un cliente
 	 */
-	public void nuevaSolicitud(int tipo, String comentarioCliente, boolean cifrado) throws Exception {
+	public void nuevaSolicitud(int tipo, String comentarioCliente, boolean cifrado)  {
 		Long inicio = new Date().getTime();
 		
 		idTickets++;
@@ -469,7 +471,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 			empleadoDelMes = empleadoDelMes.darEmpleadoDelMes();
 	}
 
-	public void cerrarTicket(ITicket ticket, String comentario) throws Exception {
+	public void cerrarTicket(ITicket ticket, String comentario) {
 		
 		Long inicio = new Date().getTime();
 		
@@ -488,7 +490,6 @@ public class HelpDesk extends Observable implements IHelpDesk {
 		catch( Exception e)
 		{
 			digiturno.agregarDatoAActividad(ACTIVIDAD_NOTFICAR, new Date().getTime() - inicio );	
-			throw new Exception(e.getMessage());
 		}
 	}
 
@@ -562,7 +563,6 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	public void iniciarSesion( IUsuario usuario ) {
 
 		usuarioActual = usuario;
-	
 	}
 
 	/**
@@ -842,6 +842,7 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	{
 		int llave = autenticador.validar(login, password, modulacionDeTipo(tipo));
 		loginActual = login;
+		usuarioActual = null;
 		return llave;
 	}
 	
@@ -884,4 +885,19 @@ public class HelpDesk extends Observable implements IHelpDesk {
 	{
 		return loginActual;
 	}
+
+	public String darComentarioTicket(ITicket ticket)
+	{
+		return ((Ticket)ticket).estaCifrado()?((Ticket)ticket).descifrar(((Empleado)((Ticket)ticket).darEmpleado()).darClave()):((Ticket)ticket).darComentarioCliente();
+	}
+
+	public void cambiarTicketActual(ITicket ticket) 
+	{
+		ticketActual = ticket;
+	}
+
+	public ITicket darTicketActual() {
+		return ticketActual;
+	}
+
 }

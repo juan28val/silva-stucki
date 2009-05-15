@@ -1,4 +1,4 @@
-package uniandes.cupi2.helpDesk.iterfazServlets;
+package uniandes.cupi2.helpDesk.Servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;

@@ -1,4 +1,4 @@
-package uniandes.cupi2.helpDesk.iterfazServlets;
+package uniandes.cupi2.helpDesk.Servlets;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -202,7 +202,7 @@ public abstract class ServletTemplate extends HttpServlet
         respuesta.write( "                      <p>Intente la \r\n" );
         respuesta.write( "                      operación nuevamente. Si el problema persiste, contacte \r\n" );
         respuesta.write( "                      al administrador del sistema.</p>\r\n" );
-        respuesta.write( "                      <p><a href=\"index.html\">Volver a la página principal</a>\r\n" );
+        respuesta.write( "                      <p><a href=\"index.htm\">Volver a la página principal</a>\r\n" );
     }
 
 

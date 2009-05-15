@@ -70,6 +70,6 @@ public class IteradorTicketsEntreFechas implements IIterador {
 	}
 
 	public boolean hayGrupoSiguiente() {
-		return iteradorEmpleados.haySiguiente();		
+		return iteradorEmpleados.haySiguiente();
 	}
 }
